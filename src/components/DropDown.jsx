@@ -2,16 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Accordion, AccordionSummary, AccordionDetails, Typography, Box } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-const contents = [
-  'https://via.placeholder.com/150',
-  'https://via.placeholder.com/150',
-  'https://via.placeholder.com/150',
-  'https://via.placeholder.com/150',
-  'https://via.placeholder.com/150',
-];
-
-export default function DropDown() {
-
+export default function DropDown({ savedDrawings, fetchDrawingById }) {
   const [expanded, setExpanded] = useState(false);
   const accordionRef = useRef(null);
 
@@ -47,9 +38,9 @@ export default function DropDown() {
         </AccordionSummary>
         <AccordionDetails>
           <Box sx={{ display: 'flex', overflowX: 'auto' }}>
-            {contents.map((src, index) => (
-              <Box key={index} sx={{ marginRight: 1 }}>
-                <img src={src} alt={`Image ${index + 1}`} style={{ width: 150, height: 150, padding: '15px' }} />
+            {savedDrawings.map((drawing) => (
+              <Box key={drawing.drawing_resources_id} sx={{ marginRight: 1 }} onClick={() => fetchDrawingById(drawing.drawing_resources_id)}>
+                <img src={`data:image/png;base64,${drawing.details}`} alt={drawing.title} style={{ width: 150, height: 150, padding: '15px' }} />
               </Box>
             ))}
           </Box>

@@ -20,7 +20,8 @@ app.use((req, res, next) => {
 });
 
 // Routes
-app.use("/api/drawings", require("./routes/drawingsRoute"));
+// app.use("/api/drawings", require("./routes/drawingsRoute")); // Example Reference
+app.use("/api", require("./routes/drawingResourcesRoute"));
 
 // Global error handler
 app.use((err, req, res, next) => {
