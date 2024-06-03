@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "Project04-Test-Connection",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

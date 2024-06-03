@@ -1,0 +1,30 @@
+
+.canvas-with-toolbar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.toolbar {
+  margin-top: 50px;;
+  margin-bottom: 50px;
+}
+
+.toolbar button {
+  margin: 0 10px;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.pressure-display {
+  margin-bottom: 10px;
+}
+
+.canvas-container {
+  display: flex;
+  justify-content: center;
+  border: 2px solid #9c9c9c;
+  border-radius: 0.25rem;
+}
+

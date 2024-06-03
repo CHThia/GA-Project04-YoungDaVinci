@@ -1,0 +1,38 @@
+import { Routes, Route } from "react-router-dom"
+import NavBar_Main from "../components/NavBar_Main"
+import Home from "./Home"
+import SignUp from "./SignUp"
+import ForgotPassword from "./ForgotPassword"
+import DashBoardStudent from "./DashboardStudent"
+import AllStudents from "./AllStudents"
+import StudentArtWorks from "./StudentArtWorks"
+import DrawingResources from "./DrawingResources"
+import KonvaStudent from "../components/KonvaStudent"
+//* import Canvas from "./Canvas"
+
+
+export default function App() {
+  
+
+  return (
+    <>
+      <main >
+        <NavBar_Main/>
+        <br/>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/forgotpassword" element={<ForgotPassword />} />
+          <Route path="/dashboardstudent" element={<DashBoardStudent />} />
+          <Route path="/allstudents" element={<AllStudents />} />
+          <Route path="/studentartworks" element={<StudentArtWorks />} />
+          <Route path="/drawingresources" element={<DrawingResources />} />        
+          <Route path="/konvastudent" element={<KonvaStudent />} />
+
+          {/* <Route path="/canvas" element={<Canvas />} /> */}
+          
+        </Routes>
+      </main>
+    </>
+  )
+}

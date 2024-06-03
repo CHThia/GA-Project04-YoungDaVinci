@@ -1,0 +1,20 @@
+.canvas-container {
+  width: 1080px;
+  height: 720px;
+  border: 1px solid #000;
+  margin: 100px auto; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.buttons-container {
+  width: 35%;
+  margin-bottom: 100px;
+  padding: 15px;
+  border: 1px solid black;
+  border-radius: 10px ;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
