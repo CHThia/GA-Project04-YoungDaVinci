@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import { Stage, Layer, Image as KonvaImage, Line, Rect } from 'react-konva';
+import { Stage, Layer, Image as KonvaImage, Line, Transformer } from 'react-konva';
 import { useImage } from 'react-konva-utils';
 
 export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }) {
@@ -10,7 +10,11 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
   const [tool, setTool] = useState('pencil');
   const [color, setColor] = useState('#000000'); // Color Picker
   const [lines, setLines] = useState([]);
+  const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
+  const [selectedImage, setSelectedImage] = useState(null);
   const stageRef = useRef(null);
+  const imageRef = useRef(null);
+  const transformerRef = useRef(null);
   const isDrawing = useRef(false);
 
   useEffect(() => {
@@ -18,7 +22,6 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
       setTitle(selectedDrawing.title);
       setDescription(selectedDrawing.description);
       setImageURL(`data:image/png;base64,${selectedDrawing.details}`);
-      // Load the image and redraw lines if necessary
     } else {
       resetCanvas();
     }
@@ -29,16 +32,26 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
       const aspectRatio = image.width / image.height;
       const newWidth = aspectRatio > 1080 / 720 ? 1080 : 720 * aspectRatio;
       const newHeight = aspectRatio > 1080 / 720 ? 1080 / aspectRatio : 720;
-      image.width = newWidth;
-      image.height = newHeight;
+      setImageDimensions({ width: newWidth, height: newHeight });
     }
   }, [image]);
+
+  useEffect(() => {
+    if (transformerRef.current && selectedImage) {
+      transformerRef.current.nodes([imageRef.current]);
+      transformerRef.current.getLayer().batchDraw();
+    } else if (transformerRef.current) {
+      transformerRef.current.nodes([]);
+      transformerRef.current.getLayer().batchDraw();
+    }
+  }, [selectedImage]);
 
   const resetCanvas = () => {
     setImageURL(null);
     setTitle('');
     setDescription('');
     setLines([]);
+    setSelectedImage(null);
   };
 
   const handleImageUpload = (event) => {
@@ -47,6 +60,14 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
       const reader = new FileReader();
       reader.onload = () => {
         setImageURL(reader.result);
+        const img = new Image();
+        img.src = reader.result;
+        img.onload = () => {
+          const aspectRatio = img.width / img.height;
+          const newWidth = aspectRatio > 1080 / 720 ? 1080 : 720 * aspectRatio;
+          const newHeight = aspectRatio > 1080 / 720 ? 1080 / aspectRatio : 720;
+          setImageDimensions({ width: newWidth, height: newHeight });
+        };
       };
       reader.readAsDataURL(file);
     }
@@ -90,9 +111,7 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
     const img = new Image();
     img.src = dataURL;
     img.onload = async () => {
-      // Draw the stage image on the center of the canvas
       context.drawImage(img, 0, 0, canvas.width, canvas.height);
-  
       const finalDataURL = canvas.toDataURL();
   
       const response = await fetch(finalDataURL);
@@ -119,7 +138,6 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
       }
     };
   };
-  
 
   const deleteDrawing = async () => {
     if (selectedDrawing) {
@@ -138,15 +156,19 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
     }
   };
 
+  const handleStageMouseDown = (e) => {
+    if (e.target === stageRef.current) {
+      setSelectedImage(null);
+    }
+  };
+
   const handleDragMove = (e) => {
     const { x, y } = e.target.position();
-    // Update state with new position if needed
     console.log('Node dragged to:', x, y);
   };
 
   const handleDragEnd = (e) => {
     const { x, y } = e.target.position();
-    // Update state with final position if needed
     console.log('Node drag ended at:', x, y);
   };
 
@@ -184,7 +206,7 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
           <Stage
             width={1080}
             height={720}
-            onMouseDown={handleMouseDown}
+            onMouseDown={handleStageMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
             ref={stageRef}
@@ -195,9 +217,14 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
                   image={image}
                   x={0}
                   y={0}
+                  width={imageDimensions.width}
+                  height={imageDimensions.height}
                   draggable
                   onDragMove={handleDragMove}
                   onDragEnd={handleDragEnd}
+                  ref={imageRef}
+                  onClick={() => setSelectedImage(imageRef.current)}
+                  onTap={() => setSelectedImage(imageRef.current)}
                 />
               )}
               {lines.map((line, i) => (
@@ -213,6 +240,7 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
                   }
                 />
               ))}
+              <Transformer ref={transformerRef} />
             </Layer>
           </Stage>
         </div>
