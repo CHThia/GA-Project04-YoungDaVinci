@@ -73,6 +73,17 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
     }
   };
 
+  const handleCombinedMouseDown = (e) => {
+    handleStageMouseDown(e);
+    handleMouseDown(e);
+  };
+
+  const handleStageMouseDown = (e) => {
+    if (e.target === stageRef.current) {
+      setSelectedImage(null);
+    }
+  };
+
   const handleMouseDown = () => {
     isDrawing.current = true;
     const pos = stageRef.current.getPointerPosition();
@@ -156,12 +167,6 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
     }
   };
 
-  const handleStageMouseDown = (e) => {
-    if (e.target === stageRef.current) {
-      setSelectedImage(null);
-    }
-  };
-
   const handleDragMove = (e) => {
     const { x, y } = e.target.position();
     console.log('Node dragged to:', x, y);
@@ -206,7 +211,7 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
           <Stage
             width={1080}
             height={720}
-            onMouseDown={handleStageMouseDown}
+            onMouseDown={handleCombinedMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
             ref={stageRef}
