@@ -1,5 +1,5 @@
 .canvas-container {
-  background-color: aquamarine;
+  /* background-color: aquamarine; */ 
   border: 2px solid #000000;
   margin: 25px auto; 
   display: flex;

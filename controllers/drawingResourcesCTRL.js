@@ -10,7 +10,7 @@ const getDrawingResources = async (req, res) => {
     res.json(images);
   } catch (err) {
     console.error(err);
-    res.status(500).send('Database connection error');
+    res.status(500).json({ error: 'Database connection error' });
   }
 };
 
@@ -32,7 +32,7 @@ const getDrawingResourcesById = async (req, res) => {
 
 const createDrawingResources = async (req, res) => {
   if (!req.file) {
-    return res.status(400).send('No file uploaded.');
+    return res.status(400).json({ error: 'No file uploaded.' });
   }
 
   const { title, description } = req.body;
@@ -50,7 +50,7 @@ const createDrawingResources = async (req, res) => {
 const updateDrawingResources = async (req, res) => {
   const { drawing_resources_id } = req.params;
   const { title, description } = req.body;
-  const details = req.file.buffer;
+  const details = req.file ? req.file.buffer : null;
 
   try {
     const drawingResource = await drawingResourceModel.updateDrawingResource(drawing_resources_id, title, description, details);
@@ -65,7 +65,7 @@ const deleteDrawingResources = async (req, res) => {
   const { drawing_resources_id } = req.params;
   try {
     await drawingResourceModel.deleteDrawingResource(drawing_resources_id);
-    res.status(200).send('Drawing resources deleted.');
+    res.status(200).json({ message: 'Drawing resources deleted.' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error deleting drawing resources' });

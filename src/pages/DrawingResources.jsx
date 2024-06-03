@@ -13,18 +13,36 @@ export default function DrawingResources() {
     fetchDrawings();
   }, []);
 
+
   const fetchDrawings = async () => {
-    const response = await fetch('http://localhost:3000/api/get-drawing-resources');
-    const data = await response.json();
-    setSavedDrawings(data);
+    try {
+      const response = await fetch('/api/get-drawing-resources');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      setSavedDrawings(data);
+    } catch (error) {
+      console.error('Error fetching drawings:', error);
+    }
   };
 
-  const fetchDrawingById = async (id) => {
-    const response = await fetch(`http://localhost:3000/api/get-drawing-resources/:drawing_resources_${id}`);
-    const data = await response.json();
-    setSelectedDrawing(data);
+  const fetchDrawingById = async (drawing_resources_id) => {
+    try {
+      const response = await fetch(`/api/get-drawing-resources/${drawing_resources_id}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      setSelectedDrawing(data);
+    } catch (error) {
+      console.error('Error fetching drawing by drawing_resources_id:', error);
+    }
   };
 
+  const clearSelection = () => {
+    setSelectedDrawing(null);
+  };
 
   return (
     <>
@@ -32,15 +50,7 @@ export default function DrawingResources() {
         <DropDown savedDrawings={savedDrawings} fetchDrawingById={fetchDrawingById} />
       </div>
       
-      <KonvaTeacher onSave={fetchDrawings} />
-
-      {selectedDrawing && (
-        <div>
-          <h2>{selectedDrawing.title}</h2>
-          <p>{selectedDrawing.description}</p>
-          <img src={`data:image/png;base64,${selectedDrawing.details}`} alt={selectedDrawing.title} />
-        </div>
-      )}
+      <KonvaTeacher onSave={fetchDrawings} selectedDrawing={selectedDrawing} clearSelection={clearSelection} />
     </>
   );
 }

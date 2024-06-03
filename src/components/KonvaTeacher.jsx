@@ -1,8 +1,8 @@
 import { useRef, useState, useEffect } from 'react';
-import { Stage, Layer, Rect, Image as KonvaImage, Line } from 'react-konva';
+import { Stage, Layer, Image as KonvaImage, Line, Rect } from 'react-konva';
 import { useImage } from 'react-konva-utils';
 
-export default function KonvaTeacher({ onSave }) {
+export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }) {
   const [imageURL, setImageURL] = useState(null);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -14,6 +14,17 @@ export default function KonvaTeacher({ onSave }) {
   const isDrawing = useRef(false);
 
   useEffect(() => {
+    if (selectedDrawing) {
+      setTitle(selectedDrawing.title);
+      setDescription(selectedDrawing.description);
+      setImageURL(`data:image/png;base64,${selectedDrawing.details}`);
+      // Load the image and redraw lines if necessary
+    } else {
+      resetCanvas();
+    }
+  }, [selectedDrawing]);
+
+  useEffect(() => {
     if (image) {
       const aspectRatio = image.width / image.height;
       const newWidth = aspectRatio > 1080 / 720 ? 1080 : 720 * aspectRatio;
@@ -22,6 +33,13 @@ export default function KonvaTeacher({ onSave }) {
       image.height = newHeight;
     }
   }, [image]);
+
+  const resetCanvas = () => {
+    setImageURL(null);
+    setTitle('');
+    setDescription('');
+    setLines([]);
+  };
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
@@ -57,30 +75,79 @@ export default function KonvaTeacher({ onSave }) {
   };
 
   const saveDrawing = async () => {
-    try {
-      const dataURL = stageRef.current.toDataURL();
-      const response = await fetch(dataURL);
+    // Create a new off-screen canvas
+    const canvas = document.createElement('canvas');
+    canvas.width = stageRef.current.width();
+    canvas.height = stageRef.current.height();
+    const context = canvas.getContext('2d');
+  
+    // Fill the canvas with white
+    context.fillStyle = 'white';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+  
+    // Draw the Konva stage onto the off-screen canvas
+    const dataURL = stageRef.current.toDataURL({ pixelRatio: 2 });
+    const img = new Image();
+    img.src = dataURL;
+    img.onload = async () => {
+      // Draw the stage image on the center of the canvas
+      context.drawImage(img, 0, 0, canvas.width, canvas.height);
+  
+      const finalDataURL = canvas.toDataURL();
+  
+      const response = await fetch(finalDataURL);
       const blob = await response.blob();
-
+  
       const formData = new FormData();
       formData.append('title', title);
       formData.append('description', description);
       formData.append('details', blob, 'drawing.png');
-
-      const saveResponse = await fetch('http://localhost:3000/api/create-drawing-resources', {
-        method: 'POST',
+  
+      const saveResponse = await fetch(selectedDrawing ? 
+        `/api/update-drawing-resources/${selectedDrawing.drawing_resources_id}` : '/api/create-drawing-resources', {
+        method: selectedDrawing ? 'PUT' : 'POST',
         body: formData,
       });
-
+  
       if (saveResponse.ok) {
         console.log('Drawing has been saved successfully.');
-        onSave();
+        onSave(); // Call the onSave callback to refresh the list of saved drawings
+        clearSelection();
+        resetCanvas();
       } else {
         console.error('Error saving drawing:', saveResponse.statusText);
       }
-    } catch (error) {
-      console.error('An error occurred while saving the drawing:', error);
+    };
+  };
+  
+
+  const deleteDrawing = async () => {
+    if (selectedDrawing) {
+      const deleteResponse = await fetch(`/api/delete-drawing-resources/${selectedDrawing.drawing_resources_id}`, {
+        method: 'DELETE',
+      });
+
+      if (deleteResponse.ok) {
+        console.log('Drawing has been deleted successfully.');
+        onSave(); // Call the onSave callback to refresh the list of saved drawings
+        clearSelection();
+        resetCanvas();
+      } else {
+        console.error('Error deleting drawing:', deleteResponse.statusText);
+      }
     }
+  };
+
+  const handleDragMove = (e) => {
+    const { x, y } = e.target.position();
+    // Update state with new position if needed
+    console.log('Node dragged to:', x, y);
+  };
+
+  const handleDragEnd = (e) => {
+    const { x, y } = e.target.position();
+    // Update state with final position if needed
+    console.log('Node drag ended at:', x, y);
   };
 
   return (
@@ -104,7 +171,8 @@ export default function KonvaTeacher({ onSave }) {
         <div className="tool-bar">
           <button onClick={() => setTool('pencil')}>Pencil</button>
           <button onClick={() => setTool('eraser')}>Eraser</button>
-          <button onClick={saveDrawing}>Save</button>
+          <button onClick={saveDrawing}>{selectedDrawing ? 'Update' : 'Save'}</button>
+          {selectedDrawing && <button onClick={deleteDrawing}>Delete</button>}
         </div>
 
         <div className="color-picker">
@@ -122,14 +190,16 @@ export default function KonvaTeacher({ onSave }) {
             ref={stageRef}
           >
             <Layer>
-              <Rect
-                x={0}
-                y={0}
-                width={1080}
-                height={720}
-                fill={"#F5F5F5"}
-              />
-              {image && <KonvaImage image={image} x={0} y={0} draggable />}
+              {image && (
+                <KonvaImage
+                  image={image}
+                  x={0}
+                  y={0}
+                  draggable
+                  onDragMove={handleDragMove}
+                  onDragEnd={handleDragEnd}
+                />
+              )}
               {lines.map((line, i) => (
                 <Line
                   key={i}
