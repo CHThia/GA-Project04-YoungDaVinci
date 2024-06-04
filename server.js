@@ -1,6 +1,7 @@
 const express = require("express");
 const logger = require("morgan");
 const multer = require("multer")
+const bodyParser = require('body-parser');
 const path = require("path");
 
 const app = express();
@@ -10,6 +11,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.static(path.join(__dirname, "dist")));
 app.use(logger("dev"));
 app.use(express.json());
+app.use(bodyParser.json());
 
 // CORS headers
 app.use((req, res, next) => {
@@ -22,6 +24,8 @@ app.use((req, res, next) => {
 // Routes
 // app.use("/api/drawings", require("./routes/drawingsRoute")); // Example Reference
 app.use("/api", require("./routes/drawingResourcesRoute"));
+app.use("/api", require("./routes/studentDetailsRoute"));
+
 
 // Global error handler
 app.use((err, req, res, next) => {

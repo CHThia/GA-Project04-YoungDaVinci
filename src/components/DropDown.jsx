@@ -39,7 +39,9 @@ export default function DropDown({ savedDrawings, fetchDrawingById }) {
             <Typography sx={{ fontFamily: 'Helvetica', fontSize: '35px', fontWeight: 'bold', marginLeft: 5 }}>
               Drawing Resources
             </Typography>
+
           </AccordionSummary>
+
           <AccordionDetails>
             <Box sx={{ display: 'flex', overflowX: 'auto' }}>
               {savedDrawings.map((drawing) => (
@@ -49,6 +51,7 @@ export default function DropDown({ savedDrawings, fetchDrawingById }) {
               ))}
             </Box>
           </AccordionDetails>
+          
         </Accordion>
     </Box>
     </>
