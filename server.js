@@ -1,7 +1,7 @@
 const express = require("express");
 const logger = require("morgan");
 const multer = require("multer")
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 const path = require("path");
 
 const app = express();
@@ -11,7 +11,9 @@ const PORT = process.env.PORT || 3000;
 app.use(express.static(path.join(__dirname, "dist")));
 app.use(logger("dev"));
 app.use(express.json());
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
+// app.use(bodyParser.json({ limit: '50mb' }));
+// app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 // CORS headers
 app.use((req, res, next) => {

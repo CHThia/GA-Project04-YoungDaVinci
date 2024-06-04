@@ -8,7 +8,9 @@ export default function Drawer_PopUp({ studentId }) {
   const [drawingResources, setDrawingResources] = useState([]);
   const [selectedResource, setSelectedResource] = useState('');
   const [imageSrc, setImageSrc] = useState('');
-
+  const [imageDetails, setImageDetails] = useState(''); // State to store data.details
+  const [assignments, setAssignments] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchDrawingResources = async () => {
@@ -24,7 +26,6 @@ export default function Drawer_PopUp({ studentId }) {
     fetchDrawingResources();
   }, []);
 
-  
   useEffect(() => {
     if (selectedResource) {
       const fetchImageData = async () => {
@@ -32,6 +33,7 @@ export default function Drawer_PopUp({ studentId }) {
           const response = await fetch(`/api/get-drawing-resources/${selectedResource}`);
           const data = await response.json();
           setImageSrc(`data:image/png;base64,${data.details}`);
+          setImageDetails(data.details); // Store data.details
         } catch (error) {
           console.error('Error fetching drawing resource data:', error);
         }
@@ -41,9 +43,8 @@ export default function Drawer_PopUp({ studentId }) {
     }
   }, [selectedResource]);
 
-
   const addItem = useCallback(async () => {
-    if (!selectedResource) return;
+    if (!selectedResource || !imageDetails) return; // Ensure imageDetails is available
 
     try {
       const response = await fetch('/api/add-new-assignments', {
@@ -54,7 +55,7 @@ export default function Drawer_PopUp({ studentId }) {
         body: JSON.stringify({
           student_id: studentId,
           drawing_resources_id: selectedResource,
-          assignment_data: 'New assignment data', // Replace with actual assignment data
+          assignment_data: imageDetails, // Use imageDetails here
         }),
       });
 
@@ -63,14 +64,15 @@ export default function Drawer_PopUp({ studentId }) {
       }
 
       const newItem = await response.json();
-      setImageSrc('');
+      setAssignments((prev) => [...prev, newItem]);
       setSelectedResource('');
+      setImageDetails('');
+      setImageSrc('');
       console.log('Assignments added successfully:', newItem);
     } catch (error) {
       console.error('Error adding assignment:', error);
     }
-  }, [selectedResource, studentId]);
-
+  }, [selectedResource, studentId, imageDetails]);
 
   const toggleDrawer = useCallback(
     (open) => (event) => {
@@ -117,8 +119,21 @@ export default function Drawer_PopUp({ studentId }) {
         <img
           src={imageSrc}
           alt="Selected drawing resource"
-          style={{ width: '100%' }}
+          style={{ width: '100%', marginBottom: '16px' }}
         />
+      )}
+
+      {!loading && assignments.length > 0 && (
+        <Box sx={{ marginTop: 2 }}>
+          {assignments.map((assignment) => (
+            <img
+              key={assignment.assignment_id}
+              src={`data:image/png;base64,${assignment.assignment_data}`}
+              alt="Assignment"
+              style={{ width: '100%', marginBottom: '16px' }}
+            />
+          ))}
+        </Box>
       )}
     </Box>
   );
