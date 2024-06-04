@@ -9,6 +9,7 @@ import "./css/drawing_resources.css"
 import "./css/inputs.css"
 import "./css/buttons.css"
 import "./css/konva.css"
+import "./css/student_artwork.css"
 // import "./css/canvas.css"
 
 

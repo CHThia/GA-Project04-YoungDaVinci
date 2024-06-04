@@ -13,7 +13,8 @@ export default function StudentCard({ student }) {
   const navigate = useNavigate();
 
   const handleButtonClick = () => {
-    navigate('./studentartworks');
+    navigate('./get-all-students/${student.student_id}');
+    console.log(student.name) // Check if student name is correct when clicked
   };
 
   return (

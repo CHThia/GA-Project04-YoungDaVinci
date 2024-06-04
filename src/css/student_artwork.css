@@ -1,0 +1,6 @@
+.feedback-container {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  margin: 8% auto;
+}

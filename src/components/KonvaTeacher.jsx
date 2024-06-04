@@ -1,8 +1,10 @@
 import { useRef, useState, useEffect } from 'react';
-import { Stage, Layer, Image as KonvaImage, Line, Transformer } from 'react-konva';
+import { Stage, Layer, Image as KonvaImage, Line, Transformer, Rect } from 'react-konva';
 import { useImage } from 'react-konva-utils';
 
+
 export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }) {
+
   const [imageURL, setImageURL] = useState(null);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -17,6 +19,7 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
   const transformerRef = useRef(null);
   const isDrawing = useRef(false);
 
+  
   useEffect(() => {
     if (selectedDrawing) {
       setTitle(selectedDrawing.title);
@@ -215,8 +218,16 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
             ref={stageRef}
+            style={{ border: '1px solid black' }}
           >
             <Layer>
+              <Rect
+                  x={0}
+                  y={0}
+                  width={1080}
+                  height={720}
+                  fill="white"
+                />
               {image && (
                 <KonvaImage
                   image={image}

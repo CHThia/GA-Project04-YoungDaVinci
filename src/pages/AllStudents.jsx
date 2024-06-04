@@ -35,17 +35,17 @@ export default function AllStudents () {
 
   return(
     <>
-       <Container>
-      <h1 style={{ textAlign: 'center' }}>My Students</h1>
-      <SearchBox onSearch={handleSearch} />
-      <Grid container spacing={3} mt={3}>
-        {filteredStudents.map(student => (
-          <Grid item xs={12} sm={6} md={4} key={student.student_id}>
-            <StudentCard student={student} />
-          </Grid>
-        ))}
-      </Grid>
-    </Container>
+      <Container>
+        <h1 style={{ textAlign: 'center' }}>My Students</h1>
+        <SearchBox onSearch={handleSearch} />
+        <Grid container spacing={3} mt={3}>
+          {filteredStudents.map(student => (
+            <Grid item xs={12} sm={6} md={4} key={student.student_id}>
+              <StudentCard student={student} />
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
     </>
   )
 }

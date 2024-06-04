@@ -25,7 +25,7 @@ export default function App() {
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/dashboardstudent" element={<DashBoardStudent />} />
           <Route path="/allstudents" element={<AllStudents />} />
-          <Route path="/studentartworks" element={<StudentArtWorks />} />
+          <Route path="/allstudents/get-all-students/:student_id" element={<StudentArtWorks />} />
           <Route path="/drawingresources" element={<DrawingResources />} />        
           <Route path="/konvastudent" element={<KonvaStudent />} />
 
