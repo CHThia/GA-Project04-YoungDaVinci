@@ -25,6 +25,7 @@ app.use((req, res, next) => {
 // app.use("/api/drawings", require("./routes/drawingsRoute")); // Example Reference
 app.use("/api", require("./routes/drawingResourcesRoute"));
 app.use("/api", require("./routes/studentDetailsRoute"));
+app.use("/api", require("./routes/assignmentsRoute"));
 
 
 // Global error handler
