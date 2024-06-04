@@ -35,13 +35,13 @@ export default function KonvaReview () {
 
   return (
     <>
-      <div className="drawing-container">
+      <div className="drawing-review-container">
         <div className="tool-bar">
           <button onClick={() => setTool('pencil')}>Pencil</button>
           <button onClick={() => setTool('eraser')}>Eraser</button>
         </div>
 
-        <div className="canvas-container">
+        <div className="canvas-review-container">
           <Stage
             width={1080}
             height={720}

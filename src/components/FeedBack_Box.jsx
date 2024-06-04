@@ -12,27 +12,29 @@ export default function FeedbackBox() {
 
   return (
     <>
-      <Box component="form" sx={{ display: 'flex', flexDirection: 'column', width: 'fit-content' }}>
+      <div className='feedback-container'>
+        <Box component="form" sx={{ display: 'flex', flexDirection: 'column', width: 'fit-content' }}>
 
-        <TextField
-          id="outlined-basic"
-          label="Enter feedback"
-          variant="outlined"
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          multiline 
-          rows={4} 
-          fullWidth
-          sx={{ width: 1080 }}
-        />
-        
-        <br/>
+          <TextField
+            id="outlined-basic"
+            label="Enter feedback"
+            variant="outlined"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            multiline 
+            rows={4} 
+            fullWidth
+            sx={{ width: 1080 }}
+          />
+          
+          <br/>
 
-        <Button variant="contained" color="primary" onClick={handleSave}>
-          Send Feedback
-        </Button>
+          <Button variant="contained" color="primary" onClick={handleSave}>
+            Send Feedback
+          </Button>
 
-      </Box>
+        </Box>
+      </div>
     </>
   );
 }

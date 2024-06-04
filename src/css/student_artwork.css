@@ -1,6 +1,21 @@
+.drawing-review-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 25px auto; 
+}
+
+.canvas-review-container {
+  margin: 25px auto; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .feedback-container {
   width: 50%;
   display: flex;
   justify-content: center;
-  margin: 8% auto;
+  margin: 10px auto;
 }

@@ -53,7 +53,7 @@ export default function DropDown({ savedDrawings, fetchDrawingById }) {
           </AccordionDetails>
           
         </Accordion>
-    </Box>
+      </Box>
     </>
   );
 }

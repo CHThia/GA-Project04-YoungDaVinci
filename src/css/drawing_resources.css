@@ -1,8 +1,4 @@
-.accordian-container {
-  margin: 15px auto;
-}
-
-.drawing-container {
+.drawing-teacher-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -15,21 +11,19 @@ input, textarea {
   max-width: 600px;
 }
 
-.tool-bar {
+/* .tool-bar {
   margin-bottom: 10px;
 }
 
 .tool-bar button, .tool-bar input {
   margin-right: 10px;
-}
+} */
 
-.canvas-container {
-  margin: 20px 0;
-  border: 1px solid #ccc;
-  width: 80%;
-  max-width: 800px;
-  height: 600px;
-  position: relative;
+.canvas-teacher-container {
+  margin: 25px auto; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 button {

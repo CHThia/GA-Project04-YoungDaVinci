@@ -8,9 +8,9 @@ export default function StudentArtWorks() {
   return (
     <>
       <KonvaReview />
-      <div className="feedback-container">
-        <FeedBackBox />
-      </div>
+
+      <FeedBackBox />
+      
       <Drawer_PopUp />
     </>
   );

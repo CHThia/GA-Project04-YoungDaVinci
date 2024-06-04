@@ -182,7 +182,7 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
 
   return (
     <>
-      <div className="drawing-container">
+      <div className="drawing-teacher-container">
         <input
           type="text"
           placeholder="Title"
@@ -210,7 +210,7 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
           <input type="color" value={color} onChange={(e) => setColor(e.target.value)} />
         </div>
 
-        <div className="canvas-container">
+        <div className="canvas-teacher-container">
           <Stage
             width={1080}
             height={720}

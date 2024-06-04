@@ -46,11 +46,14 @@ export default function DrawingResources() {
 
   return (
     <>
-      <div className="accordion-container">
-        <DropDown savedDrawings={savedDrawings} fetchDrawingById={fetchDrawingById} />
-      </div>
+      <DropDown savedDrawings={savedDrawings} fetchDrawingById={fetchDrawingById} />
+
+      <KonvaTeacher 
+        onSave={fetchDrawings} 
+        selectedDrawing={selectedDrawing} 
+        clearSelection={clearSelection} 
+      />
       
-      <KonvaTeacher onSave={fetchDrawings} selectedDrawing={selectedDrawing} clearSelection={clearSelection} />
     </>
   );
 }
