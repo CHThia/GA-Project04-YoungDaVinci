@@ -3,11 +3,12 @@ import { useState } from 'react';
 
 export default function FeedbackBox({ assignmentId, drawingState }) {
   const [text, setText] = useState('');
-
+ 
   const handleSave = async () => {
     const feedbackData = {
       feedback: text,
-      assignment_data: JSON.stringify(drawingState),
+      assignment_data: drawingState,
+      assignment_id: assignmentId
     };
   
     try {

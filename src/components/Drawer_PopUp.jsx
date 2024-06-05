@@ -167,7 +167,7 @@ export default function Drawer_PopUp({ studentId, onImageClick }) {
                 src={`data:image/png;base64,${imageData}`}
                 alt="Student Assignment"
                 style={{ width: '100%', marginBottom: '16px', cursor: 'pointer' }}
-                onClick={() => onImageClick(assignment.assignment_data)}
+                onClick={() => onImageClick(assignment.assignment_data, assignment.assignment_id)}
                 onError={() => console.error('Invalid image data:', imageData)}
               />
             );

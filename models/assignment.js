@@ -45,11 +45,9 @@ const updateFeedbackForAssignment = async (assignment_id, assignment) => {
 
   const result = await pool.query(
     `UPDATE assignments
-     SET student_id = $1, drawing_resources_id = $2, assignment_data = $3, assignment_status = $4, feedback = $5, update_date = NOW()
-     WHERE assignment_id = $6 RETURNING *`,
+     SET assignment_data = $1, assignment_status = $2, feedback = $3, update_date = NOW()
+     WHERE assignment_id = $4 RETURNING *`,
     [
-      assignment.student_id,
-      assignment.drawing_resources_id,
       assignment.assignment_data,
       'completed',
       assignment.feedback,

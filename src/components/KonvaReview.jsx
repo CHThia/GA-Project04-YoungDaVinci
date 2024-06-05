@@ -4,8 +4,6 @@ import FeedbackBox from '../components/FeedBack_Box';
 
 export default function KonvaReview({ assignmentId, assignmentData }) {
 
-  console.log("What!!", assignmentId)
-
   const [tool, setTool] = useState('pencil');
   const [lines, setLines] = useState([]);
   const [color, setColor] = useState('#000000');
@@ -82,7 +80,7 @@ export default function KonvaReview({ assignmentId, assignmentData }) {
           </Stage>
         </div>
       </div>
-      <FeedbackBox assignmentId={assignmentId} drawingState={lines} />
+      <FeedbackBox assignmentId={assignmentId} drawingState={assignmentData} />
     </>
   );
 }

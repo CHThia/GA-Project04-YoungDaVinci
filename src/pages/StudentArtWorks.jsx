@@ -11,14 +11,16 @@ export default function StudentArtWorks() {
   // console.log("Test 2", studentId)
 
   const [selectedAssignment, setSelectedAssignment] = useState(null);
+  const [selectedAssignmentId, setSelectedAssignmentId] = useState(null);
 
-  const handleImageClick = (assignmentData) => {
-    setSelectedAssignment(assignmentData);
+  const handleImageClick = (assignmentData, assignmentId) => {
+    setSelectedAssignment(assignmentData)
+    setSelectedAssignmentId(assignmentId);
   };
 
   return (
     <>
-      <KonvaReview studentId={studentId} assignmentData={selectedAssignment}/>
+      <KonvaReview studentId={studentId} assignmentData={selectedAssignment} assignmentId={selectedAssignmentId}/>
       
       <Drawer_PopUp studentId={studentId} onImageClick={handleImageClick} />
 

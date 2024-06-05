@@ -55,8 +55,7 @@ const addNewAssignmentsForStudent = async (req, res) => {
 };
 
 const updateFeedbackForAssignments = async (req, res) => {
-  const { assignment_id } = req.params;
-  const { feedback, assignment_data } = req.body;
+  const { feedback, assignment_data, assignment_id } = req.body;
 
   if (!assignment_id) {
     return res.status(400).json({ error: 'assignment_id is required' });
