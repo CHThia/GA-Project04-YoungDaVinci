@@ -1,15 +1,24 @@
-import { useRef, useState } from 'react';
-import { Stage, Layer, Line, Rect } from 'react-konva';
+import { useRef, useState, useEffect } from 'react';
+import { Stage, Layer, Line, Rect, Image as KonvaImage } from 'react-konva';
+import FeedbackBox from './FeedBack_Box';
 
-
-export default function KonvaReview () {
-
+export default function KonvaReview({ assignmentData }) {
   const [tool, setTool] = useState('pencil');
   const [lines, setLines] = useState([]);
   const [color, setColor] = useState('#000000'); // Color Picker
   const stageRef = useRef(null);
   const isDrawing = useRef(false);
+  const [image, setImage] = useState(null); // State to hold the loaded image
 
+  useEffect(() => {
+    if (assignmentData) {
+      const img = new window.Image();
+      img.src = `data:image/png;base64,${assignmentData}`;
+      img.onload = () => {
+        setImage(img);
+      };
+    }
+  }, [assignmentData]);
 
   const handleMouseDown = () => {
     isDrawing.current = true;
@@ -52,13 +61,8 @@ export default function KonvaReview () {
             style={{ border: '1px solid black' }}
           >
             <Layer>
-              <Rect
-                x={0}
-                y={0}
-                width={500}
-                height={300}
-                fill="white"
-              />
+              <Rect x={0} y={0} width={500} height={300} fill="white" />
+              {image && <KonvaImage image={image} x={0} y={0} width={500} height={300} />}
               {lines.map((line, i) => (
                 <Line
                   key={i}
@@ -76,6 +80,8 @@ export default function KonvaReview () {
           </Stage>
         </div>
       </div>
+
+      <FeedbackBox />
     </>
   );
 }

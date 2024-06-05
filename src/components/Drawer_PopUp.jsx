@@ -3,7 +3,7 @@ import { Drawer, IconButton, Box, Fade, Button, MenuItem, Select, InputLabel, Fo
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AddIcon from '@mui/icons-material/Add';
 
-export default function Drawer_PopUp({ studentId }) {
+export default function Drawer_PopUp({ studentId, onImageClick }) {
   const [isOpen, setIsOpen] = useState(false);
   const [drawingResources, setDrawingResources] = useState([]);
   const [selectedResource, setSelectedResource] = useState('');
@@ -161,13 +161,13 @@ export default function Drawer_PopUp({ studentId }) {
               ? assignment.assignment_data
               : Buffer.from(assignment.assignment_data).toString('base64');
               
-            console.log('Stored Assignment data:', imageData);
             return (
               <img
                 key={assignment.assignment_id}
                 src={`data:image/png;base64,${imageData}`}
                 alt="Student Assignment"
-                style={{ width: '100%', marginBottom: '16px' }}
+                style={{ width: '100%', marginBottom: '16px', cursor: 'pointer' }}
+                onClick={() => onImageClick(assignment.assignment_data)}
                 onError={() => console.error('Invalid image data:', imageData)}
               />
             );
