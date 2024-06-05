@@ -3,7 +3,6 @@ import { Drawer, IconButton, Box, Fade, Button, MenuItem, Select, InputLabel, Fo
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AddIcon from '@mui/icons-material/Add';
 
-
 export default function Drawer_PopUp({ studentId }) {
   const [isOpen, setIsOpen] = useState(false);
   const [drawingResources, setDrawingResources] = useState([]);
@@ -13,12 +12,11 @@ export default function Drawer_PopUp({ studentId }) {
   const [assignments, setAssignments] = useState([]);
   const [loading, setLoading] = useState(false);
 
-
   // Fetch Drawing Resources
   useEffect(() => {
     const fetchDrawingResources = async () => {
       try {
-        const response = await fetch('/api/get-drawing-resources'); 
+        const response = await fetch('/api/get-drawing-resources'); // Updated endpoint
         const data = await response.json();
         setDrawingResources(data);
       } catch (error) {
@@ -29,13 +27,12 @@ export default function Drawer_PopUp({ studentId }) {
     fetchDrawingResources();
   }, []);
 
-
   // Fetch Image Data for Selected Resource
   useEffect(() => {
     if (selectedResource) {
       const fetchImageData = async () => {
         try {
-          const response = await fetch(`/api/get-drawing-resources/${selectedResource}`); 
+          const response = await fetch(`/api/get-drawing-resources/${selectedResource}`); // Updated endpoint
           const data = await response.json();
           setImageSrc(`data:image/png;base64,${data.details}`);
           setImageDetails(data.details);
@@ -48,24 +45,21 @@ export default function Drawer_PopUp({ studentId }) {
     }
   }, [selectedResource]);
 
-
   // Fetch Assignments from student id
   useEffect(() => {
     const fetchAssignments = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`/api/get-all-assignments/${studentId}`);
+        const response = await fetch(`/api/get-all-assignments/${studentId}`); // Updated endpoint
         const data = await response.json();
 
         // Convert each assignment data to base64 string if it is not already a string
-        const assignmentsWithBase64 = await Promise.all(
-          data.map(async (assignment) => {
-            if (Buffer.isBuffer(assignment.assignment_data)) {
-              assignment.assignment_data = assignment.assignment_data.toString('base64');
-            }
-            return assignment;
-          })
-        );
+        const assignmentsWithBase64 = data.map((assignment) => {
+          if (assignment.assignment_data && typeof assignment.assignment_data !== 'string') {
+            assignment.assignment_data = Buffer.from(assignment.assignment_data).toString('base64');
+          }
+          return assignment;
+        });
 
         console.log('Fetched assignments with base64 data:', assignmentsWithBase64);
         setAssignments(assignmentsWithBase64);
@@ -79,13 +73,12 @@ export default function Drawer_PopUp({ studentId }) {
     fetchAssignments();
   }, [studentId]);
 
-
   // Add Assignments for student id
   const addItem = useCallback(async () => {
     if (!selectedResource || !imageDetails) return;
 
     try {
-      const response = await fetch('/api/add-new-assignments', { 
+      const response = await fetch('/api/add-new-assignments', { // Updated endpoint
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -113,7 +106,6 @@ export default function Drawer_PopUp({ studentId }) {
     }
   }, [selectedResource, studentId, imageDetails]);
 
-
   const toggleDrawer = useCallback(
     (open) => (event) => {
       if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -123,7 +115,6 @@ export default function Drawer_PopUp({ studentId }) {
     },
     []
   );
-
 
   const drawerContent = (
     <Box
@@ -183,7 +174,6 @@ export default function Drawer_PopUp({ studentId }) {
     </Box>
   );
 
-  
   return (
     <>
       <Fade in={!isOpen}>

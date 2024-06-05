@@ -36,7 +36,7 @@ export default function DropDown({ savedDrawings, fetchDrawingById }) {
             aria-controls="panel1a-content"
             id="panel1a-header"
           >
-            <Typography sx={{ fontFamily: 'Helvetica', fontSize: '35px', fontWeight: 'bold', marginLeft: 5 }}>
+            <Typography sx={{ fontFamily: 'Helvetica', fontSize: '25px', fontWeight: 'bold', marginLeft: 5 }}>
               Drawing Resources
             </Typography>
 

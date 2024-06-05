@@ -52,11 +52,8 @@ const updateFeedbackForAssignment = async (assignment_id, assignment) => {
 };
 
 const deleteAssignment = async (assignment_id) => {
-  const result = await pool.query(
-    'DELETE FROM assignments WHERE assignment_id = $1 RETURNING *',
-    [assignment_id]
-  );
-  return result.rows[0];
+  await pool.query('DELETE FROM assignments WHERE assignment_id = $1', [assignment_id]);
+  return { message: 'Assignment deleted successfully.' };
 };
 
 module.exports = {

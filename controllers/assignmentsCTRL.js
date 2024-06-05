@@ -5,7 +5,15 @@ const getAllAssignmentsForStudent = async (req, res) => {
   
   try {
     const assignments = await assignmentModel.getAllAssignmentsByStudentId(student_id);
-    res.json(assignments);
+
+    const assignmentsWithBase64 = assignments.map(assignment => {
+      if (assignment.assignment_data) {
+        assignment.assignment_data = Buffer.from(assignment.assignment_data).toString('base64');
+      }
+      return assignment;
+    });
+
+    res.json(assignmentsWithBase64);
   } catch (error) {
     console.error('Error fetching assignments:', error);
     res.status(500).send('Server error');
@@ -17,6 +25,11 @@ const getAssignmentsById = async (req, res) => {
 
   try {
     const assignment = await assignmentModel.getAssignmentById(assignment_id);
+
+    if (assignment.assignment_data) {
+      assignment.assignment_data = Buffer.from(assignment.assignment_data).toString('base64');
+    }
+
     res.json(assignment);
   } catch (error) {
     console.error('Error fetching assignment:', error);
@@ -26,7 +39,10 @@ const getAssignmentsById = async (req, res) => {
 
 const addNewAssignmentsForStudent = async (req, res) => {
   const assignment = req.body;
-  
+  if (req.file) {
+    assignment.assignment_data = req.file.buffer.toString('base64'); 
+  }
+
   try {
     const newAssignment = await assignmentModel.addNewAssignmentForStudent(assignment);
     res.json(newAssignment);
@@ -39,6 +55,10 @@ const addNewAssignmentsForStudent = async (req, res) => {
 const updateFeedbackForAssignments = async (req, res) => {
   const { assignment_id } = req.params;
   const assignment = req.body;
+
+  if (req.file) {
+    assignment.assignment_data = req.file.buffer.toString('base64'); 
+  }
 
   try {
     const updatedAssignment = await assignmentModel.updateFeedbackForAssignment(assignment_id, assignment);
