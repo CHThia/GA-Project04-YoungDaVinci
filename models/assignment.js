@@ -35,6 +35,14 @@ const addNewAssignmentForStudent = async (assignment) => {
 };
 
 const updateFeedbackForAssignment = async (assignment_id, assignment) => {
+  if (!assignment_id) {
+    throw new Error('assignment_id is required');
+  }
+
+  if (!assignment.feedback || !assignment.assignment_data) {
+    throw new Error('Feedback and assignment_data are required');
+  }
+
   const result = await pool.query(
     `UPDATE assignments
      SET student_id = $1, drawing_resources_id = $2, assignment_data = $3, assignment_status = $4, feedback = $5, update_date = NOW()
@@ -43,13 +51,14 @@ const updateFeedbackForAssignment = async (assignment_id, assignment) => {
       assignment.student_id,
       assignment.drawing_resources_id,
       assignment.assignment_data,
-      assignment.assignment_status,
+      'completed',
       assignment.feedback,
       assignment_id
     ]
   );
   return result.rows[0];
 };
+
 
 const deleteAssignment = async (assignment_id) => {
   await pool.query('DELETE FROM assignments WHERE assignment_id = $1', [assignment_id]);

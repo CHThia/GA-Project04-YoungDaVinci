@@ -1,14 +1,17 @@
 import { useRef, useState, useEffect } from 'react';
 import { Stage, Layer, Line, Rect, Image as KonvaImage } from 'react-konva';
-import FeedbackBox from './FeedBack_Box';
+import FeedbackBox from '../components/FeedBack_Box';
 
-export default function KonvaReview({ assignmentData }) {
+export default function KonvaReview({ assignmentId, assignmentData }) {
+
+  console.log("What!!", assignmentId)
+
   const [tool, setTool] = useState('pencil');
   const [lines, setLines] = useState([]);
-  const [color, setColor] = useState('#000000'); // Color Picker
+  const [color, setColor] = useState('#000000');
   const stageRef = useRef(null);
   const isDrawing = useRef(false);
-  const [image, setImage] = useState(null); // State to hold the loaded image
+  const [image, setImage] = useState(null);
 
   useEffect(() => {
     if (assignmentData) {
@@ -49,7 +52,6 @@ export default function KonvaReview({ assignmentData }) {
           <button onClick={() => setTool('pencil')}>Pencil</button>
           <button onClick={() => setTool('eraser')}>Eraser</button>
         </div>
-
         <div className="canvas-review-container">
           <Stage
             width={500}
@@ -80,8 +82,7 @@ export default function KonvaReview({ assignmentData }) {
           </Stage>
         </div>
       </div>
-
-      <FeedbackBox />
+      <FeedbackBox assignmentId={assignmentId} drawingState={lines} />
     </>
   );
 }

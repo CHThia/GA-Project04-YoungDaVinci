@@ -56,14 +56,14 @@ const addNewAssignmentsForStudent = async (req, res) => {
 
 const updateFeedbackForAssignments = async (req, res) => {
   const { assignment_id } = req.params;
-  const assignment = req.body;
+  const { feedback, assignment_data } = req.body;
 
-  if (req.file) {
-    assignment.assignment_data = req.file.buffer.toString('base64');
+  if (!assignment_id) {
+    return res.status(400).json({ error: 'assignment_id is required' });
   }
 
   try {
-    const updatedAssignment = await assignmentModel.updateFeedbackForAssignment(assignment_id, assignment);
+    const updatedAssignment = await assignmentModel.updateFeedbackForAssignment(assignment_id, { feedback, assignment_data });
     const updatedAssignmentWithBase64 = ensureBase64AssignmentData(updatedAssignment);
 
     res.json(updatedAssignmentWithBase64);
@@ -72,6 +72,7 @@ const updateFeedbackForAssignments = async (req, res) => {
     res.status(500).send('Server error');
   }
 };
+
 
 const deleteAssignments = async (req, res) => {
   const { assignment_id } = req.params;
