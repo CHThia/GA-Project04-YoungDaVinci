@@ -16,14 +16,14 @@ export default function Drawer_PopUp({ studentId }) {
   useEffect(() => {
     const fetchDrawingResources = async () => {
       try {
-        const response = await fetch('/api/get-drawing-resources'); // Updated endpoint
+        const response = await fetch('/api/get-drawing-resources');
         const data = await response.json();
         setDrawingResources(data);
       } catch (error) {
         console.error('Error fetching drawing resources:', error);
       }
     };
-
+  
     fetchDrawingResources();
   }, []);
 
@@ -32,53 +32,52 @@ export default function Drawer_PopUp({ studentId }) {
     if (selectedResource) {
       const fetchImageData = async () => {
         try {
-          const response = await fetch(`/api/get-drawing-resources/${selectedResource}`); // Updated endpoint
+          const response = await fetch(`/api/get-drawing-resources/${selectedResource}`);
           const data = await response.json();
+          console.log("Fetched Image Data:", data);
           setImageSrc(`data:image/png;base64,${data.details}`);
           setImageDetails(data.details);
         } catch (error) {
           console.error('Error fetching drawing resource data:', error);
         }
       };
-
+  
       fetchImageData();
     }
   }, [selectedResource]);
-
+  
   // Fetch Assignments from student id
   useEffect(() => {
     const fetchAssignments = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`/api/get-all-assignments/${studentId}`); // Updated endpoint
+        const response = await fetch(`/api/get-all-assignments/${studentId}`);
         const data = await response.json();
-
-        // Convert each assignment data to base64 string if it is not already a string
-        const assignmentsWithBase64 = data.map((assignment) => {
-          if (assignment.assignment_data && typeof assignment.assignment_data !== 'string') {
-            assignment.assignment_data = Buffer.from(assignment.assignment_data).toString('base64');
-          }
-          return assignment;
-        });
-
-        console.log('Fetched assignments with base64 data:', assignmentsWithBase64);
-        setAssignments(assignmentsWithBase64);
+        setAssignments(data);
+        console.log("Fetched assignments", data);
       } catch (error) {
         console.error('Error fetching assignments:', error);
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchAssignments();
   }, [studentId]);
+  
 
   // Add Assignments for student id
   const addItem = useCallback(async () => {
     if (!selectedResource || !imageDetails) return;
-
+  
     try {
-      const response = await fetch('/api/add-new-assignments', { // Updated endpoint
+      console.log("Data before sending:", {
+        student_id: studentId,
+        drawing_resources_id: selectedResource,
+        assignment_data: imageDetails,
+      });
+  
+      const response = await fetch('/api/add-new-assignments', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -89,23 +88,23 @@ export default function Drawer_PopUp({ studentId }) {
           assignment_data: imageDetails,
         }),
       });
-
+  
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
       }
-
+  
       const newItem = await response.json();
       console.log('New item added:', newItem);
       setAssignments((prev) => [...prev, newItem]);
       setSelectedResource('');
       setImageDetails('');
       setImageSrc('');
-      console.log('Assignments added successfully:', newItem);
     } catch (error) {
       console.error('Error adding assignment:', error);
     }
   }, [selectedResource, studentId, imageDetails]);
-
+  
+  
   const toggleDrawer = useCallback(
     (open) => (event) => {
       if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -158,14 +157,18 @@ export default function Drawer_PopUp({ studentId }) {
       {!loading && assignments.length > 0 && (
         <Box sx={{ marginTop: 2 }}>
           {assignments.map((assignment) => {
-            console.log('Assignment data:', assignment.assignment_data);
+            const imageData = typeof assignment.assignment_data === 'string'
+              ? assignment.assignment_data
+              : Buffer.from(assignment.assignment_data).toString('base64');
+              
+            console.log('Stored Assignment data:', imageData);
             return (
               <img
                 key={assignment.assignment_id}
-                src={`data:image/png;base64,${assignment.assignment_data}`}
+                src={`data:image/png;base64,${imageData}`}
                 alt="Student Assignment"
                 style={{ width: '100%', marginBottom: '16px' }}
-                onError={() => console.error('Invalid image data:', assignment.assignment_data)}
+                onError={() => console.error('Invalid image data:', imageData)}
               />
             );
           })}

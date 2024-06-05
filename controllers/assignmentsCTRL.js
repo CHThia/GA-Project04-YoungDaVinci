@@ -1,17 +1,19 @@
 const assignmentModel = require('../models/assignment');
 
+// Helper function to ensure assignment_data is base64
+const ensureBase64AssignmentData = (assignment) => {
+  if (Buffer.isBuffer(assignment.assignment_data)) {
+    assignment.assignment_data = assignment.assignment_data.toString('base64');
+  }
+  return assignment;
+};
+
 const getAllAssignmentsForStudent = async (req, res) => {
   const { student_id } = req.params;
-  
+
   try {
     const assignments = await assignmentModel.getAllAssignmentsByStudentId(student_id);
-
-    const assignmentsWithBase64 = assignments.map(assignment => {
-      if (assignment.assignment_data) {
-        assignment.assignment_data = Buffer.from(assignment.assignment_data).toString('base64');
-      }
-      return assignment;
-    });
+    const assignmentsWithBase64 = assignments.map(ensureBase64AssignmentData);
 
     res.json(assignmentsWithBase64);
   } catch (error) {
@@ -25,12 +27,9 @@ const getAssignmentsById = async (req, res) => {
 
   try {
     const assignment = await assignmentModel.getAssignmentById(assignment_id);
+    const assignmentWithBase64 = ensureBase64AssignmentData(assignment);
 
-    if (assignment.assignment_data) {
-      assignment.assignment_data = Buffer.from(assignment.assignment_data).toString('base64');
-    }
-
-    res.json(assignment);
+    res.json(assignmentWithBase64);
   } catch (error) {
     console.error('Error fetching assignment:', error);
     res.status(500).send('Server error');
@@ -39,13 +38,16 @@ const getAssignmentsById = async (req, res) => {
 
 const addNewAssignmentsForStudent = async (req, res) => {
   const assignment = req.body;
+
   if (req.file) {
-    assignment.assignment_data = req.file.buffer.toString('base64'); 
+    assignment.assignment_data = req.file.buffer.toString('base64');
   }
 
   try {
     const newAssignment = await assignmentModel.addNewAssignmentForStudent(assignment);
-    res.json(newAssignment);
+    const newAssignmentWithBase64 = ensureBase64AssignmentData(newAssignment);
+
+    res.json(newAssignmentWithBase64);
   } catch (error) {
     console.error('Error adding new assignment:', error);
     res.status(500).send('Server error');
@@ -57,12 +59,14 @@ const updateFeedbackForAssignments = async (req, res) => {
   const assignment = req.body;
 
   if (req.file) {
-    assignment.assignment_data = req.file.buffer.toString('base64'); 
+    assignment.assignment_data = req.file.buffer.toString('base64');
   }
 
   try {
     const updatedAssignment = await assignmentModel.updateFeedbackForAssignment(assignment_id, assignment);
-    res.json(updatedAssignment);
+    const updatedAssignmentWithBase64 = ensureBase64AssignmentData(updatedAssignment);
+
+    res.json(updatedAssignmentWithBase64);
   } catch (error) {
     console.error('Error updating assignment:', error);
     res.status(500).send('Server error');
