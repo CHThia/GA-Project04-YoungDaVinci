@@ -43,8 +43,8 @@ export default function KonvaReview () {
 
         <div className="canvas-review-container">
           <Stage
-            width={1080}
-            height={720}
+            width={500}
+            height={300}
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
@@ -55,8 +55,8 @@ export default function KonvaReview () {
               <Rect
                 x={0}
                 y={0}
-                width={1080}
-                height={720}
+                width={500}
+                height={300}
                 fill="white"
               />
               {lines.map((line, i) => (

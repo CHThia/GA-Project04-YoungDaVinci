@@ -4,7 +4,7 @@ const drawingResourcesController = require('../controllers/drawingResourcesCTRL'
 
 const router = express.Router();
 const storage = multer.memoryStorage(); 
-const upload = multer({ storage: storage, limits: { fileSize: 10 * 1080 * 720 } }); // 10MB limit
+const upload = multer({ storage: storage, limits: { fileSize: 2 * 500 * 300 } }); // 2MB limit
 
 
 

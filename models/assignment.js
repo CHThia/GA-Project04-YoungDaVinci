@@ -1,10 +1,10 @@
 const pool = require('../db');
 
 
-const getAllAssignmentsForStudent = async (student_id, drawing_resources_id) => {
+const getAllAssignmentsByStudentId = async (student_id) => {
   const result = await pool.query(
-    'SELECT * FROM assignments WHERE student_id = $1 AND drawing_resources_id = $2',
-    [student_id, drawing_resources_id]
+    'SELECT * FROM assignments WHERE student_id = $1',
+    [student_id]
   );
   return result.rows;
 };
@@ -60,7 +60,7 @@ const deleteAssignment = async (assignment_id) => {
 };
 
 module.exports = {
-  getAllAssignmentsForStudent,
+  getAllAssignmentsByStudentId,
   getAssignmentById,
   addNewAssignmentForStudent,
   updateFeedbackForAssignment,

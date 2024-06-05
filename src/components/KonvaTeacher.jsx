@@ -33,8 +33,8 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
   useEffect(() => {
     if (image) {
       const aspectRatio = image.width / image.height;
-      const newWidth = aspectRatio > 1080 / 720 ? 1080 : 720 * aspectRatio;
-      const newHeight = aspectRatio > 1080 / 720 ? 1080 / aspectRatio : 720;
+      const newWidth = aspectRatio > 500 / 300 ? 500 : 300 * aspectRatio;
+      const newHeight = aspectRatio > 500 / 300 ? 500 / aspectRatio : 300;
       setImageDimensions({ width: newWidth, height: newHeight });
     }
   }, [image]);
@@ -67,8 +67,8 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
         img.src = reader.result;
         img.onload = () => {
           const aspectRatio = img.width / img.height;
-          const newWidth = aspectRatio > 1080 / 720 ? 1080 : 720 * aspectRatio;
-          const newHeight = aspectRatio > 1080 / 720 ? 1080 / aspectRatio : 720;
+          const newWidth = aspectRatio > 500 / 300 ? 500 : 300 * aspectRatio;
+          const newHeight = aspectRatio > 500 / 300 ? 500 / aspectRatio : 300;
           setImageDimensions({ width: newWidth, height: newHeight });
         };
       };
@@ -212,8 +212,8 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
 
         <div className="canvas-teacher-container">
           <Stage
-            width={1080}
-            height={720}
+            width={500}
+            height={300}
             onMouseDown={handleCombinedMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
@@ -224,8 +224,8 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
               <Rect
                   x={0}
                   y={0}
-                  width={1080}
-                  height={720}
+                  width={500}
+                  height={300}
                   fill="white"
                 />
               {image && (
