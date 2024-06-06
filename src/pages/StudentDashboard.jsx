@@ -40,7 +40,7 @@ export default function StudentDashboard() {
       const response = await fetch(url);
       if (response.ok) {
         const assignmentsList = await response.json();
-        setAssignmentsImages(assignmentsList);
+        setAssignmentsImages(assignmentsList.map(assignment => `data:image/png;base64,${assignment.assignment_data}`));
         console.log(`Success to fetch from ${url}`);
       } else {
         throw new Error(`Failed to fetch from ${url}`);
@@ -53,9 +53,10 @@ export default function StudentDashboard() {
     }
   };
 
+  // Fetch all assignments and count at start
   useEffect(() => {
     fetchCounts();
-    fetchAssignments(); // Fetch all assignments at start
+    fetchAssignments(); 
   }, []);
 
   useEffect(() => {
