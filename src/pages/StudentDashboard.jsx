@@ -1,12 +1,13 @@
 import { useEffect, useState, useCallback } from 'react';
 
 export default function StudentDashboard() {
-  const [images, setImages] = useState([]);
+  const [assignmentsImages, setAssignmentsImages] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [counts, setCounts] = useState({ new: 0, in_Progress: 0, completed: 0 });
+  const [counts, setCounts] = useState({ new: 0, inProgress: 0, completed: 0 });
 
+  
   //* Replace with the actual student ID from authentication context
   const studentId = '11111111-1111-1111-1111-111111111111'; 
 
@@ -28,26 +29,18 @@ export default function StudentDashboard() {
     setLoading(true);
     setError(null);
 
-    const baseUrl = `/api/get-all-assignments/${studentId}`;
-    const urlMap = {
-      new: `${baseUrl}/new`,
-      inProgress: `${baseUrl}/in_progress`,
-      completed: `${baseUrl}/completed`,
-    };
-
-    const url = urlMap[category];
-
-    if (!url) {
-      console.error('Invalid category');
-      setLoading(false);
-      return;
+    let url;
+    if (category) {
+      url = `/api/get-all-assignments/${studentId}/${category}`;
+    } else {
+      url = `/api/get-all-assignments/${studentId}`;
     }
 
     try {
       const response = await fetch(url);
       if (response.ok) {
-        const imageList = await response.json();
-        setImages(imageList);
+        const assignmentsList = await response.json();
+        setAssignmentsImages(assignmentsList);
         console.log(`Success to fetch from ${url}`);
       } else {
         throw new Error(`Failed to fetch from ${url}`);
@@ -62,6 +55,7 @@ export default function StudentDashboard() {
 
   useEffect(() => {
     fetchCounts();
+    fetchAssignments(); // Fetch all assignments at start
   }, []);
 
   useEffect(() => {
@@ -86,18 +80,18 @@ export default function StudentDashboard() {
             <h2>Assignments</h2>
             <ul>
               <li><a href="#new" onClick={() => handleCategoryClick('new')}>New ({counts.new})</a></li>
-              <li><a href="#in-progress" onClick={() => handleCategoryClick('in_Progress')}>In Progress ({counts.in_progress})</a></li>
+              <li><a href="#in-progress" onClick={() => handleCategoryClick('in_progress')}>In Progress ({counts.in_progress})</a></li>
               <li><a href="#completed" onClick={() => handleCategoryClick('completed')}>Completed ({counts.completed})</a></li>
             </ul>
           </div>
 
           <div className="review-assignment">
             {loading ? (
-              <p>Loading images...</p>
+              <p>Loading assignments...</p>
             ) : error ? (
               <p>{error}</p>
-            ) : images.length > 0 ? (
-              images.map((src, index) => (
+            ) : assignmentsImages.length > 0 ? (
+              assignmentsImages.map((src, index) => (
                 <img key={index} src={src} alt={`Drawing ${index + 1}`} />
               ))
             ) : (

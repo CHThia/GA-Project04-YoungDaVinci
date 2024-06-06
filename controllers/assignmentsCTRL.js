@@ -8,6 +8,20 @@ const ensureBase64AssignmentData = (assignment) => {
   return assignment;
 };
 
+const getAssignmentsByStatus = async (req, res) => {
+  const { student_id, assignment_status } = req.params;
+
+  try {
+    const assignments = await assignmentModel.getAssignmentsByStatus(student_id, assignment_status);
+    const assignmentsWithBase64 = assignments.map(ensureBase64AssignmentData);
+
+    res.json(assignmentsWithBase64);
+  } catch (error) {
+    console.error('Error fetching assignments by status:', error);
+    res.status(500).send('Server error');
+  }
+};
+
 const getAssignmentCounts = async (req, res) => {
   const { student_id } = req.params;
 
@@ -98,6 +112,7 @@ const deleteAssignments = async (req, res) => {
 
 
 module.exports = {
+  getAssignmentsByStatus,
   getAssignmentCounts,
   getAllAssignmentsForStudent,
   getAssignmentsById,

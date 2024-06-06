@@ -1,6 +1,14 @@
 const pool = require('../db');
 
 
+const getAssignmentsByStatus = async (studentId, assignment_status) => {
+  const result = await pool.query(
+    'SELECT * FROM assignments WHERE student_id = $1 AND assignment_status = $2',
+    [studentId, assignment_status]
+  );
+  return result.rows;
+};
+
 const getAssignmentCounts = async (studentId) => {
   const result = await pool.query(
     `SELECT 
@@ -78,6 +86,7 @@ const deleteAssignment = async (assignment_id) => {
 
 
 module.exports = {
+  getAssignmentsByStatus,
   getAssignmentCounts,
   getAllAssignmentsByStudentId,
   getAssignmentById,
