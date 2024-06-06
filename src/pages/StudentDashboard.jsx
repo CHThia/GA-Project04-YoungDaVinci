@@ -8,8 +8,7 @@ export default function StudentDashboard() {
   const [error, setError] = useState(null);
   const [counts, setCounts] = useState({ new: 0, in_progress: 0, completed: 0 });
 
-  
-  //* Replace with the actual student ID from authentication context
+  // Replace with the actual student ID from authentication context
   const studentId = '11111111-1111-1111-1111-111111111111'; 
 
   const fetchCounts = async () => {
@@ -101,7 +100,7 @@ export default function StudentDashboard() {
                 <Link
                   key={index}
                   to={{
-                    pathname: `/${studentId}/${assignment.assignmentId}`,
+                    pathname: `/konva-student/${studentId}/${assignment.assignmentId}`,
                     state: { assignmentData: assignment.assignmentData } // Passing the data
                   }}
                 >

@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from 'react';
 import { Stage, Layer, Line, Image as KonvaImage } from 'react-konva';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 
-
 export default function KonvaStudent() {
   const { studentId, assignmentId } = useParams();
   const navigate = useNavigate();
@@ -12,7 +11,6 @@ export default function KonvaStudent() {
   const [initialImage, setInitialImage] = useState(null);
   const isDrawing = useRef(false);
   const stageRef = useRef(null);
-
 
   useEffect(() => {
     const fetchAssignment = async () => {
@@ -24,20 +22,20 @@ export default function KonvaStudent() {
           image.src = `data:image/png;base64,${assignmentData}`;
           image.onload = () => {
             setInitialImage(image);
-            console.log('Image loaded from state:', image);
+            // console.log('Image loaded from state:', image);
           };
         } else {
           console.log('Fetching assignment data from backend.');
           const response = await fetch(`/api/get-assignments/${assignmentId}`);
           if (response.ok) {
             const assignment = await response.json();
-            console.log('Fetched assignment:', assignment);
+            // console.log('Fetched assignment:', assignment);
             if (assignment.assignment_data) {
               const image = new window.Image();
               image.src = `data:image/png;base64,${assignment.assignment_data}`;
               image.onload = () => {
                 setInitialImage(image);
-                console.log('Image loaded from fetch:', image);
+                // console.log('Image loaded from fetch:', image);
               };
             }
           } else {
@@ -97,7 +95,8 @@ export default function KonvaStudent() {
 
       if (saveResponse.ok) {
         console.log(`Drawing has been ${status === 'completed' ? 'submitted' : 'saved'} successfully.`);
-        navigate(`/student-dashboard/${studentId}`); // Redirect to the dashboard
+        // navigate(`/studentdashboard/${studentId}`); // Use this once Authentication Page is done
+        navigate(`/studentdashboard`); // Redirect to the dashboard
       } else {
         console.error(`Error ${status === 'completed' ? 'submitting' : 'saving'} drawing:`, saveResponse.statusText);
       }

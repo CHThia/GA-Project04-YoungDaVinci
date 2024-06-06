@@ -23,11 +23,11 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
-          <Route path="/StudentDashboard" element={<StudentDashboard />} />
+          <Route path="/studentdashboard" element={<StudentDashboard />} />
           <Route path="/allstudents" element={<AllStudents />} />
           <Route path="/allstudents/get-all-students/:student_id" element={<StudentArtWorks />} />
           <Route path="/drawingresources" element={<DrawingResources />} />        
-          <Route path="/:studentId/:assignmentId" element={<KonvaStudent />} />
+          <Route path="/konva-student/:studentId/:assignmentId" element={<KonvaStudent />} />
 
           {/* <Route path="/canvas" element={<Canvas />} /> */}
           

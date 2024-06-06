@@ -31,12 +31,14 @@ const getAllAssignmentsByStudentId = async (student_id) => {
 };
 
 //* For Teacher to select artwork of student_id and display on canvas
-const getAssignmentById = async (assignment_id) => {
-  const result = await pool.query(
-    'SELECT * FROM assignments WHERE assignment_id = $1',
-    [assignment_id]
-  );
-  return result.rows[0];
+const getAssignmentById = async (assignmentId) => {
+  try {
+    const result = await pool.query('SELECT * FROM assignments WHERE assignment_id = $1', [assignmentId]);
+    return result.rows[0];
+  } catch (error) {
+    console.error('Error fetching assignment by ID:', error);
+    throw error;
+  }
 };
 
 const addNewAssignmentForStudent = async (assignment) => {
