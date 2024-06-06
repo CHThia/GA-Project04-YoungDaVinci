@@ -98,6 +98,21 @@ const updateFeedbackForAssignments = async (req, res) => {
   }
 };
 
+const updateAssignment = async (req, res) => {
+  const { assignment_id } = req.params;
+  const { assignment_data, assignment_status } = req.body;
+
+  try {
+    const updatedAssignment = await assignmentModel.updateAssignment(assignment_id, { assignment_data, assignment_status });
+    const updatedAssignmentWithBase64 = ensureBase64AssignmentData(updatedAssignment);
+
+    res.json(updatedAssignmentWithBase64);
+  } catch (error) {
+    console.error('Error updating assignment:', error);
+    res.status(500).send('Server error');
+  }
+};
+
 const deleteAssignments = async (req, res) => {
   const { assignment_id } = req.params;
 
@@ -118,5 +133,6 @@ module.exports = {
   getAssignmentsById,
   addNewAssignmentsForStudent,
   updateFeedbackForAssignments,
+  updateAssignment,
   deleteAssignments,
 };

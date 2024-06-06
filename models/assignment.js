@@ -78,6 +78,13 @@ const updateFeedbackForAssignment = async (assignment_id, assignment) => {
   return result.rows[0];
 };
 
+const updateAssignment = async (assignmentId, { assignment_data, assignment_status }) => {
+  const result = await pool.query(
+    'UPDATE assignments SET assignment_data = $1, assignment_status = $2, update_date = NOW() WHERE assignment_id = $3 RETURNING *',
+    [assignment_data, assignment_status, assignmentId]
+  );
+  return result.rows[0];
+};
 
 const deleteAssignment = async (assignment_id) => {
   await pool.query('DELETE FROM assignments WHERE assignment_id = $1', [assignment_id]);
@@ -92,5 +99,6 @@ module.exports = {
   getAssignmentById,
   addNewAssignmentForStudent,
   updateFeedbackForAssignment,
+  updateAssignment,
   deleteAssignment
 };

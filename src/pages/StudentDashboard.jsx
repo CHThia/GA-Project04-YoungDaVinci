@@ -1,11 +1,12 @@
 import { useEffect, useState, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function StudentDashboard() {
   const [assignmentsImages, setAssignmentsImages] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [counts, setCounts] = useState({ new: 0, inProgress: 0, completed: 0 });
+  const [counts, setCounts] = useState({ new: 0, in_progress: 0, completed: 0 });
 
   
   //* Replace with the actual student ID from authentication context
@@ -40,7 +41,11 @@ export default function StudentDashboard() {
       const response = await fetch(url);
       if (response.ok) {
         const assignmentsList = await response.json();
-        setAssignmentsImages(assignmentsList.map(assignment => `data:image/png;base64,${assignment.assignment_data}`));
+        setAssignmentsImages(assignmentsList.map(assignment => ({
+          src: assignment.assignment_data ? `data:image/png;base64,${assignment.assignment_data}` : '',
+          assignmentId: assignment.assignment_id,
+          assignmentData: assignment.assignment_data // Added to pass the data
+        })));
         console.log(`Success to fetch from ${url}`);
       } else {
         throw new Error(`Failed to fetch from ${url}`);
@@ -92,8 +97,16 @@ export default function StudentDashboard() {
             ) : error ? (
               <p>{error}</p>
             ) : assignmentsImages.length > 0 ? (
-              assignmentsImages.map((src, index) => (
-                <img key={index} src={src} alt={`Drawing ${index + 1}`} />
+              assignmentsImages.map((assignment, index) => (
+                <Link
+                  key={index}
+                  to={{
+                    pathname: `/${studentId}/${assignment.assignmentId}`,
+                    state: { assignmentData: assignment.assignmentData } // Passing the data
+                  }}
+                >
+                  <img src={assignment.src} alt={`Drawing ${index + 1}`} />
+                </Link>
               ))
             ) : (
               <p>{selectedCategory ? 'No contents are found.' : 'Select a category from Assignments.'}</p>
