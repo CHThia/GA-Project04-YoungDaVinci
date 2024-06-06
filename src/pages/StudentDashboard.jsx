@@ -1,20 +1,38 @@
 import { useEffect, useState, useCallback } from 'react';
 
-export default function Dashboard() {
+export default function StudentDashboard() {
   const [images, setImages] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [counts, setCounts] = useState({ new: 0, in_Progress: 0, completed: 0 });
+
+  //* Replace with the actual student ID from authentication context
+  const studentId = '11111111-1111-1111-1111-111111111111'; 
+
+  const fetchCounts = async () => {
+    try {
+      const response = await fetch(`/api/assignment-counts/${studentId}`);
+      if (response.ok) {
+        const countsData = await response.json();
+        setCounts(countsData);
+      } else {
+        throw new Error('Failed to fetch counts');
+      }
+    } catch (err) {
+      console.error('Error fetching counts:', err);
+    }
+  };
 
   const fetchAssignments = async (category) => {
     setLoading(true);
     setError(null);
 
-    const baseUrl = 'http://localhost:3000/api';
+    const baseUrl = `/api/get-all-assignments/${studentId}`;
     const urlMap = {
       new: `${baseUrl}/new`,
-      in_Progress: `${baseUrl}/in-progress`,
-      completed: `${baseUrl}/drawings`,
+      inProgress: `${baseUrl}/in_progress`,
+      completed: `${baseUrl}/completed`,
     };
 
     const url = urlMap[category];
@@ -43,6 +61,10 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
+    fetchCounts();
+  }, []);
+
+  useEffect(() => {
     if (selectedCategory) {
       fetchAssignments(selectedCategory);
     }
@@ -63,9 +85,9 @@ export default function Dashboard() {
           <div className="text-my-assignment">
             <h2>Assignments</h2>
             <ul>
-              <li><a href="#new" onClick={() => handleCategoryClick('new')}>New</a></li>
-              <li><a href="#in-progress" onClick={() => handleCategoryClick('in_Progress')}>In Progress</a></li>
-              <li><a href="#completed" onClick={() => handleCategoryClick('completed')}>Completed</a></li>
+              <li><a href="#new" onClick={() => handleCategoryClick('new')}>New ({counts.new})</a></li>
+              <li><a href="#in-progress" onClick={() => handleCategoryClick('in_Progress')}>In Progress ({counts.in_progress})</a></li>
+              <li><a href="#completed" onClick={() => handleCategoryClick('completed')}>Completed ({counts.completed})</a></li>
             </ul>
           </div>
 

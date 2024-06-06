@@ -3,7 +3,7 @@ import NavBar_Main from "../components/NavBar_Main"
 import Home from "./Home"
 import SignUp from "./SignUp"
 import ForgotPassword from "./ForgotPassword"
-import DashBoardStudent from "./DashboardStudent"
+import StudentDashboard from "./StudentDashboard"
 import AllStudents from "./AllStudents"
 import StudentArtWorks from "./StudentArtWorks"
 import DrawingResources from "./DrawingResources"
@@ -23,7 +23,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
-          <Route path="/dashboardstudent" element={<DashBoardStudent />} />
+          <Route path="/StudentDashboard" element={<StudentDashboard />} />
           <Route path="/allstudents" element={<AllStudents />} />
           <Route path="/allstudents/get-all-students/:student_id" element={<StudentArtWorks />} />
           <Route path="/drawingresources" element={<DrawingResources />} />        

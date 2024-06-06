@@ -1,6 +1,19 @@
 const pool = require('../db');
 
 
+const getAssignmentCounts = async (studentId) => {
+  const result = await pool.query(
+    `SELECT 
+      SUM(CASE WHEN assignment_status = 'new' THEN 1 ELSE 0 END) AS new,
+      SUM(CASE WHEN assignment_status = 'in_progress' THEN 1 ELSE 0 END) AS in_progress,
+      SUM(CASE WHEN assignment_status = 'completed' THEN 1 ELSE 0 END) AS completed
+    FROM assignments
+    WHERE student_id = $1`,
+    [studentId]
+  );
+  return result.rows[0];
+};
+
 const getAllAssignmentsByStudentId = async (student_id) => {
   const result = await pool.query(
     'SELECT * FROM assignments WHERE student_id = $1',
@@ -63,7 +76,9 @@ const deleteAssignment = async (assignment_id) => {
   return { message: 'Assignment deleted successfully.' };
 };
 
+
 module.exports = {
+  getAssignmentCounts,
   getAllAssignmentsByStudentId,
   getAssignmentById,
   addNewAssignmentForStudent,

@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom/client'
 import App from './pages/App.jsx'
 import "./css/titles.css"
 import "./css/all_students.css"
-import "./css/dashboard_student.css"
+import "./css/student_dashboard.css"
 import "./css/drawing_resources.css" 
 import "./css/inputs.css"
 import "./css/buttons.css"
