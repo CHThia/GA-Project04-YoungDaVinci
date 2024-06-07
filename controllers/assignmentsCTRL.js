@@ -2,17 +2,17 @@ const assignmentModel = require('../models/assignment');
 
 // Helper function to ensure assignment_data is base64
 const ensureBase64AssignmentData = (assignment) => {
-  if (Buffer.isBuffer(assignment.assignment_data)) {
+  if (assignment && Buffer.isBuffer(assignment.assignment_data)) {
     assignment.assignment_data = assignment.assignment_data.toString('base64');
   }
   return assignment;
 };
 
 const getAssignmentsByStatus = async (req, res) => {
-  const { studentId, assignment_status } = req.params;
+  const { student_id, assignment_status } = req.params;
 
   try {
-    const assignments = await assignmentModel.getAssignmentsByStatus(studentId, assignment_status);
+    const assignments = await assignmentModel.getAssignmentsByStatus(student_id, assignment_status);
     const assignmentsWithBase64 = assignments.map(ensureBase64AssignmentData);
 
     res.json(assignmentsWithBase64);
@@ -23,10 +23,10 @@ const getAssignmentsByStatus = async (req, res) => {
 };
 
 const getAssignmentCounts = async (req, res) => {
-  const { studentId } = req.params;
+  const { student_id } = req.params;
 
   try {
-    const counts = await assignmentModel.getAssignmentCounts(studentId);
+    const counts = await assignmentModel.getAssignmentCounts(student_id);
     res.json(counts);
   } catch (error) {
     console.error('Error fetching assignment counts:', error);
@@ -35,10 +35,10 @@ const getAssignmentCounts = async (req, res) => {
 };
 
 const getAllAssignmentsForStudent = async (req, res) => {
-  const { studentId } = req.params;
+  const { student_id } = req.params;
 
   try {
-    const assignments = await assignmentModel.getAllAssignmentsByStudentId(studentId);
+    const assignments = await assignmentModel.getAllAssignmentsByStudentId(student_id);
     const assignmentsWithBase64 = assignments.map(ensureBase64AssignmentData);
 
     res.json(assignmentsWithBase64);
@@ -53,6 +53,9 @@ const getAssignmentsById = async (req, res) => {
 
   try {
     const assignment = await assignmentModel.getAssignmentById(assignmentId);
+    if (!assignment) {
+      return res.status(404).json({ error: 'Assignment not found' });
+    }
     const assignmentWithBase64 = ensureBase64AssignmentData(assignment);
 
     res.json(assignmentWithBase64);
@@ -124,7 +127,6 @@ const deleteAssignments = async (req, res) => {
     res.status(500).send('Server error');
   }
 };
-
 
 module.exports = {
   getAssignmentsByStatus,

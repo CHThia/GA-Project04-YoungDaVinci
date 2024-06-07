@@ -95,8 +95,8 @@ export default function KonvaStudent() {
 
       if (saveResponse.ok) {
         console.log(`Drawing has been ${status === 'completed' ? 'submitted' : 'saved'} successfully.`);
-        // navigate(`/studentdashboard/${studentId}`); // Use this once Authentication Page is done
-        navigate(`/studentdashboard`); // Redirect to the dashboard
+        navigate(`/studentdashboard/${studentId}`); // Use this once Authentication Page is done
+        // navigate(`/studentdashboard`); // Redirect to the dashboard
       } else {
         console.error(`Error ${status === 'completed' ? 'submitting' : 'saving'} drawing:`, saveResponse.statusText);
       }

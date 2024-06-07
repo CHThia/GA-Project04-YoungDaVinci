@@ -48,16 +48,24 @@ const findUserByEmail = async (email) => {
   const client = await pool.connect();
   try {
     const res = await client.query(
-      'SELECT * FROM logins WHERE student_email = $1 OR teacher_email = $1',
+      `SELECT l.*, s.student_id 
+       FROM logins l
+       LEFT JOIN student_details s ON l.student_email = s.email
+       WHERE l.student_email = $1 OR l.teacher_email = $1`,
       [email]
     );
+
     if (res.rows.length > 0) {
       const user = res.rows[0];
       user.isteacher = user.isteacher === 'true' || user.isteacher === true; // Convert to boolean
+      console.log('User found in database:', user); // Add log
       return user;
     } else {
       return null;
     }
+  } catch (error) {
+    console.error('Error finding user by email:', error);
+    throw error;
   } finally {
     client.release();
   }

@@ -16,7 +16,7 @@ export default function LoginForm() {
       if (response.data.token) {
         localStorage.setItem('token', response.data.token);
         const redirectUrl = response.data.redirect;
-        console.log('Redirect URL:', redirectUrl); // Debug log
+        console.log('Redirect URL:', redirectUrl); // Log redirect URL
         navigate(redirectUrl); // Redirect with student ID
       }
     } catch (error) {

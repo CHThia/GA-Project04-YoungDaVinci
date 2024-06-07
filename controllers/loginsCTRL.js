@@ -71,17 +71,19 @@ const login = async (req, res) => {
 
     const token = jwt.sign({ email }, 'your_jwt_secret', { expiresIn: '1h' });
 
+    console.log(`User found: ${JSON.stringify(user, null, 2)}`); // Log user details
+
     if (user.isteacher) {
       return res.json({ token, redirect: '/AllStudents' });
     } else {
-      return res.json({ token, redirect: `/StudentDashboard/${user.student_id}`, studentId: user.student_id });
+      console.log(`Student ID to be sent: ${user.student_id}`); // Log student ID
+      return res.json({ token, redirect: `/studentdashboard/${user.student_id}`, studentId: user.student_id });
     }
   } catch (error) {
     console.error('Error during login:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 };
-
 
 
 module.exports = {

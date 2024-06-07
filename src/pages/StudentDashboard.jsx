@@ -14,8 +14,9 @@ export default function StudentDashboard() {
     console.log('Student ID:', studentId); // Log the studentId to verify
   }, [studentId]);
 
-  const fetchCounts = async () => {
+  const fetchCounts = useCallback(async () => {
     if (!studentId) return; // Ensure studentId is defined
+    console.log('Fetching counts for student ID:', studentId); // Add log
     try {
       const response = await fetch(`/api/assignment-counts/${studentId}`);
       if (response.ok) {
@@ -27,9 +28,9 @@ export default function StudentDashboard() {
     } catch (err) {
       console.error('Error fetching counts:', err);
     }
-  };
+  }, [studentId]);
 
-  const fetchAssignments = async (category) => {
+  const fetchAssignments = useCallback(async (category) => {
     if (!studentId) return; // Ensure studentId is defined
     setLoading(true);
     setError(null);
@@ -40,6 +41,8 @@ export default function StudentDashboard() {
     } else {
       url = `/api/get-all-assignments/${studentId}`;
     }
+
+    console.log(`Fetching assignments from ${url}`); // Add log
 
     try {
       const response = await fetch(url);
@@ -60,18 +63,18 @@ export default function StudentDashboard() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [studentId]);
 
   useEffect(() => {
     fetchCounts();
     fetchAssignments();
-  }, [studentId]);
+  }, [fetchCounts, fetchAssignments, studentId]);
 
   useEffect(() => {
     if (selectedCategory) {
       fetchAssignments(selectedCategory);
     }
-  }, [selectedCategory]);
+  }, [fetchAssignments, selectedCategory]);
 
   const handleCategoryClick = useCallback((category) => {
     setSelectedCategory(category);
