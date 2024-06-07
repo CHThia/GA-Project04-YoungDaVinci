@@ -12,7 +12,7 @@ export default function LoginForm() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/api/login', { email, password });
+      const response = await axios.post('/api/login', { email, password });
       if (response.data.token) {
         localStorage.setItem('token', response.data.token);
         navigate(response.data.redirect);

@@ -15,13 +15,28 @@ const insertStudentDetails = async (formData) => {
   }
 };
 
+const insertTeacherDetails = async (formData) => {
+  const client = await pool.connect();
+  try {
+    const { name, email, password } = formData;
+    const createDate = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
+    const res = await client.query(
+      'INSERT INTO teacher_details (name, email, password, create_date, update_pw_date) VALUES ($1, $2, $3, $4, $5) RETURNING teacher_id',
+      [name, email, password, createDate, createDate]
+    );
+    return res.rows[0].teacher_id;
+  } finally {
+    client.release();
+  }
+};
+
 const insertLogin = async (email, password, isTeacher = false) => {
   const client = await pool.connect();
   try {
     const createDate = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
     const res = await client.query(
       'INSERT INTO logins (student_email, teacher_email, pwd, isteacher, create_date) VALUES ($1, $2, $3, $4, $5) RETURNING login_id',
-      [email, null, password, isTeacher, createDate]
+      [isTeacher ? null : email, isTeacher ? email : null, password, isTeacher, createDate]
     );
     return res.rows[0].login_id;
   } finally {
@@ -44,6 +59,7 @@ const findUserByEmail = async (email) => {
 
 module.exports = {
   insertStudentDetails,
+  insertTeacherDetails,
   insertLogin,
   findUserByEmail,
 };

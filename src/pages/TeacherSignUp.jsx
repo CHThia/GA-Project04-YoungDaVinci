@@ -1,14 +1,11 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { TextField, Button, Container, Typography, MenuItem, Box } from '@mui/material';
+import { TextField, Button, Container, Typography, Box } from '@mui/material';
 import axios from 'axios';
 
-export default function StudentSignUp() {
+export default function TeacherSignUp() {
   const [formData, setFormData] = useState({
     name: '',
-    dob: '',
-    gender: '',
-    education: '',
     email: '',
     password: ''
   });
@@ -25,7 +22,7 @@ export default function StudentSignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/api/studentsignup', formData);
+      const response = await axios.post('http://localhost:3000/api/teachersignup', formData);
       if (response.status === 201) {
         navigate('/');
       }
@@ -37,10 +34,7 @@ export default function StudentSignUp() {
   return (
     <>
       <div className="title">
-        <h1>Membership Sign Up</h1>
-        <Typography variant="body1" sx={{ marginBottom: 2 }}>
-          Not a student? <Link to="/teachersignup">Click here to sign up as a teacher.</Link>
-        </Typography>
+        <h1>Teacher Sign Up</h1>
       </div>
       <Container maxWidth="sm">
         <form onSubmit={handleSubmit}>
@@ -53,46 +47,6 @@ export default function StudentSignUp() {
             onChange={handleChange}
             required
           />
-          <TextField
-            sx={{ width: '100%' }}
-            margin="normal"
-            label="Date of Birth"
-            name="dob"
-            type="date"
-            value={formData.dob}
-            onChange={handleChange}
-            required
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
-          <TextField
-            sx={{ width: '100%' }}
-            margin="normal"
-            select
-            label="Gender"
-            name="gender"
-            value={formData.gender}
-            onChange={handleChange}
-            required
-          >
-            <MenuItem value="Male">Male</MenuItem>
-            <MenuItem value="Female">Female</MenuItem>
-          </TextField>
-          <TextField
-            sx={{ width: '100%' }}
-            margin="normal"
-            select
-            label="Education"
-            name="education"
-            value={formData.education}
-            onChange={handleChange}
-            required
-          >
-            <MenuItem value="Kindergarten">Kindergarten</MenuItem>
-            <MenuItem value="Primary">Primary</MenuItem>
-            <MenuItem value="Secondary">Secondary</MenuItem>
-          </TextField>
           <TextField
             sx={{ width: '100%' }}
             margin="normal"
@@ -116,7 +70,7 @@ export default function StudentSignUp() {
           <Button
             sx={{ width: '100%' }}
             variant="contained"
-            color="warning"
+            color="primary"
             type="submit"
             style={{ marginTop: '16px' }}
           >

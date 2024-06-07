@@ -1,27 +1,53 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { insertStudentDetails, insertLogin, findUserByEmail } = require('../models/login');
+const { insertStudentDetails, insertTeacherDetails, insertLogin, findUserByEmail } = require('../models/login');
 
-const signup = async (req, res) => {
+const studentSignUp = async (req, res) => {
   try {
     const formData = req.body;
-    
+
     // Check if password length is at least 3
     if (formData.password.length < 3) {
       return res.status(400).json({ error: 'Password must be at least 3 characters long' });
     }
-    
-    formData.password = await bcrypt.hash(formData.password, 10);
+
+    formData.password = await bcrypt.hash(formData.password, 10); // Hash the password
     const studentId = await insertStudentDetails(formData);
-    
+
     // Ensure the studentId is being used correctly
     if (!studentId) {
       return res.status(500).json({ error: 'Failed to create student details' });
     }
-    
+
     await insertLogin(formData.email, formData.password, false); // Explicitly setting isTeacher to false
 
-    res.status(201).json({ message: 'User created' });
+    res.status(201).json({ message: 'Student created' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+const teacherSignUp = async (req, res) => {
+  try {
+    const formData = req.body;
+
+    // Check if password length is at least 3
+    if (formData.password.length < 3) {
+      return res.status(400).json({ error: 'Password must be at least 3 characters long' });
+    }
+
+    formData.password = await bcrypt.hash(formData.password, 10); // Hash the password
+    const teacherId = await insertTeacherDetails(formData);
+
+    // Ensure the teacherId is being used correctly
+    if (!teacherId) {
+      return res.status(500).json({ error: 'Failed to create teacher details' });
+    }
+
+    await insertLogin(formData.email, formData.password, true); // Explicitly setting isTeacher to true
+
+    res.status(201).json({ message: 'Teacher created' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });
@@ -45,7 +71,7 @@ const login = async (req, res) => {
 
     const token = jwt.sign({ email }, 'your_jwt_secret', { expiresIn: '1h' });
 
-    if (!user.isteacher) {
+    if (user.isteacher) {
       return res.json({ token, redirect: '/AllStudents' });
     } else {
       return res.json({ token, redirect: '/StudentDashboard' });
@@ -57,6 +83,7 @@ const login = async (req, res) => {
 };
 
 module.exports = {
-  signup,
+  studentSignUp,
+  teacherSignUp,
   login,
 };
