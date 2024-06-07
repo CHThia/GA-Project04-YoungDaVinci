@@ -25,7 +25,7 @@ export default function StudentSignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/api/studentsignup', formData);
+      const response = await axios.post('/api/studentsignup', formData);
       if (response.status === 201) {
         navigate('/');
       }

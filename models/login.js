@@ -51,11 +51,18 @@ const findUserByEmail = async (email) => {
       'SELECT * FROM logins WHERE student_email = $1 OR teacher_email = $1',
       [email]
     );
-    return res.rows[0];
+    if (res.rows.length > 0) {
+      const user = res.rows[0];
+      user.isteacher = user.isteacher === 'true' || user.isteacher === true; // Convert to boolean
+      return user;
+    } else {
+      return null;
+    }
   } finally {
     client.release();
   }
 };
+
 
 module.exports = {
   insertStudentDetails,

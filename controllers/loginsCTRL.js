@@ -57,30 +57,51 @@ const teacherSignUp = async (req, res) => {
 const login = async (req, res) => {
   const { email, password } = req.body;
   try {
+    console.log('Login attempt with email:', email);
     const user = await findUserByEmail(email);
 
     if (!user) {
+      console.log('User not found for email:', email);
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
+    console.log('User found:', user);
+
     const validPassword = await bcrypt.compare(password, user.pwd);
 
+    console.log('Password valid:', validPassword);
+
     if (!validPassword) {
+      console.log('Invalid password for email:', email);
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
     const token = jwt.sign({ email }, 'your_jwt_secret', { expiresIn: '1h' });
 
+    console.log('JWT token generated:', token);
+
     if (user.isteacher) {
+      console.log('Redirecting teacher to /AllStudents');
       return res.json({ token, redirect: '/AllStudents' });
     } else {
+      console.log('Redirecting student to /StudentDashboard');
       return res.json({ token, redirect: '/StudentDashboard' });
     }
   } catch (error) {
-    console.error(error);
+    console.error('Error during login:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+
+
+module.exports = {
+  studentSignUp,
+  teacherSignUp,
+  login,
+};
+
+
 
 module.exports = {
   studentSignUp,
