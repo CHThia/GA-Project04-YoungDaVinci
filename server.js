@@ -1,8 +1,9 @@
 const express = require("express");
 const logger = require("morgan");
 const multer = require("multer")
-// const bodyParser = require('body-parser');
 const path = require("path");
+const cron = require("node-cron");
+const { updateStudentAge } = require("./models/studentDetail");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,8 +13,7 @@ app.use(express.static(path.join(__dirname, "dist")));
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// app.use(bodyParser.json({ limit: '50mb' }));
-// app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+
 
 // CORS headers
 app.use((req, res, next) => {
@@ -23,11 +23,30 @@ app.use((req, res, next) => {
   next();
 });
 
+
 // Routes
 // app.use("/api/drawings", require("./routes/drawingsRoute")); // Example Reference
 app.use("/api", require("./routes/drawingResourcesRoute"));
 app.use("/api", require("./routes/studentDetailsRoute"));
 app.use("/api", require("./routes/assignmentsRoute"));
+
+
+// Update student age at real time (for project purpose only)
+const runUpdateStudentAge = async () => {
+  console.log('Running updateStudentAge function');
+  try {
+    const updatedRows = await updateStudentAge();
+    console.log(`Updated age for ${updatedRows} students.`);
+  } catch (err) {
+    console.error('Error updating ages:', err);
+  }
+  console.log('Finished updateStudentAge function');
+};
+
+runUpdateStudentAge(); // Run the update student age() 
+
+// Update age at midnight on January 1st yearly
+cron.schedule('0 0 1 1 *', runUpdateStudentAge);
 
 
 // Global error handler

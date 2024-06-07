@@ -42,15 +42,18 @@ export default function SignUp() {
             onChange={handleChange}
             required
           />
+          
+          {/* NEED TO CHANGE TO DOB */}
           <TextField
             sx={{ width: '100%' }}
             margin="normal"
-            label="Age"
+            label="Age "
             name="age"
             value={formData.age}
             onChange={handleChange}
             required
           />
+          
           <TextField
             sx={{ width: '100%' }}
             margin="normal"

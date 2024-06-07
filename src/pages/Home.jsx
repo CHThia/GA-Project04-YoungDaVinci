@@ -5,6 +5,7 @@ import Carousel from 'react-material-ui-carousel';
 
 
 export default function HomePage() {
+  
   const items = [
     {
       image: "https://via.placeholder.com/800x400",
