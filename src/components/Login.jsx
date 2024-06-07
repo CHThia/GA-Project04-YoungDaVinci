@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { TextField, Button, Box, Typography, Container } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -8,11 +9,17 @@ export default function LoginForm() {
   const [showLoginForm, setShowLoginForm] = useState(true);
   const navigate = useNavigate(); 
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Code logic 
-    console.log('Email:', email);
-    console.log('Password:', password);
+    try {
+      const response = await axios.post('http://localhost:3000/api/login', { email, password });
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token);
+        navigate(response.data.redirect);
+      }
+    } catch (error) {
+      console.error('Error logging in:', error);
+    }
   };
 
   const handleLinkClick = (path) => {
@@ -77,7 +84,7 @@ export default function LoginForm() {
           </Box>
           <Typography component="p" sx={{ mt: 3 }}>
             Not a member yet?
-            <Button variant="text" onClick={() => handleLinkClick('/signup')}>
+            <Button variant="text" onClick={() => handleLinkClick('/studentsignup')}>
               Sign Up
             </Button>
           </Typography>

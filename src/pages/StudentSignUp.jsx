@@ -1,16 +1,19 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom';
 import { TextField, Button, Container, Typography, MenuItem, Box } from '@mui/material';
+import axios from 'axios';
 
-export default function SignUp() {
-
+export default function StudentSignUp() {
   const [formData, setFormData] = useState({
     name: '',
-    age: '',
+    dob: '',
+    gender: '',
     education: '',
     email: '',
     password: ''
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -19,18 +22,23 @@ export default function SignUp() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Code Login
-    console.log(formData);
+    try {
+      const response = await axios.post('/api/studentsignup', formData);
+      if (response.status === 201) {
+        navigate('/');
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
     <>
-        <div className="title">
-          <h1>Membership Sign Up</h1>
-        </div>
-
+      <div className="title">
+        <h1>Membership Sign Up</h1>
+      </div>
       <Container maxWidth="sm">
         <form onSubmit={handleSubmit}>
           <TextField
@@ -42,18 +50,19 @@ export default function SignUp() {
             onChange={handleChange}
             required
           />
-          
-          {/* NEED TO CHANGE TO DOB */}
           <TextField
             sx={{ width: '100%' }}
             margin="normal"
-            label="Age "
-            name="age"
-            value={formData.age}
+            label="Date of Birth"
+            name="dob"
+            type="date"
+            value={formData.dob}
             onChange={handleChange}
             required
+            InputLabelProps={{
+              shrink: true,
+            }}
           />
-          
           <TextField
             sx={{ width: '100%' }}
             margin="normal"
@@ -64,8 +73,8 @@ export default function SignUp() {
             onChange={handleChange}
             required
           >
-            <MenuItem value="Kindergarten">Male</MenuItem>
-            <MenuItem value="Primary">Female</MenuItem>
+            <MenuItem value="Male">Male</MenuItem>
+            <MenuItem value="Female">Female</MenuItem>
           </TextField>
           <TextField
             sx={{ width: '100%' }}
@@ -111,7 +120,6 @@ export default function SignUp() {
             Sign Up
           </Button>
         </form>
-
         <Box
           sx={{
             width: '100%',
@@ -121,12 +129,11 @@ export default function SignUp() {
           }}
         >
           <Link to="/" style={{ textDecoration: 'none' }}>
-            <Typography color="primary" >
+            <Typography color="primary">
               Back to Home Page
             </Typography>
           </Link>
-        </Box> 
-
+        </Box>
       </Container>
     </>
   );

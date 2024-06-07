@@ -29,6 +29,7 @@ app.use((req, res, next) => {
 app.use("/api", require("./routes/drawingResourcesRoute"));
 app.use("/api", require("./routes/studentDetailsRoute"));
 app.use("/api", require("./routes/assignmentsRoute"));
+app.use("/api", require("./routes/loginsRoute"));
 
 
 // Update student age at real time (for project purpose only)

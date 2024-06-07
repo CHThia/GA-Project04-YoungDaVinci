@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom"
 import NavBar_Main from "../components/NavBar_Main"
 import Home from "./Home"
-import SignUp from "./SignUp"
+import StudentSignUp from "./StudentSignUp"
 import ForgotPassword from "./ForgotPassword"
 import StudentDashboard from "./StudentDashboard"
 import AllStudents from "./AllStudents"
@@ -21,7 +21,7 @@ export default function App() {
         <br/>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/signup" element={<SignUp />} />
+          <Route path="/studentsignup" element={<StudentSignUp />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/studentdashboard" element={<StudentDashboard />} />
           <Route path="/allstudents" element={<AllStudents />} />
