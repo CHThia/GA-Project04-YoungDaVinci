@@ -49,10 +49,10 @@ const getAllAssignmentsForStudent = async (req, res) => {
 };
 
 const getAssignmentsById = async (req, res) => {
-  const { assignmentId } = req.params;
+  const { assignment_id } = req.params;  // Change this to match the route parameter
 
   try {
-    const assignment = await assignmentModel.getAssignmentById(assignmentId);
+    const assignment = await assignmentModel.getAssignmentById(assignment_id);  // Use assignment_id here
     if (!assignment) {
       return res.status(404).json({ error: 'Assignment not found' });
     }

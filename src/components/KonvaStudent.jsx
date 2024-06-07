@@ -12,6 +12,7 @@ export default function KonvaStudent() {
   const isDrawing = useRef(false);
   const stageRef = useRef(null);
 
+
   useEffect(() => {
     const fetchAssignment = async () => {
       try {
@@ -22,10 +23,11 @@ export default function KonvaStudent() {
           image.src = `data:image/png;base64,${assignmentData}`;
           image.onload = () => {
             setInitialImage(image);
-            // console.log('Image loaded from state:', image);
+            console.log('Image loaded from state:', image);
           };
         } else {
           console.log('Fetching assignment data from backend.');
+          console.log('Assignment ID:', assignmentId); // Log the assignment_id to ensure it's being passed correctly
           const response = await fetch(`/api/get-assignments/${assignmentId}`);
           if (response.ok) {
             const assignment = await response.json();
@@ -50,6 +52,7 @@ export default function KonvaStudent() {
     fetchAssignment();
   }, [assignmentId, location.state]);
 
+  
   const handleMouseDown = (event) => {
     isDrawing.current = true;
     const pos = event.target.getStage().getPointerPosition();
