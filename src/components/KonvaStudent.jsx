@@ -52,7 +52,7 @@ export default function KonvaStudent() {
     fetchAssignment();
   }, [assignmentId, location.state]);
 
-  
+
   const handleMouseDown = (event) => {
     isDrawing.current = true;
     const pos = event.target.getStage().getPointerPosition();
@@ -122,7 +122,7 @@ export default function KonvaStudent() {
       <div className="buttons-container">
         <button onClick={() => setTool('pencil')}>Pencil</button>
         <button onClick={() => setTool('eraser')}>Eraser</button>
-        <button onClick={() => saveDrawing('in-progress')}>Save</button>
+        <button onClick={() => saveDrawing('in_progress')}>Save</button>
         <button onClick={() => saveDrawing('completed')}>Submit</button>
         <button onClick={downloadDrawing}>Download</button>
       </div>
