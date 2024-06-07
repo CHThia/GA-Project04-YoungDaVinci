@@ -9,10 +9,10 @@ const ensureBase64AssignmentData = (assignment) => {
 };
 
 const getAssignmentsByStatus = async (req, res) => {
-  const { student_id, assignment_status } = req.params;
+  const { studentId, assignment_status } = req.params;
 
   try {
-    const assignments = await assignmentModel.getAssignmentsByStatus(student_id, assignment_status);
+    const assignments = await assignmentModel.getAssignmentsByStatus(studentId, assignment_status);
     const assignmentsWithBase64 = assignments.map(ensureBase64AssignmentData);
 
     res.json(assignmentsWithBase64);
@@ -23,10 +23,10 @@ const getAssignmentsByStatus = async (req, res) => {
 };
 
 const getAssignmentCounts = async (req, res) => {
-  const { student_id } = req.params;
+  const { studentId } = req.params;
 
   try {
-    const counts = await assignmentModel.getAssignmentCounts(student_id);
+    const counts = await assignmentModel.getAssignmentCounts(studentId);
     res.json(counts);
   } catch (error) {
     console.error('Error fetching assignment counts:', error);
@@ -35,10 +35,10 @@ const getAssignmentCounts = async (req, res) => {
 };
 
 const getAllAssignmentsForStudent = async (req, res) => {
-  const { student_id } = req.params;
+  const { studentId } = req.params;
 
   try {
-    const assignments = await assignmentModel.getAllAssignmentsByStudentId(student_id);
+    const assignments = await assignmentModel.getAllAssignmentsByStudentId(studentId);
     const assignmentsWithBase64 = assignments.map(ensureBase64AssignmentData);
 
     res.json(assignmentsWithBase64);
@@ -49,10 +49,10 @@ const getAllAssignmentsForStudent = async (req, res) => {
 };
 
 const getAssignmentsById = async (req, res) => {
-  const { assignment_id } = req.params;
+  const { assignmentId } = req.params;
 
   try {
-    const assignment = await assignmentModel.getAssignmentById(assignment_id);
+    const assignment = await assignmentModel.getAssignmentById(assignmentId);
     const assignmentWithBase64 = ensureBase64AssignmentData(assignment);
 
     res.json(assignmentWithBase64);

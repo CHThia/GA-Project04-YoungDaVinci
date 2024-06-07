@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 export default function StudentDashboard() {
   const [assignmentsImages, setAssignmentsImages] = useState([]);
@@ -8,10 +8,14 @@ export default function StudentDashboard() {
   const [error, setError] = useState(null);
   const [counts, setCounts] = useState({ new: 0, in_progress: 0, completed: 0 });
 
-  // Replace with the actual student ID from authentication context
-  const studentId = '11111111-1111-1111-1111-111111111111'; 
+  const { studentId } = useParams();
+
+  useEffect(() => {
+    console.log('Student ID:', studentId); // Log the studentId to verify
+  }, [studentId]);
 
   const fetchCounts = async () => {
+    if (!studentId) return; // Ensure studentId is defined
     try {
       const response = await fetch(`/api/assignment-counts/${studentId}`);
       if (response.ok) {
@@ -26,6 +30,7 @@ export default function StudentDashboard() {
   };
 
   const fetchAssignments = async (category) => {
+    if (!studentId) return; // Ensure studentId is defined
     setLoading(true);
     setError(null);
 
@@ -43,7 +48,7 @@ export default function StudentDashboard() {
         setAssignmentsImages(assignmentsList.map(assignment => ({
           src: assignment.assignment_data ? `data:image/png;base64,${assignment.assignment_data}` : '',
           assignmentId: assignment.assignment_id,
-          assignmentData: assignment.assignment_data // Added to pass the data
+          assignmentData: assignment.assignment_data
         })));
         console.log(`Success to fetch from ${url}`);
       } else {
@@ -57,11 +62,10 @@ export default function StudentDashboard() {
     }
   };
 
-  // Fetch all assignments and count at start
   useEffect(() => {
     fetchCounts();
-    fetchAssignments(); 
-  }, []);
+    fetchAssignments();
+  }, [studentId]);
 
   useEffect(() => {
     if (selectedCategory) {
@@ -101,7 +105,7 @@ export default function StudentDashboard() {
                   key={index}
                   to={{
                     pathname: `/konva-student/${studentId}/${assignment.assignmentId}`,
-                    state: { assignmentData: assignment.assignmentData } // Passing the data
+                    state: { assignmentData: assignment.assignmentData }
                   }}
                 >
                   <img src={assignment.src} alt={`Drawing ${index + 1}`} />

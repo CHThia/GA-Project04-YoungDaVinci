@@ -21,16 +21,6 @@ const getAllStudentsById = async (req, res) => {
   }
 };
 
-// const addNewStudents = async (req, res) => {
-//   try {
-//     const { name, age, gender, education, email, password } = req.body;
-//     const newStudent = await studentDetails.addNewStudents(name, age, gender, education, email, password);
-//     res.status(201).json(newStudent);
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// };
-
 const addNewStudents = async (req, res) => {
   try {
     const { name, age, gender, education, email, password, date_of_birth } = req.body;

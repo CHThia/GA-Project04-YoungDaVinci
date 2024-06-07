@@ -1,6 +1,5 @@
 const pool = require('../db');
 
-
 const getAssignmentsByStatus = async (studentId, assignment_status) => {
   const result = await pool.query(
     'SELECT * FROM assignments WHERE student_id = $1 AND assignment_status = $2',
@@ -22,15 +21,23 @@ const getAssignmentCounts = async (studentId) => {
   return result.rows[0];
 };
 
-const getAllAssignmentsByStudentId = async (student_id) => {
-  const result = await pool.query(
-    'SELECT * FROM assignments WHERE student_id = $1',
-    [student_id]
-  );
-  return result.rows;
+const getAllAssignmentsByStudentId = async (studentId) => {
+  const client = await pool.connect();
+  try {
+    const result = await client.query(
+      'SELECT * FROM assignments WHERE student_id = $1',
+      [studentId]
+    );
+    return result.rows;
+  } catch (error) {
+    console.error('Query error:', error);
+    throw error;
+  } finally {
+    client.release();
+  }
 };
 
-//* For Teacher to select artwork of student_id and display on canvas
+// For Teacher to select artwork of student_id and display on canvas
 const getAssignmentById = async (assignmentId) => {
   try {
     const result = await pool.query('SELECT * FROM assignments WHERE assignment_id = $1', [assignmentId]);

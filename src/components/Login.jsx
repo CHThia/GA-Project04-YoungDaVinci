@@ -15,7 +15,9 @@ export default function LoginForm() {
       const response = await axios.post('/api/login', { email, password });
       if (response.data.token) {
         localStorage.setItem('token', response.data.token);
-        navigate(response.data.redirect);
+        const redirectUrl = response.data.redirect;
+        console.log('Redirect URL:', redirectUrl); // Debug log
+        navigate(redirectUrl); // Redirect with student ID
       }
     } catch (error) {
       console.error('Error logging in:', error);
