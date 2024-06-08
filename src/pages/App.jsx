@@ -1,5 +1,7 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import NavBar_Main from "../components/NavBar_Main";
+import NavBar_Teacher from "../components/NavBar_Teacher";
+import NavBar_Student from "../components/NavBar_Student";
 import Home from "./Home";
 import TeacherSignUp from "./TeacherSignUp";
 import StudentSignUp from "./StudentSignUp";
@@ -9,13 +11,25 @@ import AllStudents from "./AllStudents";
 import StudentArtWorks from "./StudentArtWorks";
 import DrawingResources from "./DrawingResources";
 import KonvaStudent from "../components/KonvaStudent";
-//* import Canvas from "./Canvas";
 
-export default function App() {
+export default function App () {
+
+  const location = useLocation();
+
+  const getNavBar = () => {
+    if (location.pathname.startsWith('/studentdashboard')) {
+      return <NavBar_Student />;
+    } else if (location.pathname.startsWith('/AllStudents')) { // Need to tidy the route name
+      return <NavBar_Teacher />;
+    } else {
+      return <NavBar_Main />;
+    }
+  };
+
   return (
     <>
       <main>
-        <NavBar_Main />
+        {getNavBar()}
         <br />
         <Routes>
           <Route path="/" element={<Home />} />
