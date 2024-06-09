@@ -8,8 +8,9 @@ export default function StudentDashboard() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [counts, setCounts] = useState({ new: 0, in_progress: 0, completed: 0 });
-  const [studentName, setStudentName] = useState('');
+  const [studentName, setStudentName] = useState(localStorage.getItem('studentName') || '');
 
+  
   const { studentId } = useParams();
   const location = useLocation();
 
@@ -22,6 +23,7 @@ export default function StudentDashboard() {
     if (location.state && location.state.studentName) {
       console.log('Setting student name:', location.state.studentName); // Log setting name
       setStudentName(location.state.studentName);
+      localStorage.setItem('studentName', location.state.studentName); // Store student name in localStorage
     }
   }, [studentId, location.state]);
 
@@ -149,3 +151,5 @@ export default function StudentDashboard() {
     </>
   );
 }
+
+//START
