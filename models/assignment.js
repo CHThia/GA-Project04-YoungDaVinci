@@ -19,7 +19,8 @@ const getAssignmentCounts = async (student_id) => {
       `SELECT 
         SUM(CASE WHEN assignment_status = 'new' THEN 1 ELSE 0 END) AS new,
         SUM(CASE WHEN assignment_status = 'in_progress' THEN 1 ELSE 0 END) AS in_progress,
-        SUM(CASE WHEN assignment_status = 'completed' THEN 1 ELSE 0 END) AS completed
+        SUM(CASE WHEN assignment_status = 'completed' THEN 1 ELSE 0 END) AS completed,
+        COUNT(*) AS all
       FROM assignments
       WHERE student_id = $1`,
       [student_id]
@@ -129,6 +130,7 @@ const deleteAssignment = async (assignment_id) => {
     throw error;
   }
 };
+
 
 module.exports = {
   getAssignmentsByStatus,

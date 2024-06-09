@@ -12,6 +12,7 @@ export default function StudentDashboard() {
   const { studentId } = useParams();
   const location = useLocation();
 
+
   useEffect(() => {
     console.log('Student ID:', studentId); // Log the studentId to verify
     console.log('Location state:', location.state); // Log the location state
@@ -22,6 +23,7 @@ export default function StudentDashboard() {
       setStudentName(location.state.studentName);
     }
   }, [studentId, location.state]);
+
 
   const fetchCounts = useCallback(async () => {
     if (!studentId) return; // Ensure studentId is defined
@@ -39,13 +41,14 @@ export default function StudentDashboard() {
     }
   }, [studentId]);
 
+
   const fetchAssignments = useCallback(async (category) => {
     if (!studentId) return; // Ensure studentId is defined
     setLoading(true);
     setError(null);
 
     let url;
-    if (category) {
+    if (category && category !== 'all') {
       url = `/api/get-all-assignments/${studentId}/${category}`;
     } else {
       url = `/api/get-all-assignments/${studentId}`;
@@ -74,6 +77,7 @@ export default function StudentDashboard() {
     }
   }, [studentId]);
 
+
   useEffect(() => {
     fetchCounts();
     fetchAssignments();
@@ -89,6 +93,7 @@ export default function StudentDashboard() {
     setSelectedCategory(category);
   }, []);
 
+
   return (
     <>
       <div className="dashboard-student-container">
@@ -100,6 +105,7 @@ export default function StudentDashboard() {
           <div className="text-my-assignment">
             <h2>Assignments</h2>
             <ul>
+              <li><a href="#all" onClick={() => handleCategoryClick('all')}>All ({counts.all})</a></li>
               <li><a href="#new" onClick={() => handleCategoryClick('new')}>New ({counts.new})</a></li>
               <li><a href="#in-progress" onClick={() => handleCategoryClick('in_progress')}>In Progress ({counts.in_progress})</a></li>
               <li><a href="#completed" onClick={() => handleCategoryClick('completed')}>Completed ({counts.completed})</a></li>
