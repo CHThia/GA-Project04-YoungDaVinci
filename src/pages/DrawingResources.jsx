@@ -40,13 +40,31 @@ export default function DrawingResources() {
     }
   };
 
+  const deleteDrawingById = async (drawing_resources_id) => {
+    try {
+      const response = await fetch(`/api/delete-drawing-resources/${drawing_resources_id}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      fetchDrawings(); // Refresh the drawings list
+    } catch (error) {
+      console.error('Error deleting drawing:', error);
+    }
+  };
+
   const clearSelection = () => {
     setSelectedDrawing(null);
   };
 
   return (
     <>
-      <DropDown savedDrawings={savedDrawings} fetchDrawingById={fetchDrawingById} />
+      <DropDown 
+        savedDrawings={savedDrawings} 
+        fetchDrawingById={fetchDrawingById} 
+        deleteDrawingById={deleteDrawingById} 
+      />
 
       <KonvaTeacher 
         onSave={fetchDrawings} 

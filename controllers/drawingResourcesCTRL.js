@@ -64,8 +64,11 @@ const updateDrawingResources = async (req, res) => {
 const deleteDrawingResources = async (req, res) => {
   const { drawing_resources_id } = req.params;
   try {
-    await drawingResourceModel.deleteDrawingResource(drawing_resources_id);
-    res.status(200).json({ message: 'Drawing resources deleted.' });
+    const result = await drawingResourceModel.deleteDrawingResource(drawing_resources_id);
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'Drawing resource not found' });
+    }
+    res.status(200).json({ message: 'Drawing resource deleted successfully.' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error deleting drawing resources' });
