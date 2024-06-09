@@ -71,10 +71,31 @@ const findUserByEmail = async (email) => {
   }
 };
 
+const getStudentName = async (studentId) => {
+  const client = await pool.connect();
+  try {
+    console.log(`Executing query to fetch name for student ID: ${studentId}`); // Log query execution
+    const res = await client.query('SELECT name FROM student_details WHERE student_id = $1', [studentId]);
+    if (res.rows.length > 0) {
+      console.log(`Query successful. Name: ${res.rows[0].name}`); // Log query success
+      return res.rows[0].name;
+    } else {
+      console.log('No student found with given ID'); // Log no result
+      throw new Error('Student not found');
+    }
+  } catch (error) {
+    console.error('Error executing query:', error); // Log error
+    throw error;
+  } finally {
+    client.release();
+  }
+};
+
 
 module.exports = {
   insertStudentDetails,
   insertTeacherDetails,
   insertLogin,
   findUserByEmail,
+  getStudentName
 };

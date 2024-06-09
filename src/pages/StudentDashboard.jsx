@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useLocation } from 'react-router-dom';
 
 export default function StudentDashboard() {
   const [assignmentsImages, setAssignmentsImages] = useState([]);
@@ -7,12 +7,21 @@ export default function StudentDashboard() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [counts, setCounts] = useState({ new: 0, in_progress: 0, completed: 0 });
+  const [studentName, setStudentName] = useState('');
 
   const { studentId } = useParams();
+  const location = useLocation();
 
   useEffect(() => {
     console.log('Student ID:', studentId); // Log the studentId to verify
-  }, [studentId]);
+    console.log('Location state:', location.state); // Log the location state
+
+    // Extract studentName from location state if available
+    if (location.state && location.state.studentName) {
+      console.log('Setting student name:', location.state.studentName); // Log setting name
+      setStudentName(location.state.studentName);
+    }
+  }, [studentId, location.state]);
 
   const fetchCounts = useCallback(async () => {
     if (!studentId) return; // Ensure studentId is defined
@@ -84,7 +93,7 @@ export default function StudentDashboard() {
     <>
       <div className="dashboard-student-container">
         <div className="dashboard-greet">
-          <h1>Welcome back, Student Name!</h1>
+          <h1>Welcome back, {studentName}!</h1>
         </div>
 
         <div className="assignment-container">

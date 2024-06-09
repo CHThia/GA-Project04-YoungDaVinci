@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { insertStudentDetails, insertTeacherDetails, insertLogin, findUserByEmail } = require('../models/login');
+const { insertStudentDetails, insertTeacherDetails, insertLogin, findUserByEmail, getStudentName } = require('../models/login');
+
 
 const studentSignUp = async (req, res) => {
   try {
@@ -76,8 +77,15 @@ const login = async (req, res) => {
     if (user.isteacher) {
       return res.json({ token, redirect: '/AllStudents' });
     } else {
-      console.log(`Student ID to be sent: ${user.student_id}`); // Log student ID
-      return res.json({ token, redirect: `/studentdashboard/${user.student_id}`, studentId: user.student_id });
+      console.log(`Fetching name for student ID: ${user.student_id}`); // Log fetching name
+      const studentName = await getStudentName(user.student_id);
+      console.log(`Student Name fetched: ${studentName}`); // Log fetched name
+      return res.json({ 
+        token, 
+        redirect: `/studentdashboard/${user.student_id}`, 
+        studentId: user.student_id, 
+        studentName // Include the student's name in the response
+      });
     }
   } catch (error) {
     console.error('Error during login:', error);

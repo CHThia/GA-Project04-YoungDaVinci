@@ -16,8 +16,10 @@ export default function LoginForm() {
       if (response.data.token) {
         localStorage.setItem('token', response.data.token);
         const redirectUrl = response.data.redirect;
+        const studentName = response.data.studentName; // Get the student's name
         console.log('Redirect URL:', redirectUrl); // Log redirect URL
-        navigate(redirectUrl); // Redirect with student ID
+        console.log('Student Name:', studentName); // Log student name
+        navigate(redirectUrl, { state: { studentName } }); // Redirect with student ID and name
       }
     } catch (error) {
       console.error('Error logging in:', error);
