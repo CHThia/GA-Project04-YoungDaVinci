@@ -31,9 +31,10 @@ app.use("/api", require("./routes/studentDetailsRoute"));
 app.use("/api", require("./routes/assignmentsRoute"));
 app.use("/api", require("./routes/loginsRoute"));
 
-// Root endpoint
+
+// Root endpoint to serve the main homepage
 app.get("/", (req, res) => {
-  res.send("Welcome to the API!");
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
 });
 
 
