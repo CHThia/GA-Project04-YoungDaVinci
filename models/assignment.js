@@ -1,9 +1,13 @@
 const pool = require('../db');
 
+
 const getAssignmentsByStatus = async (student_id, assignment_status) => {
   try {
     const result = await pool.query(
-      'SELECT * FROM assignments WHERE student_id = $1 AND assignment_status = $2',
+      `SELECT a.*, d.title, d.description
+       FROM assignments a
+       INNER JOIN drawing_resources d ON a.drawing_resources_id = d.drawing_resources_id
+       WHERE a.student_id = $1 AND a.assignment_status = $2`,
       [student_id, assignment_status]
     );
     return result.rows;

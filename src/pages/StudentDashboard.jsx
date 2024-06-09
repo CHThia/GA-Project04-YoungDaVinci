@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Link, useParams, useLocation } from 'react-router-dom';
 
+
 export default function StudentDashboard() {
   const [assignmentsImages, setAssignmentsImages] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -12,6 +13,7 @@ export default function StudentDashboard() {
   const { studentId } = useParams();
   const location = useLocation();
 
+
   useEffect(() => {
     console.log('Student ID:', studentId); // Log the studentId to verify
     console.log('Location state:', location.state); // Log the location state
@@ -22,6 +24,7 @@ export default function StudentDashboard() {
       setStudentName(location.state.studentName);
     }
   }, [studentId, location.state]);
+
 
   const fetchCounts = useCallback(async () => {
     if (!studentId) return; // Ensure studentId is defined
@@ -39,6 +42,7 @@ export default function StudentDashboard() {
     }
   }, [studentId]);
 
+  
   const fetchAssignments = useCallback(async (category) => {
     if (!studentId) return; // Ensure studentId is defined
     setLoading(true);
@@ -79,6 +83,7 @@ export default function StudentDashboard() {
     }
   }, [studentId]);
 
+
   useEffect(() => {
     fetchCounts();
     fetchAssignments();
@@ -93,6 +98,7 @@ export default function StudentDashboard() {
   const handleCategoryClick = useCallback((category) => {
     setSelectedCategory(category);
   }, []);
+
 
   return (
     <>
