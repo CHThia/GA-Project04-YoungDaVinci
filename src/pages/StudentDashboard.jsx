@@ -129,8 +129,8 @@ export default function StudentDashboard() {
                     <img src={assignment.src} alt={`Drawing ${index + 1}`} />
                   </Link>
                   <div className="assignment-details">
-                    <h3>{assignment.title}</h3>
-                    <p>{assignment.description}</p>
+                    <h2>Title: {assignment.title}</h2>
+                    <p>Description: {assignment.description}</p>
                   </div>
                 </div>
               ))
