@@ -31,6 +31,11 @@ app.use("/api", require("./routes/studentDetailsRoute"));
 app.use("/api", require("./routes/assignmentsRoute"));
 app.use("/api", require("./routes/loginsRoute"));
 
+// Root endpoint
+app.get("/", (req, res) => {
+  res.send("Welcome to the API!");
+});
+
 
 // Update student age at real time (for project purpose only)
 const runUpdateStudentAge = async () => {
