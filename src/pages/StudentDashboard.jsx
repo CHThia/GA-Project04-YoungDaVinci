@@ -12,7 +12,6 @@ export default function StudentDashboard() {
   const { studentId } = useParams();
   const location = useLocation();
 
-
   useEffect(() => {
     console.log('Student ID:', studentId); // Log the studentId to verify
     console.log('Location state:', location.state); // Log the location state
@@ -23,7 +22,6 @@ export default function StudentDashboard() {
       setStudentName(location.state.studentName);
     }
   }, [studentId, location.state]);
-
 
   const fetchCounts = useCallback(async () => {
     if (!studentId) return; // Ensure studentId is defined
@@ -40,7 +38,6 @@ export default function StudentDashboard() {
       console.error('Error fetching counts:', err);
     }
   }, [studentId]);
-
 
   const fetchAssignments = useCallback(async (category) => {
     if (!studentId) return; // Ensure studentId is defined
@@ -60,11 +57,16 @@ export default function StudentDashboard() {
       const response = await fetch(url);
       if (response.ok) {
         const assignmentsList = await response.json();
+        console.log('Assignments List:', assignmentsList); // Log assignments list
+
         setAssignmentsImages(assignmentsList.map(assignment => ({
           src: assignment.assignment_data ? `data:image/png;base64,${assignment.assignment_data}` : '',
           assignmentId: assignment.assignment_id,
-          assignmentData: assignment.assignment_data
+          assignmentData: assignment.assignment_data,
+          title: assignment.title,
+          description: assignment.description
         })));
+
         console.log(`Success to fetch from ${url}`);
       } else {
         throw new Error(`Failed to fetch from ${url}`);
@@ -76,7 +78,6 @@ export default function StudentDashboard() {
       setLoading(false);
     }
   }, [studentId]);
-
 
   useEffect(() => {
     fetchCounts();
@@ -92,7 +93,6 @@ export default function StudentDashboard() {
   const handleCategoryClick = useCallback((category) => {
     setSelectedCategory(category);
   }, []);
-
 
   return (
     <>
@@ -119,15 +119,20 @@ export default function StudentDashboard() {
               <p>{error}</p>
             ) : assignmentsImages.length > 0 ? (
               assignmentsImages.map((assignment, index) => (
-                <Link
-                  key={index}
-                  to={{
-                    pathname: `/konva-student/${studentId}/${assignment.assignmentId}`,
-                    state: { assignmentData: assignment.assignmentData }
-                  }}
-                >
-                  <img src={assignment.src} alt={`Drawing ${index + 1}`} />
-                </Link>
+                <div key={index} className="assignment-item">
+                  <Link
+                    to={{
+                      pathname: `/konva-student/${studentId}/${assignment.assignmentId}`,
+                      state: { assignmentData: assignment.assignmentData }
+                    }}
+                  >
+                    <img src={assignment.src} alt={`Drawing ${index + 1}`} />
+                  </Link>
+                  <div className="assignment-details">
+                    <h3>{assignment.title}</h3>
+                    <p>{assignment.description}</p>
+                  </div>
+                </div>
               ))
             ) : (
               <p>{selectedCategory ? 'No contents are found.' : 'Select a category from Assignments.'}</p>

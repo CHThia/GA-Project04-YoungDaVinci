@@ -33,22 +33,21 @@ const getAssignmentCounts = async (student_id) => {
 };
 
 const getAllAssignmentsByStudentId = async (student_id) => {
-  const client = await pool.connect();
   try {
-    const result = await client.query(
-      'SELECT * FROM assignments WHERE student_id = $1',
+    const result = await pool.query(
+      `SELECT a.*, d.title, d.description 
+       FROM assignments a
+       INNER JOIN drawing_resources d ON a.drawing_resources_id = d.drawing_resources_id
+       WHERE a.student_id = $1`,
       [student_id]
     );
     return result.rows;
   } catch (error) {
     console.error('Query error:', error);
     throw error;
-  } finally {
-    client.release();
   }
 };
 
-// For Teacher to select artwork of student_id and display on canvas
 const getAssignmentById = async (assignmentId) => {
   try {
     const result = await pool.query('SELECT * FROM assignments WHERE assignment_id = $1', [assignmentId]);
@@ -130,7 +129,6 @@ const deleteAssignment = async (assignment_id) => {
     throw error;
   }
 };
-
 
 module.exports = {
   getAssignmentsByStatus,
