@@ -33,7 +33,7 @@ app.use("/api", require("./routes/loginsRoute"));
 
 
 // Root endpoint to serve the main homepage
-app.get("/", (req, res) => {
+app.get("/*", function (req, res) {
   res.sendFile(path.join(__dirname, "dist", "index.html"));
 });
 
