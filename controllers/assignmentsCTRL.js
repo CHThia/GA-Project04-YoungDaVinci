@@ -121,12 +121,16 @@ const deleteAssignments = async (req, res) => {
 
   try {
     const deletedAssignment = await assignmentModel.deleteAssignment(assignment_id);
-    res.json(deletedAssignment);
+    if (deletedAssignment.rowCount === 0) {
+      return res.status(404).json({ error: 'Assignment not found' });
+    }
+    res.sendStatus(204); // No Content
   } catch (error) {
     console.error('Error deleting assignment:', error);
     res.status(500).send('Server error');
   }
 };
+
 
 module.exports = {
   getAssignmentsByStatus,

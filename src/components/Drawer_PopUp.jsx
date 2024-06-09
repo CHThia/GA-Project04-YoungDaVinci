@@ -1,9 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Drawer, IconButton, Box, Fade, Button, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
+import { Drawer, IconButton, Box, Fade, Button, MenuItem, Select, InputLabel, FormControl, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
+
 
 export default function Drawer_PopUp({ studentId, onImageClick }) {
+
   const [isOpen, setIsOpen] = useState(false);
   const [drawingResources, setDrawingResources] = useState([]);
   const [selectedResource, setSelectedResource] = useState('');
@@ -11,6 +14,7 @@ export default function Drawer_PopUp({ studentId, onImageClick }) {
   const [imageDetails, setImageDetails] = useState('');
   const [assignments, setAssignments] = useState([]);
   const [loading, setLoading] = useState(false);
+
 
   // Fetch Drawing Resources
   useEffect(() => {
@@ -26,6 +30,7 @@ export default function Drawer_PopUp({ studentId, onImageClick }) {
   
     fetchDrawingResources();
   }, []);
+
 
   // Fetch Image Data for Selected Resource
   useEffect(() => {
@@ -46,6 +51,7 @@ export default function Drawer_PopUp({ studentId, onImageClick }) {
     }
   }, [selectedResource]);
   
+
   // Fetch Assignments from student id
   useEffect(() => {
     const fetchAssignments = async () => {
@@ -103,6 +109,24 @@ export default function Drawer_PopUp({ studentId, onImageClick }) {
       console.error('Error adding assignment:', error);
     }
   }, [selectedResource, studentId, imageDetails]);
+
+
+  // Delete Assignment
+  const deleteAssignment = useCallback(async (assignment_id) => {
+    try {
+      const response = await fetch(`/api/delete/${assignment_id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+
+      setAssignments((prev) => prev.filter((assignment) => assignment.assignment_id !== assignment_id));
+    } catch (error) {
+      console.error('Error deleting assignment:', error);
+    }
+  }, []);
   
   
   const toggleDrawer = useCallback(
@@ -114,6 +138,21 @@ export default function Drawer_PopUp({ studentId, onImageClick }) {
     },
     []
   );
+
+  // Give Assignment Color Status
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'new':
+        return 'red';
+      case 'in_progress':
+        return '#FFC107';
+      case 'completed':
+        return 'green';
+      default:
+        return 'grey';
+    }
+  };
+
 
   const drawerContent = (
     <Box
@@ -160,16 +199,63 @@ export default function Drawer_PopUp({ studentId, onImageClick }) {
             const imageData = typeof assignment.assignment_data === 'string'
               ? assignment.assignment_data
               : Buffer.from(assignment.assignment_data).toString('base64');
-              
+
             return (
-              <img
-                key={assignment.assignment_id}
-                src={`data:image/png;base64,${imageData}`}
-                alt="Student Assignment"
-                style={{ width: '100%', marginBottom: '16px', cursor: 'pointer' }}
-                onClick={() => onImageClick(assignment.assignment_data, assignment.assignment_id)}
-                onError={() => console.error('Invalid image data:', imageData)}
-              />
+              <Box 
+                key={assignment.assignment_id} 
+                sx={{ 
+                  position: 'relative', 
+                  marginBottom: '30px',
+                  padding: '15px',
+                  border: '2px solid #ddd', 
+                  borderRadius: '5px', 
+                  overflow: 'hidden' 
+                }}
+              >
+                <img
+                  src={`data:image/png;base64,${imageData}`}
+                  alt="Student Assignment"
+                  style={{ width: '100%', cursor: 'pointer' }}
+                  onClick={() => onImageClick(assignment.assignment_data, assignment.assignment_id)}
+                  onError={() => console.error('Invalid image data:', imageData)}
+                />
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    top: 8,
+                    right: 8,
+                    backgroundColor: 'white',
+                    borderRadius: '5px',
+                    border: '1px solid black',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    boxShadow: '2px 2px 2px rgba(0,0,0,0.2)'
+                  }}
+                >
+                  <IconButton
+                    color="error"
+                    onClick={() => deleteAssignment(assignment.assignment_id)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </Box>
+                <Typography
+                  sx={{
+                    position: 'absolute',
+                    top: 8,
+                    left: 8,
+                    backgroundColor: getStatusColor(assignment.assignment_status),
+                    boxShadow: '2px 2px 2px rgba(0,0,0,0.3)',
+                    color: 'white',
+                    padding: '2px 4px',
+                    borderRadius: '4px',
+                    fontSize: '12px'
+                  }}
+                >
+                  {assignment.assignment_status.replace('_', ' ')}
+                </Typography>
+              </Box>
             );
           })}
         </Box>

@@ -17,7 +17,7 @@ router.post('/add-new-assignments', upload.single('assignment_data'), assignment
 router.put('/update-feedback/:assignment_id', upload.single('assignment_data'), assignmentsCTRL.updateFeedbackForAssignments);
 router.put('/update-assignment/:assignment_id', assignmentsCTRL.updateAssignment);
 
-router.delete('/:assignment_id', assignmentsCTRL.deleteAssignments);
+router.delete('/delete/:assignment_id', assignmentsCTRL.deleteAssignments);
 
 
 module.exports = router;
