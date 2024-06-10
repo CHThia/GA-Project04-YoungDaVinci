@@ -1,16 +1,18 @@
 import { useRef, useState, useEffect } from 'react';
 import { Stage, Layer, Image as KonvaImage, Line, Transformer, Rect } from 'react-konva';
 import { useImage } from 'react-konva-utils';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencilAlt, faEraser } from '@fortawesome/free-solid-svg-icons';
+import CustomColorPicker from './CustomColorPicker'; 
 
 
 export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }) {
-
   const [imageURL, setImageURL] = useState(null);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [image] = useImage(imageURL);
   const [tool, setTool] = useState('pencil');
-  const [color, setColor] = useState('#000000'); // Color Picker
+  const [color, setColor] = useState('#FF7300');
   const [lines, setLines] = useState([]);
   const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
   const [selectedImage, setSelectedImage] = useState(null);
@@ -19,7 +21,6 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
   const transformerRef = useRef(null);
   const isDrawing = useRef(false);
 
-  
   useEffect(() => {
     if (selectedDrawing) {
       setTitle(selectedDrawing.title);
@@ -110,41 +111,32 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
   };
 
   const saveDrawing = async () => {
-    // Create a new off-screen canvas
     const canvas = document.createElement('canvas');
     canvas.width = stageRef.current.width();
     canvas.height = stageRef.current.height();
     const context = canvas.getContext('2d');
-  
-    // Fill the canvas with white
     context.fillStyle = 'white';
     context.fillRect(0, 0, canvas.width, canvas.height);
-  
-    // Draw the Konva stage onto the off-screen canvas
     const dataURL = stageRef.current.toDataURL({ pixelRatio: 2 });
     const img = new Image();
     img.src = dataURL;
     img.onload = async () => {
       context.drawImage(img, 0, 0, canvas.width, canvas.height);
       const finalDataURL = canvas.toDataURL();
-  
       const response = await fetch(finalDataURL);
       const blob = await response.blob();
-  
       const formData = new FormData();
       formData.append('title', title);
       formData.append('description', description);
       formData.append('details', blob, 'drawing.png');
-  
       const saveResponse = await fetch(selectedDrawing ? 
         `/api/update-drawing-resources/${selectedDrawing.drawing_resources_id}` : '/api/create-drawing-resources', {
         method: selectedDrawing ? 'PUT' : 'POST',
         body: formData,
       });
-  
       if (saveResponse.ok) {
         console.log('Drawing has been saved successfully.');
-        onSave(); // Call the onSave callback to refresh the list of saved drawings
+        onSave();
         clearSelection();
         resetCanvas();
       } else {
@@ -158,10 +150,9 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
       const deleteResponse = await fetch(`/api/delete-drawing-resources/${selectedDrawing.drawing_resources_id}`, {
         method: 'DELETE',
       });
-
       if (deleteResponse.ok) {
         console.log('Drawing has been deleted successfully.');
-        onSave(); // Call the onSave callback to refresh the list of saved drawings
+        onSave();
         clearSelection();
         resetCanvas();
       } else {
@@ -183,33 +174,17 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
   return (
     <>
       <div className="drawing-teacher-container">
-        <input
-          type="text"
-          placeholder="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <br />
-        <textarea
-          placeholder="Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-        <br />
-        <input type="file" accept="image/*" onChange={handleImageUpload} />
-        <br />
-        <div className="tool-bar">
-          <button onClick={() => setTool('pencil')}>Pencil</button>
-          <button onClick={() => setTool('eraser')}>Eraser</button>
-          <button onClick={saveDrawing}>{selectedDrawing ? 'Update' : 'Save'}</button>
-          {selectedDrawing && <button onClick={deleteDrawing}>Delete</button>}
+        <div className="tool-bar-container">
+          <div className="tool-bar">
+            <button onClick={() => setTool('pencil')} className="pencil">
+              <FontAwesomeIcon icon={faPencilAlt} />
+            </button>
+            <button onClick={() => setTool('eraser')} className="eraser">
+              <FontAwesomeIcon icon={faEraser} />
+            </button>
+            <CustomColorPicker color={color} onChange={setColor} />
+          </div>
         </div>
-
-        <div className="color-picker">
-          <label>Color Picker</label>
-          <input type="color" value={color} onChange={(e) => setColor(e.target.value)} />
-        </div>
-
         <div className="canvas-teacher-container">
           <Stage
             width={500}
@@ -222,12 +197,12 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
           >
             <Layer>
               <Rect
-                  x={0}
-                  y={0}
-                  width={500}
-                  height={300}
-                  fill="white"
-                />
+                x={0}
+                y={0}
+                width={500}
+                height={300}
+                fill="white"
+              />
               {image && (
                 <KonvaImage
                   image={image}
@@ -259,6 +234,31 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
               <Transformer ref={transformerRef} />
             </Layer>
           </Stage>
+        </div>
+        <div className='content-container'>
+          <input
+            type="text"
+            placeholder="Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <br />
+          <textarea
+            placeholder="Description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+          <input className="upload-image" type="file" accept="image/*" onChange={handleImageUpload} />
+          <div className="button-container">
+            <button className={selectedDrawing ? 'button-update' : 'button-save'} onClick={saveDrawing}>
+              {selectedDrawing ? 'Update' : 'Save'}
+            </button>
+            {selectedDrawing && (
+              <button className="button-delete" onClick={deleteDrawing}>
+                Delete
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </>

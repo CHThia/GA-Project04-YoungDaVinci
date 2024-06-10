@@ -32,7 +32,7 @@ app.use("/api", require("./routes/assignmentsRoute"));
 app.use("/api", require("./routes/loginsRoute"));
 
 
-// Root endpoint to serve the main homepage
+// Root endpoint to serve the main homepage // use npm run build to create dist
 app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "dist", "index.html")); 
 });
