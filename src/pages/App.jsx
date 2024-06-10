@@ -17,9 +17,11 @@ export default function App () {
   const location = useLocation();
 
   const getNavBar = () => {
-    if (location.pathname.startsWith('/studentdashboard')) {
+    if (location.pathname.startsWith('/studentdashboard') || 
+      location.pathname.startsWith('/konva-student')) {
       return <NavBar_Student />;
-    } else if (location.pathname.startsWith('/AllStudents')) { // Need to tidy the route name
+    } else if (location.pathname.startsWith('/AllStudents') || 
+      location.pathname.startsWith('/drawingresources')) { 
       return <NavBar_Teacher />;
     } else {
       return <NavBar_Main />;
@@ -41,7 +43,6 @@ export default function App () {
           <Route path="/allstudents/get-all-students/:student_id" element={<StudentArtWorks />} />
           <Route path="/drawingresources" element={<DrawingResources />} />
           <Route path="/konva-student/:studentId/:assignmentId" element={<KonvaStudent />} />
-          {/* <Route path="/canvas" element={<Canvas />} /> */}
         </Routes>
       </main>
     </>

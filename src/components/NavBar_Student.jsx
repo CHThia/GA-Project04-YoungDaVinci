@@ -19,6 +19,7 @@ export default function NavBar_Student() {
 
   const handleLogout = () => {
     localStorage.removeItem('token'); // Remove the token
+    localStorage.removeItem('studentName'); // Remove the student name
     navigate('/'); // Redirect to home page
   };
 
