@@ -5,14 +5,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt, faEraser } from '@fortawesome/free-solid-svg-icons';
 import CustomColorPicker from './CustomColorPicker'; 
 
-
 export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }) {
   const [imageURL, setImageURL] = useState(null);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [image] = useImage(imageURL);
   const [tool, setTool] = useState('pencil');
-  const [color, setColor] = useState('#FF7300');
+  const [color, setColor] = useState('#ff9148');
   const [lines, setLines] = useState([]);
   const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
   const [selectedImage, setSelectedImage] = useState(null);
@@ -185,6 +184,7 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
             <CustomColorPicker color={color} onChange={setColor} />
           </div>
         </div>
+        
         <div className="canvas-teacher-container">
           <Stage
             width={500}
@@ -235,7 +235,8 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
             </Layer>
           </Stage>
         </div>
-        <div className='content-container'>
+        
+        <div className="content-container">
           <input
             type="text"
             placeholder="Title"

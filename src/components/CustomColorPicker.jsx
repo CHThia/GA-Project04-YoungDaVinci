@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { SketchPicker } from 'react-color';
+import { HexColorPicker } from 'react-colorful';
 
 
-export default function CustomColorPicker ({ color, onChange }) {
-
+const CustomColorPicker = ({ color , onChange }) => {
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
 
   const handleClick = () => {
@@ -15,7 +14,7 @@ export default function CustomColorPicker ({ color, onChange }) {
   };
 
   const handleChange = (color) => {
-    onChange(color.hex);
+    onChange(color);
   };
 
   return (
@@ -24,10 +23,11 @@ export default function CustomColorPicker ({ color, onChange }) {
       {displayColorPicker && (
         <div className="popover">
           <div className="cover" onClick={handleClose} />
-          <SketchPicker color={color} onChange={handleChange} disableAlpha={true} />
+          <HexColorPicker color={color} onChange={handleChange} />
         </div>
       )}
     </div>
   );
 };
 
+export default CustomColorPicker;

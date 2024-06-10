@@ -1,42 +1,41 @@
 .drawing-teacher-container {
-  /* background-color: aquamarine; */
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start; 
-  width: 80%;
-  height: 50vh;
-  margin: 3% auto;
-  padding: 20px; 
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+  gap: 20px;
+  width: 75%;
+  margin: 5% 8% auto;
+  align-items: start;
 }
 
 .tool-bar-container {
   display: flex;
   flex-direction: column;
-  margin-left: 6%;
-  width: 5%;
+  align-items: center;
+  padding-left: 85%;
+}
+
+.tool-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .tool-bar button {
   background-color: #858585;
   border-radius: 5px;
   cursor: pointer;
-  margin-bottom: 15px;
   box-shadow: 3px 3px 3px rgb(0, 0, 0, 0.2);
 }
 
 .tool-bar button svg {
   width: 20px;
   height: 25px;
-  color: #000; 
+  color: #000000;
 }
 
-.tool-bar button.pencil svg {
-  color: rgb(240, 239, 239); 
-}
-
+.tool-bar button.pencil svg,
 .tool-bar button.eraser svg {
-  color: rgb(240, 239, 239); 
+  color: rgb(240, 239, 239);
 }
 
 .color-picker-box {
@@ -62,16 +61,17 @@
 }
 
 .content-container {
-  margin-right: 6%;
   display: flex;
   flex-direction: column;
-  align-items: flex-end; 
+  align-items: flex-start;
+  width: 100%;
 }
 
-input, textarea {
+input,
+textarea {
   margin-bottom: 10px;
   padding: 8px;
-  width: 100%;
+  width: 400px; 
   box-shadow: 3px 3px 3px rgb(0, 0, 0, 0.2);
 }
 
@@ -80,17 +80,22 @@ textarea {
 }
 
 .upload-image {
+  background-color: white;
   border: 1px solid black;
   margin-top: 20px;
-  padding-top: 15px;
-  padding-bottom: 15px;
+  padding: 15px 0 15px 15px;
+  width: 400px; 
 }
 
 .canvas-teacher-container {
-  margin: 0 auto; 
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
+}
+
+.stage-wrapper {
+  border: 1px solid black;
+  width: 100%;
 }
 
 button {
@@ -128,7 +133,7 @@ button:hover {
 .button-container {
   display: flex;
   justify-content: flex-end;
-  gap: 10px; /* Space between the buttons */
+  gap: 10px;
   width: 100%;
   margin-top: 50px;
 }
