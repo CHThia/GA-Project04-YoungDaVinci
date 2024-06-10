@@ -1,21 +1,11 @@
-.my-student-container {
-  padding: 30px;
-  display:flex;
-  flex-direction: column;
+.all-students-container {
+  padding-top: 20px;
+  padding-bottom: 50px;
 }
 
-.my-student-container h1 {
+h1 {
   font-family: Helvetica, sans-serif;
-  margin-left: 25%;
+  margin-left: 2%;
   margin-bottom: 35px;
 }
 
-.student-list-container {
-  width: 95%;
-  height: auto;
-  margin: 25px auto;
-  padding: 30px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 100px;
-}
