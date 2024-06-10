@@ -2,8 +2,8 @@ import { useRef, useState, useEffect } from 'react';
 import { Stage, Layer, Image as KonvaImage, Line, Transformer, Rect } from 'react-konva';
 import { useImage } from 'react-konva-utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencilAlt, faEraser } from '@fortawesome/free-solid-svg-icons';
-import CustomColorPicker from './CustomColorPicker'; 
+import { faPencilAlt, faEraser, faUndo, faRedo, faPlus, faMinus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import CustomColorPicker from './CustomColorPicker';
 
 export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }) {
   const [imageURL, setImageURL] = useState(null);
@@ -15,6 +15,9 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
   const [lines, setLines] = useState([]);
   const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
   const [selectedImage, setSelectedImage] = useState(null);
+  const [history, setHistory] = useState([[]]);
+  const [historyIndex, setHistoryIndex] = useState(0);
+  const [strokeWidth, setStrokeWidth] = useState(2);
   const stageRef = useRef(null);
   const imageRef = useRef(null);
   const transformerRef = useRef(null);
@@ -55,6 +58,8 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
     setDescription('');
     setLines([]);
     setSelectedImage(null);
+    setHistory([[]]);
+    setHistoryIndex(0);
   };
 
   const handleImageUpload = (event) => {
@@ -90,7 +95,7 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
   const handleMouseDown = () => {
     isDrawing.current = true;
     const pos = stageRef.current.getPointerPosition();
-    setLines((prevLines) => [...prevLines, { tool, color, points: [pos.x, pos.y] }]);
+    setLines((prevLines) => [...prevLines, { tool, color, points: [pos.x, pos.y], strokeWidth }]);
   };
 
   const handleMouseMove = () => {
@@ -107,6 +112,27 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
 
   const handleMouseUp = () => {
     isDrawing.current = false;
+    updateHistory([...lines]);
+  };
+
+  const updateHistory = (newLines) => {
+    const newHistory = [...history.slice(0, historyIndex + 1), newLines];
+    setHistory(newHistory);
+    setHistoryIndex(newHistory.length - 1);
+  };
+
+  const undo = () => {
+    if (historyIndex > 0) {
+      setLines(history[historyIndex - 1]);
+      setHistoryIndex(historyIndex - 1);
+    }
+  };
+
+  const redo = () => {
+    if (historyIndex < history.length - 1) {
+      setLines(history[historyIndex + 1]);
+      setHistoryIndex(historyIndex + 1);
+    }
   };
 
   const saveDrawing = async () => {
@@ -170,18 +196,42 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
     console.log('Node drag ended at:', x, y);
   };
 
+  const increaseStrokeWidth = () => {
+    setStrokeWidth((prevWidth) => Math.min(prevWidth + 1, 20));
+  };
+
+  const decreaseStrokeWidth = () => {
+    setStrokeWidth((prevWidth) => Math.max(prevWidth - 1, 1));
+  };
+
   return (
     <>
       <div className="drawing-teacher-container">
         <div className="tool-bar-container">
           <div className="tool-bar">
+            <CustomColorPicker color={color} onChange={setColor} />
             <button onClick={() => setTool('pencil')} className="pencil">
               <FontAwesomeIcon icon={faPencilAlt} />
             </button>
+            <button onClick={increaseStrokeWidth} className="increase-stroke">
+              <FontAwesomeIcon icon={faPlus} />
+            </button>
+            <button onClick={decreaseStrokeWidth} className="decrease-stroke">
+              <FontAwesomeIcon icon={faMinus} />
+            </button>
+            <br/>
             <button onClick={() => setTool('eraser')} className="eraser">
               <FontAwesomeIcon icon={faEraser} />
             </button>
-            <CustomColorPicker color={color} onChange={setColor} />
+            <button onClick={undo} className="undo">
+              <FontAwesomeIcon icon={faUndo} />
+            </button>
+            <button onClick={redo} className="redo">
+              <FontAwesomeIcon icon={faRedo} />
+            </button>
+            <button onClick={resetCanvas} className="clear-canvas">
+              <FontAwesomeIcon icon={faTrash} />
+            </button>
           </div>
         </div>
         
@@ -223,7 +273,7 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
                   key={i}
                   points={line.points}
                   stroke={line.tool === 'eraser' ? 'white' : line.color}
-                  strokeWidth={5}
+                  strokeWidth={line.strokeWidth}
                   tension={0.5}
                   lineCap="round"
                   globalCompositeOperation={

@@ -27,6 +27,13 @@
   box-shadow: 3px 3px 3px rgb(0, 0, 0, 0.2);
 }
 
+.tool-bar button.clear-canvas {
+  background-color: #ff7b7b;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 3px 3px 3px rgb(0, 0, 0, 0.2);
+}
+
 .tool-bar button svg {
   width: 20px;
   height: 25px;
@@ -34,7 +41,12 @@
 }
 
 .tool-bar button.pencil svg,
-.tool-bar button.eraser svg {
+.tool-bar button.eraser svg,
+.tool-bar button.undo svg,
+.tool-bar button.redo svg,
+.tool-bar button.increase-stroke svg,
+.tool-bar button.decrease-stroke svg,
+.tool-bar button.clear-canvas svg {
   color: rgb(240, 239, 239);
 }
 
