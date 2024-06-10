@@ -88,7 +88,7 @@ export default function DropDown({ fetchDrawingById, savedDrawings, deleteDrawin
                 <img 
                   src={`data:image/png;base64,${drawing.details}`} 
                   alt={drawing.title} 
-                  style={{ width: 300, height: 200, marginLeft: '45px', paddingBottom: '25px' }} 
+                  style={{ width: 300, height: 200, marginLeft: '25px', paddingBottom: '25px' }} 
                   onClick={() => fetchDrawingById(drawing.drawing_resources_id)}
                 />
                 <Typography

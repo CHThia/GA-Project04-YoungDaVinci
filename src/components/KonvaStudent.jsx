@@ -1,17 +1,23 @@
 import { useState, useRef, useEffect } from 'react';
-import { Stage, Layer, Line, Image as KonvaImage } from 'react-konva';
+import { Stage, Layer, Line, Image as KonvaImage, Rect } from 'react-konva';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencilAlt, faEraser, faUndo, faRedo, faPlus, faMinus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import CustomColorPicker from './CustomColorPicker';
 
 export default function KonvaStudent() {
   const { studentId, assignmentId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const [tool, setTool] = useState('pencil');
+  const [color, setColor] = useState('#ff9148');
   const [lines, setLines] = useState([]);
   const [initialImage, setInitialImage] = useState(null);
+  const [history, setHistory] = useState([[]]);
+  const [historyIndex, setHistoryIndex] = useState(0);
+  const [strokeWidth, setStrokeWidth] = useState(2);
   const isDrawing = useRef(false);
   const stageRef = useRef(null);
-
 
   useEffect(() => {
     const fetchAssignment = async () => {
@@ -31,13 +37,11 @@ export default function KonvaStudent() {
           const response = await fetch(`/api/get-assignments/${assignmentId}`);
           if (response.ok) {
             const assignment = await response.json();
-            // console.log('Fetched assignment:', assignment);
             if (assignment.assignment_data) {
               const image = new window.Image();
               image.src = `data:image/png;base64,${assignment.assignment_data}`;
               image.onload = () => {
                 setInitialImage(image);
-                // console.log('Image loaded from fetch:', image);
               };
             }
           } else {
@@ -52,28 +56,47 @@ export default function KonvaStudent() {
     fetchAssignment();
   }, [assignmentId, location.state]);
 
-
-  const handleMouseDown = (event) => {
+  const handleMouseDown = () => {
     isDrawing.current = true;
-    const pos = event.target.getStage().getPointerPosition();
-    setLines([...lines, { tool, points: [pos.x, pos.y] }]);
+    const pos = stageRef.current.getPointerPosition();
+    setLines((prevLines) => [...prevLines, { tool, color, points: [pos.x, pos.y], strokeWidth }]);
   };
 
-  const handleMouseMove = (event) => {
-    if (!isDrawing.current) {
-      return;
-    }
-    const stage = event.target.getStage();
+  const handleMouseMove = () => {
+    if (!isDrawing.current) return;
+    const stage = stageRef.current;
     const point = stage.getPointerPosition();
-    let lastLine = lines[lines.length - 1];
-    lastLine.points = lastLine.points.concat([point.x, point.y]);
-
-    lines.splice(lines.length - 1, 1, lastLine);
-    setLines(lines.concat());
+    setLines((prevLines) => {
+      const lastLine = prevLines[prevLines.length - 1];
+      const newPoints = lastLine.points.concat([point.x, point.y]);
+      const newLine = { ...lastLine, points: newPoints };
+      return [...prevLines.slice(0, -1), newLine];
+    });
   };
 
   const handleMouseUp = () => {
     isDrawing.current = false;
+    updateHistory([...lines]);
+  };
+
+  const updateHistory = (newLines) => {
+    const newHistory = [...history.slice(0, historyIndex + 1), newLines];
+    setHistory(newHistory);
+    setHistoryIndex(newHistory.length - 1);
+  };
+
+  const undo = () => {
+    if (historyIndex > 0) {
+      setLines(history[historyIndex - 1]);
+      setHistoryIndex(historyIndex - 1);
+    }
+  };
+
+  const redo = () => {
+    if (historyIndex < history.length - 1) {
+      setLines(history[historyIndex + 1]);
+      setHistoryIndex(historyIndex + 1);
+    }
   };
 
   const saveDrawing = async (status) => {
@@ -99,7 +122,6 @@ export default function KonvaStudent() {
       if (saveResponse.ok) {
         console.log(`Drawing has been ${status === 'completed' ? 'submitted' : 'saved'} successfully.`);
         navigate(`/studentdashboard/${studentId}`); // Use this once Authentication Page is done
-        // navigate(`/studentdashboard`); // Redirect to the dashboard
       } else {
         console.error(`Error ${status === 'completed' ? 'submitting' : 'saving'} drawing:`, saveResponse.statusText);
       }
@@ -117,49 +139,87 @@ export default function KonvaStudent() {
     link.click();
   };
 
+  const increaseStrokeWidth = () => {
+    setStrokeWidth((prevWidth) => Math.min(prevWidth + 1, 20));
+  };
+
+  const decreaseStrokeWidth = () => {
+    setStrokeWidth((prevWidth) => Math.max(prevWidth - 1, 1));
+  };
+
+  
   return (
-    <div className="canvas-container">
-      <div className="buttons-container">
-        <button onClick={() => setTool('pencil')}>Pencil</button>
-        <button onClick={() => setTool('eraser')}>Eraser</button>
-        <button onClick={() => saveDrawing('in_progress')}>Save</button>
-        <button onClick={() => saveDrawing('completed')}>Submit</button>
-        <button onClick={downloadDrawing}>Download</button>
+    <div className="student-canvas-container">
+
+      <div className="student-tools">
+        <CustomColorPicker color={color} onChange={setColor} />
+        <button onClick={() => setTool('pencil')} className="pencil">
+          <FontAwesomeIcon icon={faPencilAlt} />
+        </button>
+        <button onClick={increaseStrokeWidth} className="increase-stroke">
+          <FontAwesomeIcon icon={faPlus} />
+        </button>
+        <button onClick={decreaseStrokeWidth} className="decrease-stroke">
+          <FontAwesomeIcon icon={faMinus} />
+        </button>
+        <br />
+        <button onClick={() => setTool('eraser')} className="eraser">
+          <FontAwesomeIcon icon={faEraser} />
+        </button>
+        <button onClick={undo} className="undo">
+          <FontAwesomeIcon icon={faUndo} />
+        </button>
+        <button onClick={redo} className="redo">
+          <FontAwesomeIcon icon={faRedo} />
+        </button>
+        <button onClick={() => setLines([])} className="clear-canvas">
+          <FontAwesomeIcon icon={faTrash} />
+        </button>
       </div>
-      <Stage
-        width={500}
-        height={300}
-        onMouseDown={handleMouseDown}
-        onMousemove={handleMouseMove}
-        onMouseup={handleMouseUp}
-        ref={stageRef}
-        style={{ border: '1px solid black' }}
-      >
-        <Layer>
-          {initialImage && (
-            <KonvaImage
-              image={initialImage}
-              x={0}
-              y={0}
-              width={500}
-              height={300}
-            />
-          )}
-          {lines.map((line, i) => (
-            <Line
-              key={i}
-              points={line.points}
-              stroke="#df4b26"
-              strokeWidth={5}
-              tension={0.5}
-              lineCap="round"
-              globalCompositeOperation={
-                line.tool === 'eraser' ? 'destination-out' : 'source-over'
-              }
-            />
-          ))}
-        </Layer>
-      </Stage>
+
+      <div className="student-draw-canvas">
+        <Stage
+          width={500}
+          height={300}
+          onMouseDown={handleMouseDown}
+          onMousemove={handleMouseMove}
+          onMouseup={handleMouseUp}
+          ref={stageRef}
+          style={{ border: '1px solid black' }}
+        >
+          <Layer>
+            <Rect x={0} y={0} width={500} height={300} fill="white" />
+            {initialImage && (
+              <KonvaImage
+                image={initialImage}
+                x={0}
+                y={0}
+                width={500}
+                height={300}
+              />
+            )}
+            {lines.map((line, i) => (
+              <Line
+                key={i}
+                points={line.points}
+                stroke={line.tool === 'eraser' ? 'white' : line.color}
+                strokeWidth={line.strokeWidth}
+                tension={0.5}
+                lineCap="round"
+                globalCompositeOperation={
+                  line.tool === 'eraser' ? 'destination-out' : 'source-over'
+                }
+              />
+            ))}
+          </Layer>
+        </Stage>
+      </div>
+
+      <div className="student-save-content">
+        <button className="button-save" onClick={() => saveDrawing('in_progress')}>Save</button>
+        <button className="button-submit" onClick={() => saveDrawing('completed')}>Submit</button>
+        <button className="button-download" onClick={downloadDrawing}>Download</button>
+      </div>
     </div>
   );
 }

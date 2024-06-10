@@ -1,0 +1,95 @@
+.student-canvas-container {
+  background-color: #fff0c3;
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+  gap: 20px;
+  width: 50%;
+  margin: 50px auto;
+  padding: 50px;
+  border: 8px solid rgb(255, 153, 0);
+  border-radius: 40px;
+  align-items: start;
+  box-shadow: 10px 10px 10px rgb(0, 0, 0, 0.3);
+}
+
+.student-tools {
+  display: flex;
+  flex-direction: column;
+  align-self: end; 
+  width: 60px;
+  margin-left: 30%;
+}
+
+.student-draw-canvas {
+  display: flex;
+  justify-content: center;
+}
+
+.student-save-content {
+  display: flex;
+  flex-direction: column;
+  align-self: start; 
+  margin-left: 25%;
+  gap: 30px;
+}
+
+.student-tools {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.student-tools button {
+  background-color: #858585;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 3px 3px 3px rgb(0, 0, 0, 0.2);
+  width: 60px;
+}
+
+.student-tools button.clear-canvas {
+  background-color: #ff7b7b;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 3px 3px 3px rgb(0, 0, 0, 0.2);
+}
+
+.student-tools button svg {
+  width: 20px;
+  height: 25px;
+  color: #000000;
+}
+
+.student-tools button.pencil svg,
+.student-tools button.eraser svg,
+.student-tools button.undo svg,
+.student-tools button.redo svg,
+.student-tools button.increase-stroke svg,
+.student-tools button.decrease-stroke svg,
+.student-tools button.clear-canvas svg {
+  color: rgb(240, 239, 239);
+}
+
+.student-save-content button {
+  width: 100px; 
+  padding: 10px;
+  color: rgb(0, 0, 0);
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 3px 3px 3px rgb(0, 0, 0, 0.2);
+}
+
+.student-save-content .button-save {
+  background-color: amber; 
+  background-color: #FFC107; 
+}
+
+.student-save-content .button-submit {
+  background-color: green;
+  background-color: #4CAF50; 
+}
+
+.student-save-content .button-download {
+  background-color: blue;
+  background-color: #2196F3; 
+}
