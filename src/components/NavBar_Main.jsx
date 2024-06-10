@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { AppBar, Toolbar, Button, Box, Dialog, IconButton } from '@mui/material';
 import SvgIcon from '@mui/material/SvgIcon';
+import LoginIcon from '@mui/icons-material/Login';
 import Login from './Login';
 
 // HomeIcon component 
@@ -42,7 +43,7 @@ export default function NavLogin() {
               <HomeIcon style={{ color: 'white' }} />
             </Link>
           </IconButton>
-          <Button color="inherit" sx={{ marginLeft: 'auto' }} onClick={handleClickOpen}>
+          <Button color="inherit" startIcon={<LoginIcon />} sx={{ marginLeft: 'auto' }} onClick={handleClickOpen}>
             Login
           </Button>
         </Toolbar>

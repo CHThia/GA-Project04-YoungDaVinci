@@ -1,18 +1,16 @@
 .drawing-review-container {
-  display: grid;
-  grid-template-columns: 1fr 3fr 1fr;
-  gap: 20px;
-  width: 70%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 60%;
   margin-top: 5%;
-  margin-left: 10%;
-  align-items: start;
+  margin-left: 20%;
 }
 
 .review-tool-bar-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-left: 85%;
 }
 
 .review-tool-bar {
@@ -20,21 +18,21 @@
   flex-direction: column;
   gap: 15px;
   width: 60px;
-  margin-left: 70%;
+  margin-right: 20px;
 }
 
 .review-tool-bar button {
   background-color: #858585;
   border-radius: 5px;
   cursor: pointer;
-  box-shadow: 3px 3px 3px rgb(0, 0, 0, 0.2);
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.2);
 }
 
 .review-tool-bar button.clear-canvas {
   background-color: #ff7b7b;
   border-radius: 5px;
   cursor: pointer;
-  box-shadow: 3px 3px 3px rgb(0, 0, 0, 0.2);
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.2);
 }
 
 .review-tool-bar button svg {
@@ -53,8 +51,14 @@
 }
 
 .review-canvas {
+  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
+.feedback-review {
+  width: 100%;
+  max-width: 400px;
+  margin-left: 20px;
+}

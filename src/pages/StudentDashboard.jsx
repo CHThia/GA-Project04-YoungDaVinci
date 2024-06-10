@@ -1,6 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import { Link, useParams, useLocation } from 'react-router-dom';
-
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 
 export default function StudentDashboard() {
   const [assignmentsImages, setAssignmentsImages] = useState([]);
@@ -10,10 +9,9 @@ export default function StudentDashboard() {
   const [counts, setCounts] = useState({ new: 0, in_progress: 0, completed: 0 });
   const [studentName, setStudentName] = useState(localStorage.getItem('studentName') || '');
 
-  
   const { studentId } = useParams();
   const location = useLocation();
-
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.log('Student ID:', studentId); // Log the studentId to verify
@@ -25,8 +23,11 @@ export default function StudentDashboard() {
       setStudentName(location.state.studentName);
       localStorage.setItem('studentName', location.state.studentName); // Store student name in localStorage
     }
-  }, [studentId, location.state]);
 
+    if (studentId) {
+      localStorage.setItem('studentId', studentId); // Store studentId in localStorage
+    }
+  }, [studentId, location.state]);
 
   const fetchCounts = useCallback(async () => {
     if (!studentId) return; // Ensure studentId is defined
@@ -44,7 +45,6 @@ export default function StudentDashboard() {
     }
   }, [studentId]);
 
-  
   const fetchAssignments = useCallback(async (category) => {
     if (!studentId) return; // Ensure studentId is defined
     setLoading(true);
@@ -85,7 +85,6 @@ export default function StudentDashboard() {
     }
   }, [studentId]);
 
-
   useEffect(() => {
     fetchCounts();
     fetchAssignments();
@@ -101,6 +100,9 @@ export default function StudentDashboard() {
     setSelectedCategory(category);
   }, []);
 
+  const navigateToKonvaStudent = (assignmentId, assignmentData) => {
+    navigate(`/konva-student/${studentId}/${assignmentId}`, { state: { assignmentData, studentId } });
+  };
 
   return (
     <>
@@ -128,14 +130,12 @@ export default function StudentDashboard() {
             ) : assignmentsImages.length > 0 ? (
               assignmentsImages.map((assignment, index) => (
                 <div key={index} className="assignment-item">
-                  <Link
-                    to={{
-                      pathname: `/konva-student/${studentId}/${assignment.assignmentId}`,
-                      state: { assignmentData: assignment.assignmentData }
-                    }}
+                  <a
+                    onClick={() => navigateToKonvaStudent(assignment.assignmentId, assignment.assignmentData)}
+                    style={{ cursor: 'pointer' }}
                   >
                     <img src={assignment.src} alt={`Drawing ${index + 1}`} />
-                  </Link>
+                  </a>
                   <div className="assignment-details">
                     <h2>Title: {assignment.title}</h2>
                     <p>Description: {assignment.description}</p>

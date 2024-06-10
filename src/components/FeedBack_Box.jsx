@@ -43,7 +43,7 @@ export default function FeedbackBox({ assignmentId, drawingState }) {
           multiline
           rows={11.6}
           fullWidth
-          sx={{ width: 450 }}
+          sx={{ width: 400 }}
         />
         <br/>
         <br/>

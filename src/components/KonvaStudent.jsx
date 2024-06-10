@@ -24,12 +24,12 @@ export default function KonvaStudent() {
       try {
         const assignmentData = location.state?.assignmentData;
         if (assignmentData) {
-          console.log('Using assignment data from location state.');
+          // console.log('Using assignment data from location state.');
           const image = new window.Image();
           image.src = `data:image/png;base64,${assignmentData}`;
           image.onload = () => {
             setInitialImage(image);
-            console.log('Image loaded from state:', image);
+            // console.log('Image loaded from state:', image);
           };
         } else {
           console.log('Fetching assignment data from backend.');

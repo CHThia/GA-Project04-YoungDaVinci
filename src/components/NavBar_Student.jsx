@@ -1,7 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { AppBar, Toolbar, Button, Box, IconButton } from '@mui/material';
+import { AppBar, Toolbar, Button, Box, IconButton, Divider } from '@mui/material';
 import SvgIcon from '@mui/material/SvgIcon';
+import LogoutIcon from '@mui/icons-material/Logout';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 
 // HomeIcon component
 function HomeIcon_Student (props) {
@@ -16,16 +18,26 @@ function HomeIcon_Student (props) {
 export default function NavBar_Student() {
   const location = useLocation();
   const navigate = useNavigate();
+  const [studentId, setStudentId] = useState(null);
 
   const handleLogout = () => {
     localStorage.removeItem('token'); // Remove the token
     localStorage.removeItem('studentName'); // Remove the student name
+    localStorage.removeItem('studentId'); // Remove the student ID
     navigate('/'); // Redirect to home page
   };
 
-  // Close the login dialog when route changes
+  // Get the student ID from the location state or local storage
   useEffect(() => {
-    // Additional actions if needed
+    if (location.state && location.state.studentId) {
+      console.log("Student ID from location state:", location.state.studentId);
+      setStudentId(location.state.studentId);
+      localStorage.setItem('studentId', location.state.studentId); // Store student ID in localStorage
+    } else {
+      const storedStudentId = localStorage.getItem('studentId');
+      console.log("Student ID from localStorage:", storedStudentId);
+      setStudentId(storedStudentId);
+    }
   }, [location]);
 
   return (
@@ -37,9 +49,21 @@ export default function NavBar_Student() {
               <HomeIcon_Student style={{ color: 'white' }} />
             </Link>
           </IconButton>
-          <Button color="inherit" sx={{ marginLeft: 'auto' }} onClick={handleLogout}>
-            Logout
-          </Button>
+          <Box sx={{ flexGrow: 1 }} />
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Button
+              color="inherit"
+              startIcon={<DashboardIcon />}
+              component={Link}
+              to={`/studentdashboard/${studentId || ''}`} // Navigate to the student's dashboard
+            >
+              Student Dashboard
+            </Button>
+            <Divider orientation="vertical" flexItem sx={{ mx: 5, borderColor: 'white' }} />
+            <Button color="inherit" startIcon={<LogoutIcon />} onClick={handleLogout}>
+              Logout
+            </Button>
+          </Box>
         </Toolbar>
       </AppBar>
     </Box>
