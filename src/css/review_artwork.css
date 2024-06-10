@@ -1,0 +1,60 @@
+.drawing-review-container {
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+  gap: 20px;
+  width: 70%;
+  margin-top: 5%;
+  margin-left: 10%;
+  align-items: start;
+}
+
+.review-tool-bar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-left: 85%;
+}
+
+.review-tool-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 60px;
+  margin-left: 70%;
+}
+
+.review-tool-bar button {
+  background-color: #858585;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 3px 3px 3px rgb(0, 0, 0, 0.2);
+}
+
+.review-tool-bar button.clear-canvas {
+  background-color: #ff7b7b;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 3px 3px 3px rgb(0, 0, 0, 0.2);
+}
+
+.review-tool-bar button svg {
+  width: 20px;
+  height: 25px;
+}
+
+.review-tool-bar button.pencil svg,
+.review-tool-bar button.eraser svg,
+.review-tool-bar button.undo svg,
+.review-tool-bar button.redo svg,
+.review-tool-bar button.increase-stroke svg,
+.review-tool-bar button.decrease-stroke svg,
+.review-tool-bar button.clear-canvas svg {
+  color: rgb(240, 239, 239);
+}
+
+.review-canvas {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+

@@ -10,7 +10,7 @@ import "./css/drawing_resources.css";
 import "./css/student_canvas.css"
 import "./css/inputs.css";
 import "./css/buttons.css";
-import "./css/student_artwork.css";
+import "./css/review_artwork.css";
 // import "./css/canvas.css";
 
 ReactDOM.createRoot(document.getElementById('root')).render(

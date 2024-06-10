@@ -298,6 +298,7 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
             placeholder="Description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+            style={{ fontFamily:"helvetica" }}
           />
           <input className="upload-image" type="file" accept="image/*" onChange={handleImageUpload} />
           <div className="button-container">
