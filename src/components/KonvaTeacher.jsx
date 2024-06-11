@@ -11,6 +11,7 @@ import Alert from '@mui/material/Alert';
 const CANVAS_WIDTH = 500;
 const CANVAS_HEIGHT = 300;
 
+
 export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }) {
   const [imageURL, setImageURL] = useState(null);
   const [title, setTitle] = useState('');
@@ -327,11 +328,11 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
         open={openSnackBar} 
         autoHideDuration={4000} 
         onClose={() => setopenSnackBar(false)}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{ bottom: '-45%' }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        sx={{ bottom: '60%'}}
       >
         <Alert onClose={() => setopenSnackBar(false)} severity="success" sx={{ width: '100%' }}>
-          Drawing saved successfully!
+          Drawing Resource saved successfully!
         </Alert>
       </Snackbar>
     </>

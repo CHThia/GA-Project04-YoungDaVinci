@@ -1,9 +1,14 @@
 import { TextField, Button, Box } from '@mui/material';
 import { useState } from 'react';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+
 
 export default function FeedbackBox({ assignmentId, stageRef }) {
   
   const [text, setText] = useState('');
+  const [openSnackBar, setopenSnackBar] = useState(false);
+
 
   const handleSave = async () => {
 
@@ -27,13 +32,14 @@ export default function FeedbackBox({ assignmentId, stageRef }) {
       });
 
       if (response.ok) {
-        console.log('Feedback and drawing state saved successfully');
+        console.log('Feedback saved successfully');
         setText('');
+        setopenSnackBar(true);
       } else {
-        console.error('Failed to save feedback and drawing state');
+        console.error('Failed to save feedback');
       }
     } catch (error) {
-      console.error('Error saving feedback and drawing state:', error);
+      console.error('Error saving feedback:', error);
     }
   };
 
@@ -61,6 +67,18 @@ export default function FeedbackBox({ assignmentId, stageRef }) {
           Send Feedback
         </Button>
       </Box>
+      <Snackbar 
+        open={openSnackBar} 
+        autoHideDuration={4000} 
+        onClose={() => setopenSnackBar(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        sx={{ bottom: '75%'}}
+        
+      >
+        <Alert onClose={() => setopenSnackBar(false)} severity="success" sx={{ width: '100%' }}>
+          Feedback has be sent successfully!
+        </Alert>
+      </Snackbar>
     </div>
   );
 }

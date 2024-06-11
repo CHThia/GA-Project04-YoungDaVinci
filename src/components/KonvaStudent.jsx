@@ -238,7 +238,7 @@ export default function KonvaStudent() {
         autoHideDuration={4000}
         onClose={handleSnackbarClose}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        sx={{ bottom: '-20%' }}
+        sx={{ bottom: '75%' }}
       >
         <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
           {snackbarMessage}
