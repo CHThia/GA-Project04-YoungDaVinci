@@ -99,7 +99,7 @@ export default function HomePage() {
             fontFamily: 'helvetica',
           }}
         >
-          Young Da Vinci is an online drawing platform designed specifically for kids and young teens who are eager to learn and enhance their sketching, drawing, and painting skills. Our mission is to nurture creativity and imagination through fun and engaging art lessons. Each drawing assignment is thoughtfully curated by our experienced teachers to help young artists grow and excel in their artistic journey. Join us at Young Da Vinci and let your creativity soar!
+          <b>Young DaVinci</b> is an online drawing platform designed specifically for kids and young teens who are eager to learn and enhance their sketching, drawing, and painting skills. Our mission is to nurture creativity and imagination through fun and engaging art lessons. Each drawing assignment is thoughtfully curated by our experienced teachers to help young artists grow and excel in their artistic journey. Join us at Young Da Vinci and let your creativity soar!
         </Typography>
       </Container>
 

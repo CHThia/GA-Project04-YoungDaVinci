@@ -37,7 +37,7 @@
 }
 
 .text-my-assignment {
-  background-color: rgb(255, 231, 152);
+  background: linear-gradient(125deg, rgb(255, 214, 100), rgb(255, 136, 0));
   height: 80%; 
   width: 12%; 
   text-align: right;
@@ -74,7 +74,7 @@
 }
 
 .review-assignment {
-  background-color: rgb(255, 215, 168);
+  background: linear-gradient(145deg, rgb(84, 192, 255), rgb(182, 222, 255));
   width: 75%;
   height: 86%; 
   display: flex;
@@ -87,11 +87,11 @@
 }
 
 .review-assignment img {
-  border: 1px solid black;
+  border: 2px solid black;
   border-radius: 10px;
-  margin: 40px 30px 30px 90px;
+  margin: 40px 30px 30px 150px;
   max-width: 300px;
-  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.75);
 }
 
 .review-assignment h2 {
@@ -106,6 +106,18 @@
 .review-assignment p {
   font-family: Helvetica, sans-serif;
   font-size: 18px;
+}
+
+.feedback {
+  background-color: #ffffff;
+  width: 500px;
+  border-radius: 10px;
+}
+
+.feedback p {
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.75);
 }
 
 @keyframes icon-bounce {

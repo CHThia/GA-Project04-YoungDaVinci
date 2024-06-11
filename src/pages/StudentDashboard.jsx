@@ -5,6 +5,7 @@ import { faSmile } from '@fortawesome/free-solid-svg-icons';
 
 
 export default function StudentDashboard() {
+
   const [assignmentsImages, setAssignmentsImages] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [loading, setLoading] = useState(false);
@@ -15,6 +16,7 @@ export default function StudentDashboard() {
   const { studentId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
+
 
   useEffect(() => {
     console.log('Student ID:', studentId); // Log the studentId to verify
@@ -32,6 +34,7 @@ export default function StudentDashboard() {
     }
   }, [studentId, location.state]);
 
+
   const fetchCounts = useCallback(async () => {
     if (!studentId) return; // Ensure studentId is defined
     console.log('Fetching counts for student ID:', studentId); // Add log
@@ -47,6 +50,7 @@ export default function StudentDashboard() {
       console.error('Error fetching counts:', err);
     }
   }, [studentId]);
+
 
   const fetchAssignments = useCallback(async (category) => {
     if (!studentId) return; // Ensure studentId is defined
@@ -73,7 +77,8 @@ export default function StudentDashboard() {
           assignmentId: assignment.assignment_id,
           assignmentData: assignment.assignment_data,
           title: assignment.title,
-          description: assignment.description
+          description: assignment.description,
+          feedback: assignment.feedback
         })));
 
         console.log(`Success to fetch from ${url}`);
@@ -87,6 +92,7 @@ export default function StudentDashboard() {
       setLoading(false);
     }
   }, [studentId]);
+
 
   useEffect(() => {
     fetchCounts();
@@ -106,6 +112,7 @@ export default function StudentDashboard() {
   const navigateToKonvaStudent = (assignmentId, assignmentData) => {
     navigate(`/konva-student/${studentId}/${assignmentId}`, { state: { assignmentData, studentId } });
   };
+
 
   return (
     <>
@@ -144,6 +151,9 @@ export default function StudentDashboard() {
                   <div className="assignment-details">
                     <h2>Title: {assignment.title}</h2>
                     <p>Description: {assignment.description}</p>
+                    <div className='feedback'>
+                      <p>Feedback: <b>{assignment.feedback}</b></p>
+                    </div>
                   </div>
                 </div>
               ))
