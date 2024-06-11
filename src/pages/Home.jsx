@@ -8,17 +8,17 @@ export default function HomePage() {
   
   const items = [
     {
-      image: "https://via.placeholder.com/800x400",
+      image: "${process.env.PUBLIC_URL}/img_resources/caurousel_001.png",
       label: "First slide label",
       description: "Nulla vitae elit libero, a pharetra augue mollis interdum."
     },
     {
-      image: "https://via.placeholder.com/800x400",
+      image: "${process.env.PUBLIC_URL}/img_resources/caurousel_002.png",
       label: "Second slide label",
       description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
     },
     {
-      image: "https://via.placeholder.com/800x400",
+      image: "${process.env.PUBLIC_URL}/img_resources/caurousel_003.png",
       label: "Third slide label",
       description: "Praesent commodo cursus magna, vel scelerisque nisl consectetur."
     }
