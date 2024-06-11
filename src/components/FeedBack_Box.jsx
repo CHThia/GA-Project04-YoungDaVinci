@@ -1,13 +1,19 @@
 import { TextField, Button, Box } from '@mui/material';
 import { useState } from 'react';
 
-export default function FeedbackBox({ assignmentId, drawingState }) {
+export default function FeedbackBox({ assignmentId, stageRef }) {
+  
   const [text, setText] = useState('');
 
   const handleSave = async () => {
+
+    // Convert canvas to base64
+    const dataURL = stageRef.current.toDataURL();
+    const updatedDrawingState = dataURL.split(',')[1]; // Extract base64 string
+
     const feedbackData = {
       feedback: text,
-      assignment_data: drawingState,
+      assignment_data: updatedDrawingState,
       assignment_id: assignmentId
     };
 
@@ -45,10 +51,13 @@ export default function FeedbackBox({ assignmentId, drawingState }) {
           fullWidth
           sx={{ width: 400 }}
         />
-        <br/>
-        <br/>
-        <br/>
-        <Button className="button-delete" variant="contained" color="primary" onClick={handleSave}>
+        <br />
+        <Button
+          className="button-delete"
+          variant="contained"
+          color="primary"
+          onClick={handleSave}
+        >
           Send Feedback
         </Button>
       </Box>

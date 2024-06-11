@@ -6,6 +6,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt, faEraser, faUndo, faRedo, faPlus, faMinus, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 
+const CANVAS_WIDTH = 500;
+const CANVAS_HEIGHT = 300;
+
+
 export default function KonvaReview({ assignmentId, assignmentData }) {
 
   const [tool, setTool] = useState('pencil');
@@ -22,6 +26,7 @@ export default function KonvaReview({ assignmentId, assignmentData }) {
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
 
+
   useEffect(() => {
     if (assignmentData) {
       const img = new window.Image();
@@ -29,12 +34,13 @@ export default function KonvaReview({ assignmentId, assignmentData }) {
       img.onload = () => {
         setImage(img);
         const aspectRatio = img.width / img.height;
-        const newWidth = aspectRatio > 500 / 300 ? 500 : 300 * aspectRatio;
-        const newHeight = aspectRatio > 500 / 300 ? 500 / aspectRatio : 300;
+        const newWidth = aspectRatio > CANVAS_WIDTH / CANVAS_HEIGHT ? CANVAS_WIDTH : CANVAS_HEIGHT * aspectRatio;
+        const newHeight = aspectRatio > CANVAS_WIDTH / CANVAS_HEIGHT ? CANVAS_WIDTH / aspectRatio : CANVAS_HEIGHT;
         setImageDimensions({ width: newWidth, height: newHeight });
       };
     }
   }, [assignmentData]);
+
 
   useEffect(() => {
     if (transformerRef.current && selectedImage) {
@@ -47,13 +53,16 @@ export default function KonvaReview({ assignmentId, assignmentData }) {
   }, [selectedImage]);
 
   const handleMouseDown = () => {
-    isDrawing.current = true;
-    const pos = stageRef.current.getPointerPosition();
-    setLines((prevLines) => [...prevLines, { tool, color, points: [pos.x, pos.y], strokeWidth }]);
+    if (!selectedImage) {
+      isDrawing.current = true;
+      const pos = stageRef.current.getPointerPosition();
+      setLines((prevLines) => [...prevLines, { tool, color, points: [pos.x, pos.y], strokeWidth }]);
+    }
   };
 
+
   const handleMouseMove = () => {
-    if (!isDrawing.current) return;
+    if (!isDrawing.current || selectedImage) return;
     const stage = stageRef.current;
     const point = stage.getPointerPosition();
     setLines((prevLines) => {
@@ -66,7 +75,9 @@ export default function KonvaReview({ assignmentId, assignmentData }) {
 
   const handleMouseUp = () => {
     isDrawing.current = false;
-    updateHistory([...lines]);
+    if (!selectedImage) {
+      updateHistory([...lines]);
+    }
   };
 
   const updateHistory = (newLines) => {
@@ -117,6 +128,7 @@ export default function KonvaReview({ assignmentId, assignmentData }) {
   return (
     <>
       <div className="drawing-review-container">
+
         <div className="review-tool-bar">
           <CustomColorPicker color={color} onChange={setColor} />
           <button onClick={() => setTool('pencil')} className="pencil">
@@ -128,7 +140,7 @@ export default function KonvaReview({ assignmentId, assignmentData }) {
           <button onClick={decreaseStrokeWidth} className="decrease-stroke">
             <FontAwesomeIcon icon={faMinus} />
           </button>
-          <br/>
+          <br />
           <button onClick={() => setTool('eraser')} className="eraser">
             <FontAwesomeIcon icon={faEraser} />
           </button>
@@ -145,8 +157,8 @@ export default function KonvaReview({ assignmentId, assignmentData }) {
 
         <div className="review-canvas">
           <Stage
-            width={500}
-            height={300}
+            width={CANVAS_WIDTH}
+            height={CANVAS_HEIGHT}
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
@@ -154,7 +166,7 @@ export default function KonvaReview({ assignmentId, assignmentData }) {
             style={{ border: '1px solid black' }}
           >
             <Layer>
-              <Rect x={0} y={0} width={500} height={300} fill="white" />
+              <Rect x={0} y={0} width={CANVAS_WIDTH} height={CANVAS_HEIGHT} fill="white" />
               {image && (
                 <KonvaImage
                   image={image}
@@ -162,12 +174,12 @@ export default function KonvaReview({ assignmentId, assignmentData }) {
                   y={0}
                   width={imageDimensions.width}
                   height={imageDimensions.height}
-                  draggable
+                  draggable={!!selectedImage}
                   onDragMove={handleDragMove}
                   onDragEnd={handleDragEnd}
                   ref={imageRef}
-                  onClick={() => setSelectedImage(imageRef.current)}
-                  onTap={() => setSelectedImage(imageRef.current)}
+                  onClick={() => setSelectedImage(selectedImage ? null : imageRef.current)}
+                  onTap={() => setSelectedImage(selectedImage ? null : imageRef.current)}
                 />
               )}
               {lines.map((line, i) => (
@@ -188,8 +200,8 @@ export default function KonvaReview({ assignmentId, assignmentData }) {
           </Stage>
         </div>
 
-        <FeedbackBox assignmentId={assignmentId} drawingState={assignmentData} />
-
+        <FeedbackBox assignmentId={assignmentId} stageRef={stageRef} />
+        
       </div>
     </>
   );
