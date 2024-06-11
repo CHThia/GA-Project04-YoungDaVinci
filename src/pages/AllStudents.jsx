@@ -23,6 +23,7 @@ export default function AllStudents () {
     fetchStudents();
   }, []);
 
+  // Search for student by name
   const handleSearch = (term) => {
     setSearchTerm(term);
     console.log("SearchBox is working")

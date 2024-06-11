@@ -1,5 +1,6 @@
 const assignmentModel = require('../models/assignment');
 
+
 // Helper function to ensure assignment_data is base64
 const ensureBase64AssignmentData = (assignment) => {
   if (assignment && Buffer.isBuffer(assignment.assignment_data)) {
@@ -49,10 +50,10 @@ const getAllAssignmentsForStudent = async (req, res) => {
 };
 
 const getAssignmentsById = async (req, res) => {
-  const { assignment_id } = req.params;  // Change this to match the route parameter
+  const { assignment_id } = req.params; 
 
   try {
-    const assignment = await assignmentModel.getAssignmentById(assignment_id);  // Use assignment_id here
+    const assignment = await assignmentModel.getAssignmentById(assignment_id); 
     if (!assignment) {
       return res.status(404).json({ error: 'Assignment not found' });
     }
@@ -124,7 +125,7 @@ const deleteAssignments = async (req, res) => {
     if (deletedAssignment.rowCount === 0) {
       return res.status(404).json({ error: 'Assignment not found' });
     }
-    res.sendStatus(204); // No Content
+    res.sendStatus(204);
   } catch (error) {
     console.error('Error deleting assignment:', error);
     res.status(500).send('Server error');
@@ -142,5 +143,3 @@ module.exports = {
   updateAssignment,
   deleteAssignments,
 };
-
-//Start

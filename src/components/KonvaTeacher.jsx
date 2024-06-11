@@ -5,6 +5,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt, faEraser, faUndo, faRedo, faPlus, faMinus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import CustomColorPicker from './CustomColorPicker';
 
+const CANVAS_WIDTH = 500;
+const CANVAS_HEIGHT = 300;
+
 export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }) {
   const [imageURL, setImageURL] = useState(null);
   const [title, setTitle] = useState('');
@@ -36,18 +39,15 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
   useEffect(() => {
     if (image) {
       const aspectRatio = image.width / image.height;
-      const newWidth = aspectRatio > 500 / 300 ? 500 : 300 * aspectRatio;
-      const newHeight = aspectRatio > 500 / 300 ? 500 / aspectRatio : 300;
+      const newWidth = aspectRatio > CANVAS_WIDTH / CANVAS_HEIGHT ? CANVAS_WIDTH : CANVAS_HEIGHT * aspectRatio;
+      const newHeight = aspectRatio > CANVAS_WIDTH / CANVAS_HEIGHT ? CANVAS_WIDTH / aspectRatio : CANVAS_HEIGHT;
       setImageDimensions({ width: newWidth, height: newHeight });
     }
   }, [image]);
 
   useEffect(() => {
-    if (transformerRef.current && selectedImage) {
-      transformerRef.current.nodes([imageRef.current]);
-      transformerRef.current.getLayer().batchDraw();
-    } else if (transformerRef.current) {
-      transformerRef.current.nodes([]);
+    if (transformerRef.current) {
+      transformerRef.current.nodes(selectedImage ? [imageRef.current] : []);
       transformerRef.current.getLayer().batchDraw();
     }
   }, [selectedImage]);
@@ -72,8 +72,8 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
         img.src = reader.result;
         img.onload = () => {
           const aspectRatio = img.width / img.height;
-          const newWidth = aspectRatio > 500 / 300 ? 500 : 300 * aspectRatio;
-          const newHeight = aspectRatio > 500 / 300 ? 500 / aspectRatio : 300;
+          const newWidth = aspectRatio > CANVAS_WIDTH / CANVAS_HEIGHT ? CANVAS_WIDTH : CANVAS_HEIGHT * aspectRatio;
+          const newHeight = aspectRatio > CANVAS_WIDTH / CANVAS_HEIGHT ? CANVAS_WIDTH / aspectRatio : CANVAS_HEIGHT;
           setImageDimensions({ width: newWidth, height: newHeight });
         };
       };
@@ -83,7 +83,9 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
 
   const handleCombinedMouseDown = (e) => {
     handleStageMouseDown(e);
-    handleMouseDown(e);
+    if (!selectedImage) {
+      handleMouseDown(e);
+    }
   };
 
   const handleStageMouseDown = (e) => {
@@ -99,7 +101,7 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
   };
 
   const handleMouseMove = () => {
-    if (!isDrawing.current) return;
+    if (!isDrawing.current || selectedImage) return;
     const stage = stageRef.current;
     const point = stage.getPointerPosition();
     setLines((prevLines) => {
@@ -112,7 +114,9 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
 
   const handleMouseUp = () => {
     isDrawing.current = false;
-    updateHistory([...lines]);
+    if (!selectedImage) {
+      updateHistory([...lines]);
+    }
   };
 
   const updateHistory = (newLines) => {
@@ -237,8 +241,8 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
         
         <div className="canvas-teacher-container">
           <Stage
-            width={500}
-            height={300}
+            width={CANVAS_WIDTH}
+            height={CANVAS_HEIGHT}
             onMouseDown={handleCombinedMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
@@ -249,8 +253,8 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
               <Rect
                 x={0}
                 y={0}
-                width={500}
-                height={300}
+                width={CANVAS_WIDTH}
+                height={CANVAS_HEIGHT}
                 fill="white"
               />
               {image && (
@@ -260,12 +264,12 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
                   y={0}
                   width={imageDimensions.width}
                   height={imageDimensions.height}
-                  draggable
+                  draggable={!!selectedImage}
                   onDragMove={handleDragMove}
                   onDragEnd={handleDragEnd}
                   ref={imageRef}
-                  onClick={() => setSelectedImage(imageRef.current)}
-                  onTap={() => setSelectedImage(imageRef.current)}
+                  onClick={() => setSelectedImage(selectedImage ? null : imageRef.current)}
+                  onTap={() => setSelectedImage(selectedImage ? null : imageRef.current)}
                 />
               )}
               {lines.map((line, i) => (

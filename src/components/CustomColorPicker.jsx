@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { HexColorPicker } from 'react-colorful';
 
 
-const CustomColorPicker = ({ color , onChange }) => {
+export default function CustomColorPicker ({ color , onChange }) {
+
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
 
   const handleClick = () => {
@@ -28,6 +29,5 @@ const CustomColorPicker = ({ color , onChange }) => {
       )}
     </div>
   );
-};
+}
 
-export default CustomColorPicker;
