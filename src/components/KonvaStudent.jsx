@@ -129,7 +129,7 @@ export default function KonvaStudent() {
       if (saveResponse.ok) {
         setSnackbarMessage(`Drawing has been ${status === 'completed' ? 'submitted' : 'saved'} successfully.`);
         setOpenSnackbar(true);
-        // Comment out the navigate line to prevent routing back
+        //* Prevent Route back to student Dashboard after Save or Submit
         // navigate(`/studentdashboard/${studentId}`); // Use this once Authentication Page is done
       } else {
         console.error(`Error ${status === 'completed' ? 'submitting' : 'saving'} drawing:`, saveResponse.statusText);

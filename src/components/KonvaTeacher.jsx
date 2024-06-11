@@ -4,6 +4,9 @@ import { useImage } from 'react-konva-utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt, faEraser, faUndo, faRedo, faPlus, faMinus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import CustomColorPicker from './CustomColorPicker';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+
 
 const CANVAS_WIDTH = 500;
 const CANVAS_HEIGHT = 300;
@@ -25,6 +28,8 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
   const imageRef = useRef(null);
   const transformerRef = useRef(null);
   const isDrawing = useRef(false);
+  const [openSnackBar, setopenSnackBar] = useState(false);
+
 
   useEffect(() => {
     if (selectedDrawing) {
@@ -168,6 +173,7 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
         onSave();
         clearSelection();
         resetCanvas();
+        setopenSnackBar(true);
       } else {
         console.error('Error saving drawing:', saveResponse.statusText);
       }
@@ -317,6 +323,17 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
           </div>
         </div>
       </div>
+      <Snackbar 
+        open={openSnackBar} 
+        autoHideDuration={4000} 
+        onClose={() => setopenSnackBar(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        sx={{ bottom: '-45%' }}
+      >
+        <Alert onClose={() => setopenSnackBar(false)} severity="success" sx={{ width: '100%' }}>
+          Drawing saved successfully!
+        </Alert>
+      </Snackbar>
     </>
   );
 }
