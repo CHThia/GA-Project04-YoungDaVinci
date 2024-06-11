@@ -1,13 +1,19 @@
 import { useState, useRef, useEffect } from 'react';
 import { Stage, Layer, Line, Image as KonvaImage, Rect } from 'react-konva';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt, faEraser, faUndo, faRedo, faPlus, faMinus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import CustomColorPicker from './CustomColorPicker';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 export default function KonvaStudent() {
-  const { studentId, assignmentId } = useParams();
-  const navigate = useNavigate();
+
+  // const { studentId, assignmentId } = useParams();
+  // const navigate = useNavigate();
+
+  const { assignmentId } = useParams();
+
   const location = useLocation();
   const [tool, setTool] = useState('pencil');
   const [color, setColor] = useState('#ff9148');
@@ -19,21 +25,22 @@ export default function KonvaStudent() {
   const isDrawing = useRef(false);
   const stageRef = useRef(null);
 
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+
   useEffect(() => {
     const fetchAssignment = async () => {
       try {
         const assignmentData = location.state?.assignmentData;
         if (assignmentData) {
-          // console.log('Using assignment data from location state.');
           const image = new window.Image();
           image.src = `data:image/png;base64,${assignmentData}`;
           image.onload = () => {
             setInitialImage(image);
-            // console.log('Image loaded from state:', image);
           };
         } else {
           console.log('Fetching assignment data from backend.');
-          console.log('Assignment ID:', assignmentId); // Log the assignment_id to ensure it's being passed correctly
+          console.log('Assignment ID:', assignmentId);
           const response = await fetch(`/api/get-assignments/${assignmentId}`);
           if (response.ok) {
             const assignment = await response.json();
@@ -120,8 +127,10 @@ export default function KonvaStudent() {
       });
 
       if (saveResponse.ok) {
-        console.log(`Drawing has been ${status === 'completed' ? 'submitted' : 'saved'} successfully.`);
-        navigate(`/studentdashboard/${studentId}`); // Use this once Authentication Page is done
+        setSnackbarMessage(`Drawing has been ${status === 'completed' ? 'submitted' : 'saved'} successfully.`);
+        setOpenSnackbar(true);
+        // Comment out the navigate line to prevent routing back
+        // navigate(`/studentdashboard/${studentId}`); // Use this once Authentication Page is done
       } else {
         console.error(`Error ${status === 'completed' ? 'submitting' : 'saving'} drawing:`, saveResponse.statusText);
       }
@@ -147,7 +156,10 @@ export default function KonvaStudent() {
     setStrokeWidth((prevWidth) => Math.max(prevWidth - 1, 1));
   };
 
-  
+  const handleSnackbarClose = () => {
+    setOpenSnackbar(false);
+  };
+
   return (
     <div className="student-canvas-container">
 
@@ -220,6 +232,18 @@ export default function KonvaStudent() {
         <button className="button-submit" onClick={() => saveDrawing('completed')}>Submit</button>
         <button className="button-download" onClick={downloadDrawing}>Download</button>
       </div>
+
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={4000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        sx={{ bottom: '-20%' }}
+      >
+        <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }
