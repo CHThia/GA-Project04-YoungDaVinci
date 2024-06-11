@@ -31,8 +31,8 @@ export default function NavBar_Teacher() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
+      <AppBar position="static" sx={{ borderRadius:'10px'}}>
+        <Toolbar >
           <IconButton color="inherit" aria-label="home">
             <Link to="/" component={Box} sx={{ display: 'flex' }}>
               <HomeIcon_Teacher style={{ color: 'white' }} />

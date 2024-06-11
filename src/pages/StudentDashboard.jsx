@@ -1,5 +1,8 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSmile } from '@fortawesome/free-solid-svg-icons';
+
 
 export default function StudentDashboard() {
   const [assignmentsImages, setAssignmentsImages] = useState([]);
@@ -108,7 +111,9 @@ export default function StudentDashboard() {
     <>
       <div className="dashboard-student-container">
         <div className="dashboard-greet">
-          <h1>Welcome back, {studentName}!</h1>
+          <h1><FontAwesomeIcon icon={faSmile} style={{ color:'#F57809' }} className="yellow-icon"/> 
+            Welcome back, {studentName}!
+          </h1>
         </div>
 
         <div className="assignment-container">

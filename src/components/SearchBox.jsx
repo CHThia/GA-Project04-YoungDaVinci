@@ -21,7 +21,13 @@ export default function SearchBox ({ onSearch }) {
             </InputAdornment>
           ),
         }}
-        style={{ width: '40%', marginLeft: '2%' }}
+        style={{ 
+          width: '40%', 
+          marginLeft: '2%', 
+          backgroundColor:'white', 
+          borderRadius:'5px',
+          boxShadow: '3px 3px 3px rgba(0, 0, 0, 0.3)',
+         }}
         onKeyDown={handleKeyPress}
       />
     </>

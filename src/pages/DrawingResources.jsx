@@ -60,18 +60,17 @@ export default function DrawingResources() {
 
   return (
     <>
-      <DropDown 
-        savedDrawings={savedDrawings} 
-        fetchDrawingById={fetchDrawingById} 
-        deleteDrawingById={deleteDrawingById} 
-      />
+        <DropDown 
+          savedDrawings={savedDrawings} 
+          fetchDrawingById={fetchDrawingById} 
+          deleteDrawingById={deleteDrawingById} 
+        />
 
-      <KonvaTeacher 
-        onSave={fetchDrawings} 
-        selectedDrawing={selectedDrawing} 
-        clearSelection={clearSelection} 
-      />
-      
+        <KonvaTeacher 
+          onSave={fetchDrawings} 
+          selectedDrawing={selectedDrawing} 
+          clearSelection={clearSelection} 
+        />
     </>
   );
 }

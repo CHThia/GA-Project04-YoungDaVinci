@@ -42,7 +42,7 @@ export default function NavBar_Student() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="static" sx={{ backgroundColor:'#F0770B', borderRadius:'10px'}}>
         <Toolbar>
           <IconButton color="inherit" aria-label="home">
             <Link to="/">

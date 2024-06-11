@@ -25,7 +25,7 @@ export default function StudentCard({ student }) {
         sx={{
           width: 320,
           maxWidth: '100%',
-          boxShadow: 'lg',
+          boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.2)',
         }}
       >
         <CardContent sx={{ alignItems: 'center', textAlign: 'center' }}>
