@@ -36,7 +36,7 @@ export default function NavLogin() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="static" sx={{ backgroundColor:'#6D51FC', borderRadius:'10px'}}>
         <Toolbar>
           <IconButton color="inherit" aria-label="home">
             <Link to="/">
