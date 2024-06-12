@@ -74,14 +74,24 @@ In the student's drawing canvas page, users are allow to create their artwork ba
 </p>
 
 
-## My Favourite Code(s)
+## Favourite Component 
+
+The "Drawer_PopUp" component, in my own opinion, provided the most rewarding experience I can have in this project. At the back of my mind, I would consider this segment of the coding as a 'Bus Terminal'. 
+
+<li> The flow started with the 'Student Card' from the All Students Page.
 
 <p align="center">
     <img width="650" src="/img_resources/Fav-Code-AllStudents-01.PNG">
 </p>
 
+<li> Checking if student id is pass down accordingly.
+
 <p align="center">
     <img width="650" src="/img_resources/Fav-Code-StudentCard-02.PNG">
+</p>
+
+<p align="center">
+    <img width="650" src="/img_resources/Fav-Code-StudentCard-02a.PNG">
 </p>
 
 <p align="center">
