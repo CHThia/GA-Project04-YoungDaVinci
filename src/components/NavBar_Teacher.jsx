@@ -17,16 +17,16 @@ function HomeIcon_Teacher(props) {
 
 // NavBar_Teacher component
 export default function NavBar_Teacher() {
+  
   const location = useLocation();
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem('token'); // Remove the token
+    localStorage.removeItem('token'); // Remove token
     navigate('/'); // Redirect to home page
   };
 
   useEffect(() => {
-    // Additional actions if needed
   }, [location]);
 
   return (

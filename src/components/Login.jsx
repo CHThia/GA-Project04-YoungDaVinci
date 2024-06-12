@@ -2,12 +2,16 @@ import { useState } from 'react';
 import { TextField, Button, Box, Typography, Container } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useUser } from '../../context/userContext'
+
 
 export default function LoginForm() {
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showLoginForm, setShowLoginForm] = useState(true);
   const navigate = useNavigate(); 
+  const { setRole } = useUser();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -15,8 +19,9 @@ export default function LoginForm() {
       const response = await axios.post('/api/login', { email, password });
       if (response.data.token) {
         localStorage.setItem('token', response.data.token);
+        setRole(response.data.role); // user role in context
         const redirectUrl = response.data.redirect;
-        const studentName = response.data.studentName; // Get the student's name
+        const studentName = response.data.studentName; // student's name
         console.log('Redirect URL:', redirectUrl); // Log redirect URL
         console.log('Student Name:', studentName); // Log student name
         navigate(redirectUrl, { state: { studentName } }); // Redirect with student ID and name

@@ -6,6 +6,7 @@ import { faPencilAlt, faEraser, faUndo, faRedo, faPlus, faMinus, faTrash } from 
 import CustomColorPicker from './CustomColorPicker';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import { useNavigate } from 'react-router-dom';
 
 
 const CANVAS_WIDTH = 500;
@@ -13,6 +14,7 @@ const CANVAS_HEIGHT = 300;
 
 
 export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }) {
+
   const [imageURL, setImageURL] = useState(null);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -30,7 +32,16 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
   const transformerRef = useRef(null);
   const isDrawing = useRef(false);
   const [openSnackBar, setopenSnackBar] = useState(false);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/login'); // Redirect to login if token is missing
+    }
+  }, [navigate]);
 
   useEffect(() => {
     if (selectedDrawing) {
@@ -146,6 +157,12 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
   };
 
   const saveDrawing = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/login'); // Redirect to login if token is missing
+      return;
+    }
+
     const canvas = document.createElement('canvas');
     canvas.width = stageRef.current.width();
     canvas.height = stageRef.current.height();
@@ -167,6 +184,9 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
       const saveResponse = await fetch(selectedDrawing ? 
         `/api/update-drawing-resources/${selectedDrawing.drawing_resources_id}` : '/api/create-drawing-resources', {
         method: selectedDrawing ? 'PUT' : 'POST',
+        headers: {
+          'x-auth-token': token
+        },
         body: formData,
       });
       if (saveResponse.ok) {
@@ -177,14 +197,24 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
         setopenSnackBar(true);
       } else {
         console.error('Error saving drawing:', saveResponse.statusText);
+        setError('Error saving drawing');
       }
     };
   };
 
   const deleteDrawing = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/login'); // Redirect to login if token is missing
+      return;
+    }
+
     if (selectedDrawing) {
       const deleteResponse = await fetch(`/api/delete-drawing-resources/${selectedDrawing.drawing_resources_id}`, {
         method: 'DELETE',
+        headers: {
+          'x-auth-token': token
+        }
       });
       if (deleteResponse.ok) {
         console.log('Drawing has been deleted successfully.');
@@ -193,6 +223,7 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
         resetCanvas();
       } else {
         console.error('Error deleting drawing:', deleteResponse.statusText);
+        setError('Error deleting drawing');
       }
     }
   };
@@ -214,6 +245,10 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
   const decreaseStrokeWidth = () => {
     setStrokeWidth((prevWidth) => Math.max(prevWidth - 1, 1));
   };
+
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   return (
     <>

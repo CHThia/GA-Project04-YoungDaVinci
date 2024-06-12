@@ -8,14 +8,27 @@ export default function AllStudents () {
 
   const [students, setStudents] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [error, setError] = useState(null);
+
 
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const response = await fetch('/api/get-all-students');
+        const token = localStorage.getItem('token');
+        const response = await fetch('/api/get-all-students', {
+          headers: {
+            'x-auth-token': token
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch students');
+        }
+
         const data = await response.json();
-        setStudents(data);
+        setStudents(Array.isArray(data) ? data : []);
       } catch (error) {
+        setError('Error fetching students');
         console.error('Error fetching students:', error);
       }
     };
