@@ -84,30 +84,42 @@ The "Drawer_PopUp" component, in my own opinion, provided the most rewarding exp
     <img width="650" src="/img_resources/Fav-Code-AllStudents-01.PNG">
 </p>
 
-<li> Checking if student id is pass down accordingly.
+<li> Checking if student id is pass down accordingly
 
 <p align="center">
-    <img width="650" src="/img_resources/Fav-Code-StudentCard-02.PNG">
+    <img width="600" src="/img_resources/Fav-Code-StudentCard-02.PNG">
 </p>
 
 <p align="center">
-    <img width="650" src="/img_resources/Fav-Code-StudentCard-02a.PNG">
+    <img width="600" src="/img_resources/Fav-Code-StudentCard-02a.PNG">
+</p>
+
+<li> Fetching Drawing Resource from Blob to base64
+
+<p align="center">
+    <img width="600" src="/img_resources/Fav-Code-StudentCard-02b.PNG">
+</p>
+
+<li> Passing the student id and fetch assignments belong to this student
+
+<p align="center">
+    <img width="600" src="/img_resources/Fav-Code-Drawer_PopUp-03.PNG">
+</p>
+
+<li> Clone the selected drawing assignment for the student so that the original state of the drawing resource will not be manipulated.
+
+<p align="center">
+    <img width="600" src="/img_resources/Fav-Code-Drawer_PopUp-04.PNG">
+</p>
+
+<li> Coordinate the data type for assignments. Initially, I set both to be 'BYTEA' which was a mistake. 
+
+<p align="center">
+    <img width="500" src="/img_resources/Fav-SQL-DrawResource-05.PNG">
 </p>
 
 <p align="center">
-    <img width="650" src="/img_resources/Fav-Code-Drawer_PopUp-03.PNG">
-</p>
-
-<p align="center">
-    <img width="650" src="/img_resources/Fav-Code-Drawer_PopUp-04.PNG">
-</p>
-
-<p align="center">
-    <img width="650" src="/img_resources/Fav-SQL-DrawResource-05.PNG">
-</p>
-
-<p align="center">
-    <img width="650" src="/img_resources/Fav-SQL-Assignments-06.PNG">
+    <img width="500" src="/img_resources/Fav-SQL-Assignments-06.PNG">
 </p>
 
 ## Challenges and Key learning Points 
