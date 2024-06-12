@@ -6,13 +6,11 @@ Young Davinci is an online drawing platform designed for kids and young teens. T
 ## Reasons to develop this application
 
 I am a regular user of drawing applications like Photoshop, Illustrator etc. For the longest of time, I have always wanted to learn how to code a digital drawing application and to understand the complexity of developing one myself. Thus, this capstone project provided the opportunity. 
-<br/>
 During the brainstorming phase, I needed a user story for this project which I was reminded of my children drawing on my ipad time to time. In addition, I have seen my children using e-learning platforms like Class Dojo and Koobits. The experience of it all provide the sparks to my idea and lead to the concept of creating an online drawing platform for young users.
 
 ## Wireframe of the application during planning stage
 Below is the initial wireframe for this application. Some design layout were adjusted slightly 
 during the development phase but general concept remains as it is.
-<br/>
 
 Click link to Figma - 
 https://www.figma.com/board/cGHnFhpFbsl6iTgqPnVDhy/GA-Project04-YoungDaVinci-2024?t=5lUVgVXwDrSolOcm-1
