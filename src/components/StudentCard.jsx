@@ -14,7 +14,6 @@ export default function StudentCard({ student }) {
 
   const navigate = useNavigate();
 
-
   const handleButtonClick = () => {
     navigate(`./get-all-students/${student.student_id}`, { state: student.student_id });
     // Check if student name is correct when clicked

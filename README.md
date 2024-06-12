@@ -76,7 +76,29 @@ In the student's drawing canvas page, users are allow to create their artwork ba
 
 ## My Favourite Code(s)
 
+<p align="center">
+    <img width="650" src="/img_resources/Fav-Code-AllStudents-01.PNG">
+</p>
 
+<p align="center">
+    <img width="650" src="/img_resources/Fav-Code-StudentCard-02.PNG">
+</p>
+
+<p align="center">
+    <img width="650" src="/img_resources/Fav-Code-Drawer_PopUp-03.PNG">
+</p>
+
+<p align="center">
+    <img width="650" src="/img_resources/Fav-Code-Drawer_PopUp-04.PNG">
+</p>
+
+<p align="center">
+    <img width="650" src="/img_resources/Fav-SQL-DrawResource-05.PNG">
+</p>
+
+<p align="center">
+    <img width="650" src="/img_resources/Fav-SQL-Assignments-06.PNG">
+</p>
 
 ## Challenges and Key learning Points 
 <ul>
