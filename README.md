@@ -80,14 +80,9 @@ In the student's drawing canvas page, users are allow to create their artwork ba
 
 ## Challenges and Key learning Points 
 <ul>
-  <li> React Sketch Canvas --> React Konva 
-  
-  <br/>
-  
+  <li> React Sketch Canvas --> React Konva
+
   Challenges: There was some drawing features not available for React Sketch Canvas and the documentation was pretty limited. Therefore, I have to source for another alternative which i decided to use go for React Konva.
-
-  <br/>
-
   Key Learning Points: Do testing early. If things are not working out from the start, take courage to explore other alternative as soon as possible.
 
   <li> 
