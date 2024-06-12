@@ -81,24 +81,37 @@ In the student's drawing canvas page, users are allow to create their artwork ba
 ## Challenges and Key learning Points 
 <ul>
   <li> React Sketch Canvas --> React Konva
-
-  <b>Challenges:</b> There was some drawing features not available for React Sketch Canvas and the documentation was pretty limited. Therefore, I have to source for another alternative which i decided to use go for React Konva.
-  <b>Key Learning Points:</b> Do testing early. If things are not working out from the start, take courage to explore other alternative as soon as possible.
-
+    <ul>
+      <li><b>Challenges:</b> There was some drawing features not available for React Sketch Canvas and the documentation was pretty limited. Therefore, I have to source for another alternative which i decided to use go for React Konva.
+      <li><b>Key Learning Points:</b> Do testing early. If things are not working out from the start, take courage to explore other alternative as soon as possible.
+    </ul>
+</ul>
+      
+<ul>
   <li> Convert images to blob and base64
-
-  <b>Challenges:</b> At the start, I created the drawing canvas to be 1080px by 720px. Generally it works normally if I only draw with line art and save the blob into the database. However, if I upload an external image file into the canvas, it will indicate payload is too large. The only way that I solve it was by reducing the canvas size to 500px by 300px. <b>Key Learning Points:</b> When dealing with large image files, its good to use content delivery network (CDN). 
-
-  <li> Data Structure
-
-  <b>Challenges:</b> The right idea but different results. During the project, there was alot of back and forth with the SQL Tables despite designing how I want the data to flow or retrieve or update. One of the most significant case I encounter was the assigning of drawing materials to students. The SQL tables related in this situation was 'Drawing_Resources' and 'Assignments'. The concept was to take the original drawing resources (blob) and duplicate it for the student(s). So I thought the data type has to be blob between the 2 tables. However, I was actually wrong as I forgotten the student's version has been encoded to Base64 which is a string data. <b>Key Learning Points:</b> From this experience, I think its good to draw out how the data structures flows despite doing it in excel and understand what type data are converted during certain processes. Also, its ok to drop the tables and restart again as PostgreSQL does not have certain features like shifting columns etc.
-     
-  <li> Error message and console logging
-  <b>Challenges:</b> Although it may look simple in some pages of the web application, it will get pretty confusing when it needs to fetch, update or delete certain parts of the data from different tables to get the results needed. In situation like this, errors are bound to happen and to be honest, I have spent hours resolving it. 
-  <b>Key Learning Points:</b> I learnt not to be so fearful when seeing error message. During this project especially, I started to be able to understand the problem better due to pass experience or seeing the same repetitive error messages. When I have a hard time solving it, I will try to slot in more console log to investigate the problem until i understand the issue. Although its time consuming, resolving the problem is like a level up and allow me to understand what happen so that i will not make the same mistakes.
-
+    <ul>
+      <li><b>Challenges:</b> At the start, I created the drawing canvas to be 1080px by 720px. Generally it works normally if I only draw with line art and save the blob into the database. However, if I upload an external image file into the canvas, it will indicate payload is too large. The only way that I solve it was by reducing the canvas size to 500px by 300px.
+      <li><b>Key Learning Points:</b> When dealing with large image files, its good to use content delivery network (CDN). 
+    </ul>
 </ul>
 
+   
+<ul>
+  <li> Data Structure
+    <ul>
+      <li><b>Challenges:</b> The right idea but different results. During the project, there was alot of back and forth with the SQL Tables despite designing how I want the data to flow or retrieve or update. One of the most significant case I encounter was the assigning of drawing materials to students. The SQL tables related in this situation was 'Drawing_Resources' and 'Assignments'. The concept was to take the original drawing resources (blob) and duplicate it for the student(s). So I thought the data type has to be blob between the 2 tables. However, I was actually wrong as I forgotten the student's version has been encoded to Base64 which is a string data.
+      <li><b>Key Learning Points:</b> From this experience, I think its good to draw out how the data structures flows despite doing it in excel and understand what type data are converted during certain processes. Also, its ok to drop the tables and restart again as PostgreSQL does not have certain features like shifting columns etc.
+    </ul>
+</ul>
+
+<ul>
+  <li> Error message and console logging
+  <ul>
+    <li><b>Challenges:</b> Although it may look simple in some pages of the web application, it will get pretty confusing when it needs to fetch, update or delete certain parts of the data from different tables to get the results needed. In situation like this, errors are bound to happen and to be honest, I have spent hours resolving it. 
+    <li><b>Key Learning Points:</b> I learnt not to be so fearful when seeing error message. During this project especially, I started to be able to understand the problem better due to pass experience or seeing the same repetitive error messages. When I have a hard time solving it, I will try to slot in more console log to investigate the problem until i understand the issue. Although its time consuming, resolving the problem is like a level up and allow me to understand what happen so that i will not make the same mistakes.
+  </ul>
+</ul>
+  
 ## Application Add-On (next version update)
 <ol>
   <li> Create a Main Administrator account that can delegate students for different teachers by education level  
@@ -109,7 +122,6 @@ In the student's drawing canvas page, users are allow to create their artwork ba
   <li> Build layers for the drawing canvas (in reference to Adobe Photoshop)
   <li> Improve or add drawing tools like Shapes, more intuitive control for pencil etc.
   <li> Different canvas dimension
-
 </ol>
 
 ## Technologies Used:
