@@ -11,7 +11,8 @@ export default function LoginForm() {
   const [password, setPassword] = useState("");
   const [showLoginForm, setShowLoginForm] = useState(true);
   const navigate = useNavigate(); 
-  const { setRole } = useUser();
+  const { setRole, setIsAuthenticated } = useUser();
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -19,11 +20,12 @@ export default function LoginForm() {
       const response = await axios.post('/api/login', { email, password });
       if (response.data.token) {
         localStorage.setItem('token', response.data.token);
-        setRole(response.data.role); // user role in context
+        setRole(response.data.role); // Update role in context
+        setIsAuthenticated(true); // Set authentication state to true
         const redirectUrl = response.data.redirect;
-        const studentName = response.data.studentName; // student's name
-        console.log('Redirect URL:', redirectUrl); // Log redirect URL
-        console.log('Student Name:', studentName); // Log student name
+        const studentName = response.data.studentName; 
+        console.log('Redirect URL:', redirectUrl); 
+        console.log('Student Name:', studentName); 
         navigate(redirectUrl, { state: { studentName } }); // Redirect with student ID and name
       }
     } catch (error) {
@@ -36,6 +38,7 @@ export default function LoginForm() {
     navigate(path); 
   };
 
+  
   return (
     <Container component="main" maxWidth="xs">
       {showLoginForm && (

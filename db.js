@@ -5,15 +5,15 @@ require("dotenv").config()
 
 // PostgreSQL connection settings
 const pool = new Pool({
-  user: process.env.DB_USERNAME, // Replace with your database username
-  host: process.env.DB_HOST, // Replace with your database host
-  database: process.env.DB, // Replace with your database name
-  password: process.env.DB_PASSWORD, // Replace with your database password
-  port: process.env.DB_PORT, // Default Port for PostgreSQL
+  user: process.env.DB_USERNAME, 
+  host: process.env.DB_HOST,
+  database: process.env.DB,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT, 
   ssl: {
     rejectUnauthorized: false // This allows self-signed certificates
   },
-  connectionTimeoutMillis: 5000, // Timeout after 5 seconds 
+  connectionTimeoutMillis: 5000, // Timeout after 5 secs
   idleTimeoutMillis: 10000, // Close idle clients after 10 secs
   max: 10 // Set pool max 
 });

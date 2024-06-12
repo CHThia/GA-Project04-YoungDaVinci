@@ -29,6 +29,7 @@ const studentSignUp = async (req, res) => {
   }
 };
 
+
 const teacherSignUp = async (req, res) => {
   try {
     const formData = req.body;
@@ -54,6 +55,7 @@ const teacherSignUp = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
 
 const login = async (req, res) => {
   const { email, password } = req.body;

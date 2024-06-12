@@ -1,5 +1,6 @@
 const studentDetails = require('../models/studentDetail');
 
+
 const getAllStudents = async (req, res) => {
   try {
     const students = await studentDetails.getAllStudents();
@@ -8,6 +9,7 @@ const getAllStudents = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 const getAllStudentsById = async (req, res) => {
   try {
@@ -21,6 +23,7 @@ const getAllStudentsById = async (req, res) => {
   }
 };
 
+
 const addNewStudents = async (req, res) => {
   try {
     const { name, age, gender, education, email, password, date_of_birth } = req.body;
@@ -30,6 +33,7 @@ const addNewStudents = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 const updateStudentPasswords = async (req, res) => {
   try {
@@ -43,6 +47,7 @@ const updateStudentPasswords = async (req, res) => {
   }
 };
 
+
 const deleteStudentProfiles = async (req, res) => {
   try {
     await studentDetails.deleteStudentProfile(req.params.id);
@@ -51,6 +56,7 @@ const deleteStudentProfiles = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 module.exports = {
   getAllStudents,

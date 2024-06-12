@@ -26,4 +26,5 @@ function authRole(allowedRoles) {
   };
 }
 
+
 module.exports = authRole;

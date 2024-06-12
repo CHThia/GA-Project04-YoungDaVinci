@@ -19,12 +19,12 @@ export default function StudentDashboard() {
 
 
   useEffect(() => {
-    console.log('Student ID:', studentId); // Log the studentId to verify
-    console.log('Location state:', location.state); // Log the location state
+    console.log('Student ID:', studentId); 
+    console.log('Location state:', location.state); 
 
     // Extract studentName from location state if available
     if (location.state && location.state.studentName) {
-      console.log('Setting student name:', location.state.studentName); // Log setting name
+      console.log('Setting student name:', location.state.studentName); // Set name
       setStudentName(location.state.studentName);
       localStorage.setItem('studentName', location.state.studentName); // Store student name in localStorage
     }
@@ -37,7 +37,7 @@ export default function StudentDashboard() {
 
   const fetchCounts = useCallback(async () => {
     if (!studentId) return; // Ensure studentId is defined
-    console.log('Fetching counts for student ID:', studentId); // Add log
+    console.log('Fetching counts for student ID:', studentId); 
     try {
       const response = await fetch(`/api/assignment-counts/${studentId}`);
       if (response.ok) {
@@ -64,7 +64,7 @@ export default function StudentDashboard() {
       url = `/api/get-all-assignments/${studentId}`;
     }
 
-    console.log(`Fetching assignments from ${url}`); // Add log
+    console.log(`Fetching assignments from ${url}`); 
 
     try {
       const response = await fetch(url);

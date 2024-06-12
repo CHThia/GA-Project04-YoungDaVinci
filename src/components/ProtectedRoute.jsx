@@ -1,7 +1,9 @@
 import { Navigate } from 'react-router-dom';
 import { useUser } from '../../context/userContext';
 
+
 const ProtectedRoute = ({ children, allowedRoles }) => {
+  
   const { role } = useUser();
 
   if (!allowedRoles.includes(role)) {

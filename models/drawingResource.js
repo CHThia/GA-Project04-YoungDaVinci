@@ -1,14 +1,17 @@
 const pool = require("../db");
 
+
 const getDrawingResource = async () => {
   const result = await pool.query('SELECT * FROM drawing_resources');
   return result.rows;
 };
 
+
 const getDrawingResourceById = async (drawing_resources_id) => {
   const result = await pool.query('SELECT * FROM drawing_resources WHERE drawing_resources_id = $1', [drawing_resources_id]);
   return result.rows[0];
 };
+
 
 const createDrawingResource = async (title, description, details) => {
   const result = await pool.query(
@@ -18,6 +21,7 @@ const createDrawingResource = async (title, description, details) => {
   return result.rows[0];
 };
 
+
 const updateDrawingResource = async (drawing_resources_id, title, description, details) => {
   const result = await pool.query(
     'UPDATE drawing_resources SET title = $1, description = $2, details = $3, update_date = NOW() WHERE drawing_resources_id = $4 RETURNING *',
@@ -26,10 +30,12 @@ const updateDrawingResource = async (drawing_resources_id, title, description, d
   return result.rows[0];
 };
 
+
 const deleteDrawingResource = async (drawing_resources_id) => {
   await pool.query('DELETE FROM drawing_resources WHERE drawing_resources_id = $1', [drawing_resources_id]);
   return { message: 'Drawing resource deleted successfully.' };
 };
+
 
 module.exports = {
   getDrawingResource,

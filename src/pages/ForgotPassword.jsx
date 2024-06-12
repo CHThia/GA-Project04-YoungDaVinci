@@ -11,10 +11,10 @@ export default function ForgotPassword () {
  
   const handleResetPassword = (event) => {
     event.preventDefault();
-    // Code logic 
+    // Code logic (Future Upgrade Version)
     console.log("Email", email)
     alert('Password reset link has been sent to your email address.');
-    setEmail("") // Reset Input Box 
+    setEmail("")
   }
 
   return (

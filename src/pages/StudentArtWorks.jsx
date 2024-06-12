@@ -23,7 +23,6 @@ export default function StudentArtWorks() {
       <KonvaReview studentId={studentId} assignmentData={selectedAssignment} assignmentId={selectedAssignmentId}/>
       
       <Drawer_PopUp studentId={studentId} onImageClick={handleImageClick} />
-
     </>
   );
 }

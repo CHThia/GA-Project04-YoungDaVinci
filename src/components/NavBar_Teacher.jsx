@@ -1,10 +1,11 @@
-import { useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AppBar, Toolbar, Button, Box, IconButton, Divider } from '@mui/material';
 import SvgIcon from '@mui/material/SvgIcon';
 import SchoolIcon from '@mui/icons-material/School';
 import DrawIcon from '@mui/icons-material/Draw';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { useUser } from '../../context/userContext'; 
+
 
 // HomeIcon component
 function HomeIcon_Teacher(props) {
@@ -18,21 +19,19 @@ function HomeIcon_Teacher(props) {
 // NavBar_Teacher component
 export default function NavBar_Teacher() {
   
-  const location = useLocation();
   const navigate = useNavigate();
+  const { logout } = useUser(); 
 
   const handleLogout = () => {
-    localStorage.removeItem('token'); // Remove token
-    navigate('/'); // Redirect to home page
+    logout(); 
+    navigate('/');
   };
 
-  useEffect(() => {
-  }, [location]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ borderRadius:'10px'}}>
-        <Toolbar >
+      <AppBar position="static" sx={{ borderRadius: '10px' }}>
+        <Toolbar>
           <IconButton color="inherit" aria-label="home">
             <Link to="/" component={Box} sx={{ display: 'flex' }}>
               <HomeIcon_Teacher style={{ color: 'white' }} />

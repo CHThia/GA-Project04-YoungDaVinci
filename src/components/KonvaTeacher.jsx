@@ -39,7 +39,7 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
-      navigate('/login'); // Redirect to login if token is missing
+      navigate('/'); 
     }
   }, [navigate]);
 
@@ -78,6 +78,7 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
     setHistory([[]]);
     setHistoryIndex(0);
   };
+
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
@@ -159,7 +160,7 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
   const saveDrawing = async () => {
     const token = localStorage.getItem('token');
     if (!token) {
-      navigate('/login'); // Redirect to login if token is missing
+      navigate('/'); 
       return;
     }
 
@@ -205,7 +206,7 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
   const deleteDrawing = async () => {
     const token = localStorage.getItem('token');
     if (!token) {
-      navigate('/login'); // Redirect to login if token is missing
+      navigate('/'); 
       return;
     }
 
@@ -250,6 +251,7 @@ export default function KonvaTeacher({ onSave, selectedDrawing, clearSelection }
     return <div>{error}</div>;
   }
 
+  
   return (
     <>
       <div className="drawing-teacher-container">

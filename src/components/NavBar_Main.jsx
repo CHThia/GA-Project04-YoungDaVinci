@@ -29,11 +29,12 @@ export default function NavLogin() {
     setOpen(false);
   };
 
-  // Update LoginFrom State when route changes
+  // Update Login State when route changes
   useEffect(() => {
     setOpen(false);
   }, [location]);
 
+  
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" sx={{ backgroundColor:'#6D51FC', borderRadius:'10px'}}>

@@ -9,8 +9,11 @@ import CardActions from '@mui/joy/CardActions';
 import Typography from '@mui/joy/Typography';
 import { useNavigate } from 'react-router-dom';
 
+
 export default function StudentCard({ student }) {
+
   const navigate = useNavigate();
+
 
   const handleButtonClick = () => {
     navigate(`./get-all-students/${student.student_id}`, { state: student.student_id });
@@ -19,6 +22,7 @@ export default function StudentCard({ student }) {
     // console.log("Test 1", student.student_id) 
   };
 
+  
   return (
     <Container>
       <Card

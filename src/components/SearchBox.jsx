@@ -1,6 +1,7 @@
 import { TextField, InputAdornment } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 
+
 export default function SearchBox ({ onSearch }) {
 
   const handleKeyPress = (event) => {
@@ -9,6 +10,7 @@ export default function SearchBox ({ onSearch }) {
     }
   };
 
+  
   return (
     <>
       <TextField

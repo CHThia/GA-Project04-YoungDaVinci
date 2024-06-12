@@ -4,7 +4,9 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 
+
 export default function Drawer_PopUp({ studentId, onImageClick }) {
+
   const [isOpen, setIsOpen] = useState(false);
   const [drawingResources, setDrawingResources] = useState([]);
   const [selectedResource, setSelectedResource] = useState('');
@@ -13,6 +15,7 @@ export default function Drawer_PopUp({ studentId, onImageClick }) {
   const [assignments, setAssignments] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
 
   // Fetch Drawing Resources
   useEffect(() => {
@@ -39,6 +42,7 @@ export default function Drawer_PopUp({ studentId, onImageClick }) {
 
     fetchDrawingResources();
   }, []);
+
 
   // Fetch Image Data for Selected Resource
   useEffect(() => {
@@ -69,6 +73,7 @@ export default function Drawer_PopUp({ studentId, onImageClick }) {
     }
   }, [selectedResource]);
 
+
   // Fetch Assignments from student id
   useEffect(() => {
     const fetchAssignments = async () => {
@@ -97,6 +102,7 @@ export default function Drawer_PopUp({ studentId, onImageClick }) {
 
     fetchAssignments();
   }, [studentId]);
+
 
   // Add Assignments for student id
   const addItem = useCallback(async () => {
@@ -132,6 +138,7 @@ export default function Drawer_PopUp({ studentId, onImageClick }) {
     }
   }, [selectedResource, studentId, imageDetails]);
 
+
   // Delete Assignment
   const deleteAssignment = useCallback(async (assignment_id) => {
     try {
@@ -164,6 +171,7 @@ export default function Drawer_PopUp({ studentId, onImageClick }) {
     []
   );
 
+
   // Give Assignment Color Status
   const getStatusColor = (status) => {
     switch (status) {
@@ -177,6 +185,7 @@ export default function Drawer_PopUp({ studentId, onImageClick }) {
         return 'grey';
     }
   };
+
 
   const drawerContent = (
     <Box
@@ -289,6 +298,7 @@ export default function Drawer_PopUp({ studentId, onImageClick }) {
     </Box>
   );
 
+  
   return (
     <>
       <Fade in={!isOpen}>

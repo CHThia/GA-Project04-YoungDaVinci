@@ -15,6 +15,7 @@ const getDrawingResources = async (req, res) => {
   }
 };
 
+
 const getDrawingResourcesById = async (req, res) => {
   const { drawing_resources_id } = req.params;
   try {
@@ -30,6 +31,7 @@ const getDrawingResourcesById = async (req, res) => {
     res.status(500).json({ error: 'Error fetching drawing resource' });
   }
 };
+
 
 const createDrawingResources = async (req, res) => {
   if (!req.file) {
@@ -48,6 +50,7 @@ const createDrawingResources = async (req, res) => {
   }
 };
 
+
 const updateDrawingResources = async (req, res) => {
   const { drawing_resources_id } = req.params;
   const { title, description } = req.body;
@@ -62,6 +65,7 @@ const updateDrawingResources = async (req, res) => {
   }
 };
 
+
 const deleteDrawingResources = async (req, res) => {
   const { drawing_resources_id } = req.params;
   try {
@@ -75,6 +79,7 @@ const deleteDrawingResources = async (req, res) => {
     res.status(500).json({ error: 'Error deleting drawing resources' });
   }
 };
+
 
 module.exports = {
   getDrawingResources,

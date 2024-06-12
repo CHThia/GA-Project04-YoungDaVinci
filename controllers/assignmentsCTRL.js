@@ -9,6 +9,7 @@ const ensureBase64AssignmentData = (assignment) => {
   return assignment;
 };
 
+
 const getAssignmentsByStatus = async (req, res) => {
   const { student_id, assignment_status } = req.params;
 
@@ -23,6 +24,7 @@ const getAssignmentsByStatus = async (req, res) => {
   }
 };
 
+
 const getAssignmentCounts = async (req, res) => {
   const { student_id } = req.params;
 
@@ -34,6 +36,7 @@ const getAssignmentCounts = async (req, res) => {
     res.status(500).send('Server error');
   }
 };
+
 
 const getAllAssignmentsForStudent = async (req, res) => {
   const { student_id } = req.params;
@@ -48,6 +51,7 @@ const getAllAssignmentsForStudent = async (req, res) => {
     res.status(500).send('Server error');
   }
 };
+
 
 const getAssignmentsById = async (req, res) => {
   const { assignment_id } = req.params; 
@@ -65,6 +69,7 @@ const getAssignmentsById = async (req, res) => {
     res.status(500).send('Server error');
   }
 };
+
 
 const addNewAssignmentsForStudent = async (req, res) => {
   const assignment = req.body;
@@ -84,6 +89,7 @@ const addNewAssignmentsForStudent = async (req, res) => {
   }
 };
 
+
 const updateFeedbackForAssignments = async (req, res) => {
   const { feedback, assignment_data, assignment_id } = req.body;
 
@@ -102,6 +108,7 @@ const updateFeedbackForAssignments = async (req, res) => {
   }
 };
 
+
 const updateAssignment = async (req, res) => {
   const { assignment_id } = req.params;
   const { assignment_data, assignment_status } = req.body;
@@ -116,6 +123,7 @@ const updateAssignment = async (req, res) => {
     res.status(500).send('Server error');
   }
 };
+
 
 const deleteAssignments = async (req, res) => {
   const { assignment_id } = req.params;

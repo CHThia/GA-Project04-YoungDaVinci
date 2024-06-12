@@ -10,6 +10,7 @@ const getAllStudents = async () => {
   return result.rows;
 };
 
+
 const getAllStudentsById = async (student_id) => {
   const result = await pool.query(
     `SELECT student_id, name, age, gender, education, email, 
@@ -21,6 +22,7 @@ const getAllStudentsById = async (student_id) => {
   return result.rows[0];
 };
 
+
 const addNewStudents = async (name, age, gender, education, email, password, date_of_birth) => {
   const result = await pool.query(
     `INSERT INTO student_details (name, age, gender, education, email, password, create_date, update_pw_date, date_of_birth) 
@@ -30,6 +32,7 @@ const addNewStudents = async (name, age, gender, education, email, password, dat
   );
   return result.rows[0];
 };
+
 
 const updateStudentPassword = async (student_id, password) => {
   const result = await pool.query(
@@ -42,6 +45,7 @@ const updateStudentPassword = async (student_id, password) => {
   return result.rows[0];
 };
 
+
 const updateStudentAge = async () => {
   const result = await pool.query(
     `UPDATE student_details 
@@ -49,6 +53,7 @@ const updateStudentAge = async () => {
   );
   return result.rowCount;
 };
+
 
 const deleteStudentProfile = async (student_id) => {
   await pool.query('DELETE FROM student_details WHERE student_id = $1', [student_id]);

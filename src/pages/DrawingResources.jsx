@@ -71,7 +71,7 @@ export default function DrawingResources() {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      fetchDrawings(token); // Refresh the drawings list
+      fetchDrawings(token); // Refresh drawings list
     } catch (error) {
       console.error('Error deleting drawing:', error);
       setError('Error deleting drawing');

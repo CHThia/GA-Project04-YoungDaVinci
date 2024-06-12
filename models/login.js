@@ -1,5 +1,6 @@
 const pool = require('../db');
 
+
 const insertStudentDetails = async (formData) => {
   const client = await pool.connect();
   try {
@@ -14,6 +15,7 @@ const insertStudentDetails = async (formData) => {
     client.release();
   }
 };
+
 
 const insertTeacherDetails = async (formData) => {
   const client = await pool.connect();
@@ -30,6 +32,7 @@ const insertTeacherDetails = async (formData) => {
   }
 };
 
+
 const insertLogin = async (email, password, isTeacher = false) => {
   const client = await pool.connect();
   try {
@@ -43,6 +46,7 @@ const insertLogin = async (email, password, isTeacher = false) => {
     client.release();
   }
 };
+
 
 const findUserByEmail = async (email) => {
   const client = await pool.connect();
@@ -71,20 +75,21 @@ const findUserByEmail = async (email) => {
   }
 };
 
+
 const getStudentName = async (studentId) => {
   const client = await pool.connect();
   try {
-    console.log(`Executing query to fetch name for student ID: ${studentId}`); // Log query execution
+    console.log(`Executing query to fetch name for student ID: ${studentId}`); 
     const res = await client.query('SELECT name FROM student_details WHERE student_id = $1', [studentId]);
     if (res.rows.length > 0) {
-      console.log(`Query successful. Name: ${res.rows[0].name}`); // Log query success
+      console.log(`Query successful. Name: ${res.rows[0].name}`); 
       return res.rows[0].name;
     } else {
-      console.log('No student found with given ID'); // Log no result
+      console.log('No student found with given ID'); 
       throw new Error('Student not found');
     }
   } catch (error) {
-    console.error('Error executing query:', error); // Log error
+    console.error('Error executing query:', error); 
     throw error;
   } finally {
     client.release();

@@ -7,10 +7,8 @@ import CustomColorPicker from './CustomColorPicker';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
-export default function KonvaStudent() {
 
-  // const { studentId, assignmentId } = useParams();
-  // const navigate = useNavigate();
+export default function KonvaStudent() {
 
   const { assignmentId } = useParams();
 
@@ -27,6 +25,7 @@ export default function KonvaStudent() {
 
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+
 
   useEffect(() => {
     const fetchAssignment = async () => {
@@ -62,6 +61,7 @@ export default function KonvaStudent() {
 
     fetchAssignment();
   }, [assignmentId, location.state]);
+
 
   const handleMouseDown = () => {
     isDrawing.current = true;
@@ -129,8 +129,6 @@ export default function KonvaStudent() {
       if (saveResponse.ok) {
         setSnackbarMessage(`Drawing has been ${status === 'completed' ? 'submitted' : 'saved'} successfully.`);
         setOpenSnackbar(true);
-        //* Prevent Route back to student Dashboard after Save or Submit
-        // navigate(`/studentdashboard/${studentId}`); // Use this once Authentication Page is done
       } else {
         console.error(`Error ${status === 'completed' ? 'submitting' : 'saving'} drawing:`, saveResponse.statusText);
       }
@@ -159,6 +157,7 @@ export default function KonvaStudent() {
   const handleSnackbarClose = () => {
     setOpenSnackbar(false);
   };
+
 
   return (
     <div className="student-canvas-container">

@@ -14,12 +14,15 @@ import KonvaStudent from "../components/KonvaStudent";
 import { useUser } from '../../context/userContext';
 import ProtectedRoute from '../components/ProtectedRoute';
 
+
 export default function App() {
-  // const location = useLocation();
-  const { role } = useUser();
+
+  const { role, isAuthenticated } = useUser();
 
   const getNavBar = () => {
-    if (role === 'student') {
+    if (!isAuthenticated) {
+      return <NavBar_Main />;
+    } else if (role === 'student') {
       return <NavBar_Student />;
     } else if (role === 'teacher') {
       return <NavBar_Teacher />;
@@ -28,19 +31,17 @@ export default function App() {
     }
   };
 
+
   return (
     <>
       {getNavBar()}
       <br />
       <Routes>
         <Route path="/" element={<Home />} />
+        
         <Route path="/teachersignup" element={<TeacherSignUp />} />
         <Route path="/studentsignup" element={<StudentSignUp />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
-
-        <Route path="/studentdashboard/:studentId"
-          element={<ProtectedRoute allowedRoles={['student']}><StudentDashboard /></ProtectedRoute>} 
-        />
 
         <Route path="/allstudents"
           element={<ProtectedRoute allowedRoles={['teacher']}><AllStudents /></ProtectedRoute>}  
@@ -52,6 +53,10 @@ export default function App() {
 
         <Route path="/drawingresources"
           element={<ProtectedRoute allowedRoles={['teacher']}><DrawingResources /></ProtectedRoute>} 
+        />
+
+        <Route path="/studentdashboard/:studentId"
+          element={<ProtectedRoute allowedRoles={['student']}><StudentDashboard /></ProtectedRoute>} 
         />
 
         <Route path="/konva-student/:studentId/:assignmentId"

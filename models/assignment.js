@@ -17,6 +17,7 @@ const getAssignmentsByStatus = async (student_id, assignment_status) => {
   }
 };
 
+
 const getAssignmentCounts = async (student_id) => {
   try {
     const result = await pool.query(
@@ -36,6 +37,7 @@ const getAssignmentCounts = async (student_id) => {
   }
 };
 
+
 const getAllAssignmentsByStudentId = async (student_id) => {
   try {
     const result = await pool.query(
@@ -52,6 +54,7 @@ const getAllAssignmentsByStudentId = async (student_id) => {
   }
 };
 
+
 const getAssignmentById = async (assignmentId) => {
   try {
     const result = await pool.query('SELECT * FROM assignments WHERE assignment_id = $1', [assignmentId]);
@@ -61,6 +64,7 @@ const getAssignmentById = async (assignmentId) => {
     throw error;
   }
 };
+
 
 const addNewAssignmentForStudent = async (assignment) => {
   try {
@@ -82,6 +86,7 @@ const addNewAssignmentForStudent = async (assignment) => {
     throw error;
   }
 };
+
 
 const updateFeedbackForAssignment = async (assignment_id, assignment) => {
   if (!assignment_id) {
@@ -111,6 +116,7 @@ const updateFeedbackForAssignment = async (assignment_id, assignment) => {
   }
 };
 
+
 const updateAssignment = async (assignmentId, { assignment_data, assignment_status }) => {
   try {
     const result = await pool.query(
@@ -124,6 +130,7 @@ const updateAssignment = async (assignmentId, { assignment_data, assignment_stat
   }
 };
 
+
 const deleteAssignment = async (assignment_id) => {
   try {
     await pool.query('DELETE FROM assignments WHERE assignment_id = $1', [assignment_id]);
@@ -133,6 +140,7 @@ const deleteAssignment = async (assignment_id) => {
     throw error;
   }
 };
+
 
 module.exports = {
   getAssignmentsByStatus,
