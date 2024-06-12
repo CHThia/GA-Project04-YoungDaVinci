@@ -17,12 +17,14 @@ import ProtectedRoute from '../components/ProtectedRoute';
 
 export default function App() {
 
-  const { role, isAuthenticated } = useUser();
+  const { role, isAuthReady } = useUser();
 
   const getNavBar = () => {
-    if (!isAuthenticated) {
-      return <NavBar_Main />;
-    } else if (role === 'student') {
+    if (!isAuthReady) {
+      return null; 
+    }
+
+    if (role === 'student') {
       return <NavBar_Student />;
     } else if (role === 'teacher') {
       return <NavBar_Teacher />;
@@ -31,7 +33,7 @@ export default function App() {
     }
   };
 
-
+  
   return (
     <>
       {getNavBar()}

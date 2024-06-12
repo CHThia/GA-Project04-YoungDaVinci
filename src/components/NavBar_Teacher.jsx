@@ -6,7 +6,6 @@ import DrawIcon from '@mui/icons-material/Draw';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useUser } from '../../context/userContext'; 
 
-
 // HomeIcon component
 function HomeIcon_Teacher(props) {
   return (
@@ -18,7 +17,6 @@ function HomeIcon_Teacher(props) {
 
 // NavBar_Teacher component
 export default function NavBar_Teacher() {
-  
   const navigate = useNavigate();
   const { logout } = useUser(); 
 
@@ -26,7 +24,6 @@ export default function NavBar_Teacher() {
     logout(); 
     navigate('/');
   };
-
 
   return (
     <Box sx={{ flexGrow: 1 }}>

@@ -21,26 +21,25 @@ export default function NavBar_Student() {
   const location = useLocation();
   const navigate = useNavigate();
   const [studentId, setStudentId] = useState(null);
-  const { logout } = useUser(); 
+  const { logout } = useUser();
 
   const handleLogout = () => {
     logout(); 
     navigate('/'); 
   };
 
-  // Get student ID from location state or local storage
+  // Get the student ID from location state or local storage
   useEffect(() => {
     if (location.state && location.state.studentId) {
       console.log("Student ID from location state:", location.state.studentId);
       setStudentId(location.state.studentId);
-      localStorage.setItem('studentId', location.state.studentId); 
+      localStorage.setItem('studentId', location.state.studentId); // Store student ID in localStorage
     } else {
       const storedStudentId = localStorage.getItem('studentId');
       console.log("Student ID from localStorage:", storedStudentId);
       setStudentId(storedStudentId);
     }
   }, [location]);
-
 
   return (
     <Box sx={{ flexGrow: 1 }}>
