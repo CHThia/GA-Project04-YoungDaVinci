@@ -81,7 +81,7 @@ The "Drawer_PopUp" component, in my own opinion, provided the most rewarding exp
 <li> The flow started with the 'Student Card' from the All Students Page.
 
 <p align="center">
-    <img width="650" src="/img_resources/Fav-Code-AllStudents-01.PNG">
+    <img width="600" src="/img_resources/Fav-Code-AllStudents-01.PNG">
 </p>
 
 <li> Checking if student id is pass down accordingly
